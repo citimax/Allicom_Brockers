@@ -26,6 +26,8 @@ User.get('/',(req, res) => {
        
     });
   
+}).post('/',(req,res)=>{
+    res.status(201).send("Posted");
 })
 
 
