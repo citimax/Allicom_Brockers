@@ -29,14 +29,11 @@ Currency.get('/',(req, res) => {
 }).post('/',(req,res)=>{
     sql.connect(config, err => {
 
-        const Currency={
-            CurrCode:  req.body.CurrCode,
-            CurrDesc:  req.body.CurrDesc
-        }
+       
 
         new sql.Request()
-        .input('CurrCode', sql.VarChar, Currency.CurrCode)
-        .input('CurrDesc', sql.VarChar, Currency.CurrDesc)
+        .input('CurrCode', sql.VarChar, req.body.CurrCode)
+        .input('CurrDesc', sql.VarChar, req.body.CurrDesc)
         .input('@CurrPrec', sql.Int, 2)
         .input('UserID', sql.VarChar, 'steve@live.com')
         .input('Terminus', sql.VarChar, 'server')
