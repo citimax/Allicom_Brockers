@@ -2,8 +2,8 @@ const express = require('express')
 const app = express()
 var bodyParser = require('body-parser');
 
-const UserRoute= require('./Setups/user')
-const CompanyRoute= require('./Setups/Companies')
+const UserRoute= require('./Routes/user')
+const CompanyRoute= require('./Routes/Companies')
 
  app.use(bodyParser.urlencoded({extended:false}));
  app.use(bodyParser.json());

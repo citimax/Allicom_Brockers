@@ -14,7 +14,7 @@ User.get('/',(req, res) => {
         new sql.Request()
         .input('UserID', sql.VarChar, 'steve@live.com')
         .input('Terminus', sql.VarChar, 'server')
-        .execute('spSelectAllCurrencies', (err, result) => {
+        .execute('spSelectAllCompanyCostCenterAccess', (err, result) => {
           if(err){
             res.json(err.message);
             
