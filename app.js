@@ -1,17 +1,10 @@
 const express = require('express')
 const app = express()
 var bodyParser = require('body-parser');
-<<<<<<< HEAD
 
 const UserRoute= require('./Routes/user')
 const CompanyRoute= require('./Routes/Company');
 const currencyRoute = require('./Routes/Currency')
-=======
-var jwt = require("jsonwebtoken");
-//routes
-const UserRoute= require('./Setups/user')
-const CompanyRoute= require('./Setups/Companies')
->>>>>>> master
 
 
 
