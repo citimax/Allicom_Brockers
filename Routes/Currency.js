@@ -8,8 +8,6 @@ const config = require('../database')
 
 
 Currency.get('/',(req, res) => {
-
-    
     sql.connect(config, err => {
         new sql.Request()
         .input('UserID', sql.VarChar, 'steve@live.com')
@@ -28,13 +26,10 @@ Currency.get('/',(req, res) => {
   
 }).post('/',(req,res)=>{
     sql.connect(config, err => {
-
-       
-
         new sql.Request()
         .input('CurrCode', sql.VarChar, req.body.CurrCode)
         .input('CurrDesc', sql.VarChar, req.body.CurrDesc)
-        .input('@CurrPrec', sql.Int, 2)
+        .input('CurrPrec', sql.Int, 2)
         .input('UserID', sql.VarChar, 'steve@live.com')
         .input('Terminus', sql.VarChar, 'server')
         .execute('spSaveCurrencies', (err, result) => {
@@ -48,7 +43,7 @@ Currency.get('/',(req, res) => {
         })
        
     });
-}).delete()
+})
 
 
 module.exports = Currency;

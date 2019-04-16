@@ -3,12 +3,14 @@ const app = express()
 var bodyParser = require('body-parser');
 
 const UserRoute= require('./Routes/user')
-const CompanyRoute= require('./Routes/Companies')
+const CompanyRoute= require('./Routes/Company');
+const currencyRoute = require('./Routes/Currency')
 
  app.use(bodyParser.urlencoded({extended:false}));
  app.use(bodyParser.json());
 
-
+ app.locals.UserID = 'steve@live.com';
+ app.locals.Terminus = 'Server';
 
 
 app.use(function (req, res, next) {
@@ -20,7 +22,8 @@ app.use(function (req, res, next) {
 });
 
 app.use('/users',UserRoute);
-app.use('/company',CompanyRoute,);
+app.use('/company',CompanyRoute);
+app.use('/currency',currencyRoute);
 
 
 app.use((req,res,next)=>{
