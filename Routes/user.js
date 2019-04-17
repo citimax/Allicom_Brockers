@@ -5,11 +5,10 @@ const config = require("../database");
 const AppConstant = require("../AppConstant");
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-//const auth = require("../auth");
+var jwt = require("jsonwebtoken");
 
-//User.use(auth.validateToken);
 
-global.pass = "kim";
+
 User.get(
     "/", (req, res) => {
       sql.connect(config, err => {
@@ -140,6 +139,7 @@ User.get(
     });
   })
   .get('/:UserName/:securitymodule', (req, res) => {
+    const right = "View";
     sql.connect(config, err => {
       new sql.Request()
         .input("UserName", sql.VarChar, req.params.UserName)
@@ -153,7 +153,11 @@ User.get(
               message: err.message
             });
           } else {
-            res.status(200).json(result.recordset);
+            if (result.recordset[0] + right) {
+              res.send('true.....');
+            }
+
+
           }
           sql.close();
         });

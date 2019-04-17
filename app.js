@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
 var jwt = require("jsonwebtoken");
+const request = require("request");
 const UserRoute = require("./Routes/user");
 const CompanyRoute = require("./Routes/Company");
 const currencyRoute = require("./Routes/Currency");
@@ -13,8 +14,10 @@ const Usergroups = require("./Routes/UserGroups");
 const UserRoles = require("./Routes/UserRoles");
 const RolesRoute = require('./Routes/Roles');
 const SecurityGroupsRoute = require('./Routes/SecurityGroups');
+const auth = require('./auth');
 
-//end of routes
+
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -32,30 +35,20 @@ app.use(function (req, res, next) {
 });
 
 
+app.use('/login', auth.router);
+// app.use(auth.validateToken);
+app.use("/users", auth.validaterole("Users"), UserRoute);
+app.use("/company", auth.validaterole("company"), CompanyRoute);
+app.use("/currency", auth.validaterole("currency"), currencyRoute);
+app.use("/Countries", auth.validaterole("Countries"), Countries);
+app.use("/Counties", auth.validaterole("Counties"), Counties);
+app.use("/CostCenter", auth.validaterole("CostCenter"), CostCenter);
+app.use("/CompanyCostCenterAccess", auth.validaterole("CompanyCostCenterAccess"), CompanyCostCenterAccess);
+app.use("/Usergroups", auth.validaterole("Usergroups"), Usergroups);
+app.use("/UserRoles", auth.validaterole("UserRoles"), UserRoles);
+app.use('/roles', auth.validaterole("roles"), RolesRoute);
+app.use('/securityGroups', auth.validaterole("securityGroups"), SecurityGroupsRoute);
 
-app.use("/users", UserRoute);
-app.use("/company", CompanyRoute);
-app.use("/currency", currencyRoute);
-app.use("/Countries", Countries);
-app.use("/Counties", Counties);
-app.use("/CostCenter", CostCenter);
-app.use("/CompanyCostCenterAccess", CompanyCostCenterAccess);
-app.use("/Usergroups", Usergroups);
-app.use("/UserRoles", UserRoles);
-app.use('/roles', RolesRoute);
-app.use('/', LoginRoute);
-app.use('/securityGroups', SecurityGroupsRoute);
-app.post("/login", function (req, res) {
-  const response = {
-    request: {
-      type: "GET",
-      url: "http://localhost:3000/user" + req.body.username
-    }
-  }
-
-  res.json(response);
-
-});
 
 app.use(bodyParser.urlencoded({
   extended: false

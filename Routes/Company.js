@@ -5,6 +5,7 @@ const config = require("../database");
 const AppConstant = require("../AppConstant");
 const Joi = require("joi");
 
+
 Company.get("/", (req, res) => {
     sql.connect(config, err => {
       new sql.Request()
