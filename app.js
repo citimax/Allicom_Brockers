@@ -68,12 +68,10 @@ app.use("/CostCenter", CostCenter);
 app.use("/CompanyCostCenterAccess", CompanyCostCenterAccess);
 app.use("/Usergroups", Usergroups);
 app.use("/UserRoles", UserRoles);
-//end of app use routes
+app.use('/roles', RolesRoute);
+app.use('/securityGroups', SecurityGroupsRoute);
 
 
-
-
-//end of routes
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -90,11 +88,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.use('/users', UserRoute);
-app.use('/company', CompanyRoute);
-app.use('/currency', currencyRoute);
-app.use('/roles', RolesRoute);
-app.use('/securityGroups', SecurityGroupsRoute);
+
 
 //end of app use routes
 app.use((req, res, next) => {
