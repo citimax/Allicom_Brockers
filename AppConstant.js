@@ -1,5 +1,5 @@
 let AppConstant = {
-  userName: "kim",
-  Terminus: "Server"
-};
+  userName: 'steve',
+  Terminus: 'Server'
+}
 module.exports = AppConstant;
