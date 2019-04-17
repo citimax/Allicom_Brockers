@@ -11,7 +11,6 @@ const CostCenter = require("./Routes/CostCenter");
 const CompanyCostCenterAccess = require("./Routes/CompanyCostCenterAccess");
 const Usergroups = require("./Routes/UserGroups");
 const UserRoles = require("./Routes/UserRoles");
-
 const RolesRoute = require('./Routes/Roles');
 const SecurityGroupsRoute = require('./Routes/SecurityGroups');
 
@@ -32,32 +31,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-//load routes
-const user = {
-  id: 1,
-  password: "123"
-};
 
-app.post("/authenticate", function (req, res) {
-  if (user.password != req.body.password) {
-    res.json({
-      success: false,
-      message: "Authentication failed. Wrong password."
-    });
-  } else {
-    var token = jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + 60 * 60,
-        data: "foobar"
-      },
-      "secret"
-    );
-    res.json({
-      success: true,
-      message: "Enjoy your token!",
-      token: token
-    });
-  }
-});
 
 app.use("/users", UserRoute);
 app.use("/company", CompanyRoute);
@@ -69,8 +43,19 @@ app.use("/CompanyCostCenterAccess", CompanyCostCenterAccess);
 app.use("/Usergroups", Usergroups);
 app.use("/UserRoles", UserRoles);
 app.use('/roles', RolesRoute);
+app.use('/', LoginRoute);
 app.use('/securityGroups', SecurityGroupsRoute);
+app.post("/login", function (req, res) {
+  const response = {
+    request: {
+      type: "GET",
+      url: "http://localhost:3000/user" + req.body.username
+    }
+  }
 
+  res.json(response);
+
+});
 
 app.use(bodyParser.urlencoded({
   extended: false
