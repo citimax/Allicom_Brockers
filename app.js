@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
 var jwt = require("jsonwebtoken");
+const request = require("request");
 const UserRoute = require("./Routes/user");
 const CompanyRoute = require("./Routes/Company");
 const currencyRoute = require("./Routes/Currency");
@@ -11,11 +12,12 @@ const CostCenter = require("./Routes/CostCenter");
 const CompanyCostCenterAccess = require("./Routes/CompanyCostCenterAccess");
 const Usergroups = require("./Routes/UserGroups");
 const UserRoles = require("./Routes/UserRoles");
-
 const RolesRoute = require('./Routes/Roles');
 const SecurityGroupsRoute = require('./Routes/SecurityGroups');
+const auth = require('./auth');
 
-//end of routes
+
+
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -32,44 +34,20 @@ app.use(function (req, res, next) {
   next();
 });
 
-//load routes
-const user = {
-  id: 1,
-  password: "123"
-};
 
-app.post("/authenticate", function (req, res) {
-  if (user.password != req.body.password) {
-    res.json({
-      success: false,
-      message: "Authentication failed. Wrong password."
-    });
-  } else {
-    var token = jwt.sign({
-        exp: Math.floor(Date.now() / 1000) + 60 * 60,
-        data: "foobar"
-      },
-      "secret"
-    );
-    res.json({
-      success: true,
-      message: "Enjoy your token!",
-      token: token
-    });
-  }
-});
-
-app.use("/users", UserRoute);
-app.use("/company", CompanyRoute);
-app.use("/currency", currencyRoute);
-app.use("/Countries", Countries);
-app.use("/Counties", Counties);
-app.use("/CostCenter", CostCenter);
-app.use("/CompanyCostCenterAccess", CompanyCostCenterAccess);
-app.use("/Usergroups", Usergroups);
-app.use("/UserRoles", UserRoles);
-app.use('/roles', RolesRoute);
-app.use('/securityGroups', SecurityGroupsRoute);
+app.use('/login', auth.router);
+// app.use(auth.validateToken);
+app.use("/users", auth.validaterole("Users"), UserRoute);
+app.use("/company", auth.validaterole("company"), CompanyRoute);
+app.use("/currency", auth.validaterole("currency"), currencyRoute);
+app.use("/Countries", auth.validaterole("Countries"), Countries);
+app.use("/Counties", auth.validaterole("Counties"), Counties);
+app.use("/CostCenter", auth.validaterole("CostCenter"), CostCenter);
+app.use("/CompanyCostCenterAccess", auth.validaterole("CompanyCostCenterAccess"), CompanyCostCenterAccess);
+app.use("/Usergroups", auth.validaterole("Usergroups"), Usergroups);
+app.use("/UserRoles", auth.validaterole("UserRoles"), UserRoles);
+app.use('/roles', auth.validaterole("roles"), RolesRoute);
+app.use('/securityGroups', auth.validaterole("securityGroups"), SecurityGroupsRoute);
 
 
 app.use(bodyParser.urlencoded({
