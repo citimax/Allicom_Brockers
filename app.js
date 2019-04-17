@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
-
+var jwt = require("jsonwebtoken");
 const UserRoute = require("./Routes/user");
 const CompanyRoute = require("./Routes/Company");
 const currencyRoute = require("./Routes/Currency");
@@ -9,12 +9,11 @@ const Countries = require("./Routes/Countries");
 const Counties = require("./Routes/Counties");
 const CostCenter = require("./Routes/CostCenter");
 const CompanyCostCenterAccess = require("./Routes/CompanyCostCenterAccess");
+const Usergroups = require("./Routes/UserGroups");
+const UserRoles = require("./Routes/UserRoles");
 //end of routes
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
-app.locals.UserID = "steve@live.com";
-app.locals.Terminus = "Server";
 
 app.use(function(req, res, next) {
   //Enabling CORS
@@ -59,6 +58,8 @@ app.use("/Countries", Countries);
 app.use("/Counties", Counties);
 app.use("/CostCenter", CostCenter);
 app.use("/CompanyCostCenterAccess", CompanyCostCenterAccess);
+app.use("/Usergroups", Usergroups);
+app.use("/UserRoles", UserRoles);
 //end of app use routes
 app.use((req, res, next) => {
   const error = new Error("resource not found");
