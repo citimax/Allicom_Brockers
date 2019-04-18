@@ -35,19 +35,19 @@ app.use(function (req, res, next) {
 });
 
 
-app.use('/login', auth.router);
+app.use('/api/login', auth.router);
 // app.use(auth.validateToken);
-app.use("/users", auth.validaterole("Users"), UserRoute);
-app.use("/company", auth.validaterole("company"), CompanyRoute);
-app.use("/currency", auth.validaterole("currency"), currencyRoute);
-app.use("/Countries", auth.validaterole("Countries"), Countries);
-app.use("/Counties", auth.validaterole("Counties"), Counties);
-app.use("/CostCenter", auth.validaterole("CostCenter"), CostCenter);
-app.use("/CompanyCostCenterAccess", auth.validaterole("CompanyCostCenterAccess"), CompanyCostCenterAccess);
-app.use("/Usergroups", auth.validaterole("Usergroups"), Usergroups);
-app.use("/UserRoles", auth.validaterole("UserRoles"), UserRoles);
-app.use('/roles', auth.validaterole("roles"), RolesRoute);
-app.use('/securityGroups', auth.validaterole("securityGroups"), SecurityGroupsRoute);
+app.use("/api/users", auth.validaterole("Users"), UserRoute);
+app.use("/api/company", auth.validaterole("company"), CompanyRoute);
+app.use("/api/currency", auth.validaterole("currency"), currencyRoute);
+app.use("/api/Countries", auth.validaterole("Countries"), Countries);
+app.use("/api/Counties", auth.validaterole("Counties"), Counties);
+app.use("/api/CostCenter", auth.validaterole("CostCenter"), CostCenter);
+app.use("/api/CompanyCostCenterAccess", auth.validaterole("CompanyCostCenterAccess"), CompanyCostCenterAccess);
+app.use("/api/Usergroups", auth.validaterole("Usergroups"), Usergroups);
+app.use("/api/UserRoles", auth.validaterole("UserRoles"), UserRoles);
+app.use('/api/roles', auth.validaterole("roles"), RolesRoute);
+app.use('/api/securityGroups', auth.validaterole("securityGroups"), SecurityGroupsRoute);
 
 
 app.use(bodyParser.urlencoded({
