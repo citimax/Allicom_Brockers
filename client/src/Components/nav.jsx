@@ -1,9 +1,7 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
+
 class Nav extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
   render() {
     return (
       <div>
@@ -29,32 +27,7 @@ class Nav extends Component {
                 </div>
                 <div className="logo-element">IN+</div>
               </li>
-              <li>
-                <a href="index-2.html">
-                  <i className="fa fa-th-large" />{" "}
-                  <span className="nav-label">System Admin</span>{" "}
-                  <span className="fa arrow" />
-                </a>
-                <ul className="nav nav-second-level collapse">
-                  <li>
-                    <a href="/users">Users</a>
-                  </li>
-                  <li>
-                    <a href="/usergroups">User Groups</a>
-                  </li>
-                  <li>
-                    <a href="/roles">Roles</a>
-                  </li>
-                  <li>
-                    <a href="/userroles">User Roles</a>
-                  </li>
-                  <li>
-                    <a href="/securitygroups">Security Groups </a>
-                  </li>
-                </ul>
-              </li>
-             
-
+              {this.props.children}
             </ul>
           </div>
         </nav>
