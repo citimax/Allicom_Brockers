@@ -25,9 +25,6 @@ class Home extends Component {
   render() {
     const ColumnData = [
       {
-        label: "ID"
-      },
-      {
         label: "UserName"
       },
       {
@@ -38,35 +35,40 @@ class Home extends Component {
       },
       {
         label: "Telephone"
+      },
+      {
+        label: "Action"
       }
     ];
     let itemlist = [];
     this.state.users.map((d, i) => {
       let list = {
-        ID: i + 1,
         Username: d.UserName,
         FullName: d.FullNames,
         Email: d.Email,
-        Telephone: d.Telephone
+        Telephone: d.Telephone,
+        Edit: <span> <a href=""> Edit</a> | <a href=""> Delete</a></span>
       };
 
       itemlist.push(list);
     });
 
     return (
-      <div id="wrapper">
-        <div id="page-wrapper" className="gray-bg">
-         
-          <Breadcumps tablename={"Users"} />
-          <TableWrapper>
-            <Tables
-              users={this.state.users}
-              Rows={itemlist}
-              columns={ColumnData}
-            />
-          </TableWrapper>
-        </div>
+      // <div id="wrapper">
+      //   <div id="page-wrapper" className="gray-bg">
+
+      <div>
+        <Breadcumps tablename={"Users"} />
+        <TableWrapper>
+          <Tables
+            users={this.state.users}
+            Rows={itemlist}
+            columns={ColumnData}
+          />
+        </TableWrapper>
       </div>
+      //   </div>
+      // </div>
     );
   }
 }
