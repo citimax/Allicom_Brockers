@@ -1,18 +1,3 @@
-<<<<<<< HEAD
-const express = require('express')
-const app = express()
-var bodyParser = require('body-parser');
-
-const UserRoute = require('./Routes/user')
-const CompanyRoute = require('./Routes/Company');
-const currencyRoute = require('./Routes/Currency');
-const RolesRoute = require('./Routes/Roles');
-const SecurityGroupsRoute = require('./Routes/SecurityGroups');
-
-
-
-//end of routes
-=======
 const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
@@ -65,7 +50,6 @@ app.use('/api/roles', auth.validaterole("roles"), RolesRoute);
 app.use('/api/securityGroups', auth.validaterole("securityGroups"), SecurityGroupsRoute);
 
 
->>>>>>> b980b914b99e3221430877761657814d5873fa59
 app.use(bodyParser.urlencoded({
   extended: false
 }));
@@ -82,15 +66,6 @@ app.use(function (req, res, next) {
   next();
 });
 
-<<<<<<< HEAD
-app.use('/users', UserRoute);
-app.use('/company', CompanyRoute);
-app.use('/currency', currencyRoute);
-app.use('/roles', RolesRoute);
-app.use('/securityGroups', SecurityGroupsRoute);
-=======
-
->>>>>>> b980b914b99e3221430877761657814d5873fa59
 
 //end of app use routes
 app.use((req, res, next) => {

@@ -14,14 +14,14 @@ class Nav extends Component {
                     className='rounded-circle'
                     src='img/profile_small.jpg'
                   />
-                  <a
+                  <Link
                     data-toggle='dropdown'
                     className='dropdown-toggle'
-                    href='#'>
+                    href='/'>
                     <span className='block m-t-xs font-bold'>
                       David Williams
                     </span>
-                  </a>
+                  </Link>
                 </div>
                 <div className='logo-element'>IN+</div>
               </li>

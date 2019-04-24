@@ -5,7 +5,6 @@ const config = require("../database");
 const AppConstant = require("../AppConstant");
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
-<<<<<<< HEAD
 
 User.get("/", (req, res) => {
     sql.connect(config, err => {
@@ -25,31 +24,6 @@ User.get("/", (req, res) => {
         });
     });
   })
-=======
-var jwt = require("jsonwebtoken");
-
-
-
-User.get(
-    "/", (req, res) => {
-      sql.connect(config, err => {
-        new sql.Request()
-          .input("UserID", sql.VarChar, AppConstant.userName)
-          .input("Terminus", sql.VarChar, AppConstant.Terminus)
-          .execute("spSelectAllUsers", (err, result) => {
-            if (err) {
-              res.json({
-                success: false,
-                message: err.message
-              });
-            } else {
-              res.status(200).json(result.recordset);
-            }
-            sql.close();
-          });
-      });
-    })
->>>>>>> b980b914b99e3221430877761657814d5873fa59
   .post("/", (req, res) => {
     const schema = Joi.object().keys({
       UserName: Joi.string()
@@ -161,10 +135,7 @@ User.get(
     });
   })
   .get('/:UserName/:securitymodule', (req, res) => {
-<<<<<<< HEAD
-=======
     const right = "View";
->>>>>>> b980b914b99e3221430877761657814d5873fa59
     sql.connect(config, err => {
       new sql.Request()
         .input("UserName", sql.VarChar, req.params.UserName)
@@ -178,25 +149,17 @@ User.get(
               message: err.message
             });
           } else {
-<<<<<<< HEAD
-            res.status(200).json(result.recordset);
-=======
             if (result.recordset[0] + right) {
               res.send('true.....');
             }
 
 
->>>>>>> b980b914b99e3221430877761657814d5873fa59
           }
           sql.close();
         });
     });
   });
 
-<<<<<<< HEAD
   
-=======
-
->>>>>>> b980b914b99e3221430877761657814d5873fa59
 
 module.exports = User;
