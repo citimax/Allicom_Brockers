@@ -1,19 +1,19 @@
-import React, { Component } from 'react';
-import Nav from './Components/nav.jsx';
-import Wrapper from './Components/wrapper'
-import NavTop from './Components/nav_top'
+import React, {Component} from 'react';
+import { BrowserRouter, Route, Link ,IndexRoute} from "react-router-dom";
+import UsersPage from './Components/pages/users';
+import UsergroupsPage from './Components/pages/usergroups';
 
 
 
 class App extends Component {
   render() {
-    return (
-      <div id="wrapper">
-        <Nav/>
-        
-        < Wrapper / >
-      </div>
-    );
+    return ( 
+      <BrowserRouter>
+        <Route path="/" exact component={UsersPage}></Route> 
+          <Route path="/users" exact component={UsersPage}></Route>
+          <Route path="/usergroups" exact component={UsergroupsPage}></Route>
+       
+     </BrowserRouter> );
   }
 }
 
