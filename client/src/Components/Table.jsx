@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { MDBDataTable } from "mdbreact";
 
-class Tables extends Component {
+class Table extends Component {
   render() {
     const data = {
       columns: this.props.columns,
@@ -11,4 +11,4 @@ class Tables extends Component {
   }
 }
 
-export default Tables;
+export default Table;

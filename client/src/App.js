@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-import Nav from "./Components/nav.jsx";
-import Wrapper from "./Components/wrapper";
+import React, {Component} from 'react';
+import { BrowserRouter, Route, Link ,IndexRoute} from "react-router-dom";
+import UsersPage from './Components/pages/users';
+import UsergroupsPage from './Components/pages/usergroups';
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import User from "./Components/Users";
@@ -11,46 +12,14 @@ import Login from "./Components/Login";
 
 class App extends Component {
   render() {
-    return (
-      <div id="wrapper">
-        <Router>
-          <Nav>
-            <Menus />
-          </Nav>
-          <Wrapper>
-            <Route path="/users" exact component={User} />
-            <Route path="/usergroups" exact component={UserGroups} />
-          </Wrapper>
-        </Router>
-      </div>
-    );
+    return ( 
+      <BrowserRouter>
+        <Route path="/" exact component={UsersPage}></Route> 
+          <Route path="/users" exact component={UsersPage}></Route>
+          <Route path="/usergroups" exact component={UsergroupsPage}></Route>
+       
+     </BrowserRouter> );
   }
 }
 
 export default App;
-{
-  /* <Router>
-  <div id="wrapper">
-    <Route
-      path="/"
-      exact="true"
-      render={() => {
-        return (
-          <div>
-            <Nav />
-            <h1>Login Here</h1>
-            <Wrapper />
-          </div>
-        );
-      }}
-    />
-    <Route
-      path="/About"
-      exact="true"
-      render={() => {
-        return <h1>About About</h1>;
-      }}
-    />
-  </div>
-</Router> */
-}

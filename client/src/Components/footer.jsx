@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 class Footer extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {  }
-    }
+   
     render() { 
         return ( <div>
-            <div class="footer">
-                <div class="float-right">
+            <div className="footer">
+                <div className="float-right">
                     10GB of <strong>250GB</strong> Free.
             </div>
                 <div>
