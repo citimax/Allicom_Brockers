@@ -3,6 +3,7 @@ import Breadcumps from "../breadcumps";
 import Table from "../Table";
 import TableWrapper from "../TableWrappper";
 import Wrapper from "../wrapper";
+import { NotificationContainer, NotificationManager } from 'react-notifications';
 
 class Users extends Component {
  
@@ -10,8 +11,30 @@ class Users extends Component {
     super();
     this.state = { users: [], 
       reseter: false,
-      NewUser: { UserName: "", FullNames: "", Email: "", Password: "", Telephone: "", ConfirmPassword: "", ExpiryDate: "4/25/2019", IsActive:true}
+       UserName: "", FullNames: "", Email: "", Password: "", Telephone: "", ConfirmPassword: "", ExpiryDate: "4/25/2019", IsActive:true,
       }}
+
+
+  createNotification = (type) => {
+    return () => {
+      switch (type) {
+        case 'info':
+          NotificationManager.info('Info message');
+          break;
+        case 'success':
+          NotificationManager.success('Success message', 'Title here');
+          break;
+        case 'warning':
+          NotificationManager.warning('Warning message', 'Close after 3000ms', 3000);
+          break;
+        case 'error':
+          NotificationManager.error('Error message', 'Click me!', 5000, () => {
+            alert('callback');
+          });
+          break;
+      }
+    };
+  };
  handleclick=(e)=>{
    e.preventDefault();
    if (this.state.reseter === false){
@@ -19,8 +42,11 @@ class Users extends Component {
    }else{
      this.setState({ reseter: false })
    }
-   
+   this.handleStateReset();
  }
+  handleStateReset() {
+    this.setState({ UserName: "", FullNames: "", Email: "", Password: "", Telephone: "", ConfirmPassword: "", ExpiryDate: "4/25/2019", IsActive: true });
+  }
   fetchData = () => {
     fetch("api/users")
       .then(res => res.json())
@@ -31,13 +57,29 @@ class Users extends Component {
 
   handleInputChange=(event)=> {
     event.preventDefault();
-
-    this.setState({ NewUser: {[event.target.name]:[event.target.value]}});
-    
+    this.setState({ [event.target.name]:event.target.value}); 
+     
+  }
+  handleDelete = (username) => {
+    console.log(username);
+    return fetch('api/users/' + username, {
+      method: "Delete",
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+      .then(response => response.json().then(data => { 
+        this.fetchData();
+        console.log(data) })); 
+  }
+  handleEdit = (User) => {
+    const data = { UserName: User.UserName, FullNames: User.FullNames, Email: User.Email, Password: User.Password, Telephone: User.Telephone, ConfirmPassword: User.ConfirmPassword, ExpiryDate: "4/25/2019", IsActive: true };
+    this.setState(data);
+    this.setState({ reseter: true })
   }
   handleSubmit=(event)=> {
     event.preventDefault();
-    const data = { UserName: this.state.NewUser.UserName, FullNames: this.state.NewUser.FullNames, Email: this.state.NewUser.Email, Password: this.state.NewUser.Password, Telephone: this.state.NewUser.Telephone, ConfirmPassword: this.state.NewUser.ConfirmPassword, ExpiryDate: "4/25/2019", IsActive: true };
+    const data = { UserName: this.state.UserName, FullNames: this.state.FullNames, Email: this.state.Email, Password: this.state.Password, Telephone: this.state.Telephone, ConfirmPassword: this.state.ConfirmPassword, ExpiryDate: "4/25/2019", IsActive: true };
   
     this.postData('api/users', data);
     console.log(data);
@@ -50,7 +92,10 @@ class Users extends Component {
     },
     body: JSON.stringify(data),
   })
-    .then(response => response.json().then(data => { console.log(data)})); 
+    .then(response => response.json().then(data => { 
+      this.fetchData();
+      this.handleStateReset();
+      console.log(data)})); 
 }
   componentDidMount() {
     this.fetchData();
@@ -106,7 +151,7 @@ class Users extends Component {
         Email: k.Email,
         Telephone: k.Telephone,
         ExpiryDate: k.ExpiryDate,
-        action: <span> <a href="">Edit</a>| <a href="">Delete</a></span>
+        action: <span> <a style={{ color: "#007bff" }} onClick={(e) => this.handleEdit(k, e)} >Edit</a>| <a style={{ color:"#007bff"}} onClick={(e) => this.handleDelete(k.UserName,e)} >  Delete</a></span>
       };
       Rowdata1.push(Rowdata);
     });
@@ -116,7 +161,7 @@ class Users extends Component {
       <Wrapper>
         <Breadcumps tablename={"Users"} button={<button to="/" type="button" style={{ marginTop: 40 }} onClick={this.handleclick} className="btn btn-primary float-left">Go Back</button>} />
        
-        <Formdata handleSubmit={this.handleSubmit} handleInputChange={this.handleInputChange} />
+        <Formdata Values={this.state} handleSubmit={this.handleSubmit} handleInputChange={this.handleInputChange} />
        
       </Wrapper>
     );
@@ -151,12 +196,12 @@ const Formdata = (props) => {
                 <div className="col-sm">
                   <div className="form-group">
                     <label htmlFor="exampleInputEmail1">UserName</label>
-                    <input type="text" name="UserName" onChange={props.handleInputChange} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username" />
+                    <input type="text" name="UserName" value={props.Values.UserName} onChange={props.handleInputChange} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username" />
 
                   </div>
                   <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>
-                    <input type="email" name="Email" className="form-control" onChange={props.handleInputChange} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+                    <input type="email" name="Email" value={props.Values.Email} className="form-control" onChange={props.handleInputChange} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
 
                   </div>
                   <div className="form-group">
@@ -168,12 +213,12 @@ const Formdata = (props) => {
                 <div className="col-sm">
                   <div className="form-group">
                     <label htmlFor="exampleInputPassword1">FullNames</label>
-                    <input type="text" name="FullNames"  onChange={props.handleInputChange} className="form-control" id="exampleInputPassword1" placeholder="FullNames" />
+                    <input type="text" name="FullNames" value={props.Values.FullNames}  onChange={props.handleInputChange} className="form-control" id="exampleInputPassword1" placeholder="FullNames" />
                   </div>
 
                   <div className="form-group">
                     <label htmlFor="exampleInputPassword1">Telephone</label>
-                    <input type="text" name="Telephone" className="form-control" onChange={props.handleInputChange} id="exampleInputPassword1" placeholder="Telephone" />
+                    <input type="text" name="Telephone" value={props.Values.Telephone} className="form-control" onChange={props.handleInputChange} id="exampleInputPassword1" placeholder="Telephone" />
                   </div>
                   <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Confirm Password</label>
