@@ -8,9 +8,10 @@ class Users extends Component {
  
   constructor() {
     super();
-    this.state = { users: [],reseter: false};
-    
-  }
+    this.state = { users: [], 
+      reseter: false,
+      NewUser: { UserName: "", FullNames: "", Email: "", Password: "", Telephone: "", ConfirmPassword: "", ExpiryDate: "4/25/2019", IsActive:true}
+      }}
  handleclick=(e)=>{
    e.preventDefault();
    if (this.state.reseter === false){
@@ -28,22 +29,36 @@ class Users extends Component {
       });
   };
 
+  handleInputChange=(event)=> {
+    event.preventDefault();
+
+    this.setState({ NewUser: {[event.target.name]:[event.target.value]}});
+    
+  }
+  handleSubmit=(event)=> {
+    event.preventDefault();
+    const data = { UserName: this.state.NewUser.UserName, FullNames: this.state.NewUser.FullNames, Email: this.state.NewUser.Email, Password: this.state.NewUser.Password, Telephone: this.state.NewUser.Telephone, ConfirmPassword: this.state.NewUser.ConfirmPassword, ExpiryDate: "4/25/2019", IsActive: true };
+  
+    this.postData('api/users', data);
+    console.log(data);
+  }
+ postData(url = ``, data = {}) {
+  return fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then(response => response.json().then(data => { console.log(data)})); 
+}
   componentDidMount() {
     this.fetchData();
   }
 
- TonglePage=(e)=>{
-   e.preventDefault();
-   console.log("clicked")
-    
-  
- }
+
 
   render() {
-   
-    
-   
-   
     const ColumnData = [
       {
         label: "UserName",
@@ -99,42 +114,85 @@ class Users extends Component {
     if (this.state.reseter) {
     return (
       <Wrapper>
-        <Breadcumps tablename={"Users"} newClick={() => this.handleclick} />
+        <Breadcumps tablename={"Users"} button={<button to="/" type="button" style={{ marginTop: 40 }} onClick={this.handleclick} className="btn btn-primary float-left">Go Back</button>} />
        
-        <Formdata/>
+        <Formdata handleSubmit={this.handleSubmit} handleInputChange={this.handleInputChange} />
        
       </Wrapper>
     );
   }else{
       return (
         <Wrapper>
-          <Breadcumps tablename={"Users"} newClick={(e) => this.handleclick} />
+          <Breadcumps tablename={"Users"} button={<button type="button" style={{ marginTop: 40 }} onClick={this.handleclick} className="btn btn-primary float-left">Create New</button>} />
           <TableWrapper >
-            
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
         </Wrapper>);
   }
 }
 }
-const Formdata = () => {
+const Formdata = (props) => {
   return (
-  <form>
-    <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email"/>
-        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+  <div className="container-fluid">
+      <div className="col-sm-12">
+        <div className="ibox ">
+          <div className="ibox-title">
+            <div className="ibox-tools">
+            
+              
+              <a className="close-link">
+                <i className="fa fa-times"></i>
+              </a>
+            </div>
+          </div>
+          <div className="ibox-content">
+            <form onSubmit={props.handleSubmit} >
+              <div className=" row">
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="exampleInputEmail1">UserName</label>
+                    <input type="text" name="UserName" onChange={props.handleInputChange} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter Username" />
+
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="exampleInputEmail1">Email address</label>
+                    <input type="email" name="Email" className="form-control" onChange={props.handleInputChange} id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email" />
+
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">Password</label>
+                    <input name="Password"  type="Password" onChange={props.handleInputChange} className="form-control" id="exampleInputPassword1" placeholder="Password" />
+                  </div>
+                  <button type="submit" className="btn btn-primary">Submit</button>
+                </div>
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">FullNames</label>
+                    <input type="text" name="FullNames"  onChange={props.handleInputChange} className="form-control" id="exampleInputPassword1" placeholder="FullNames" />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">Telephone</label>
+                    <input type="text" name="Telephone" className="form-control" onChange={props.handleInputChange} id="exampleInputPassword1" placeholder="Telephone" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="exampleInputEmail1">Confirm Password</label>
+                    <input type="password" name="ConfirmPassword"  onChange={props.handleInputChange} className="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="ConfirmPassword" />
+
+                  </div>
+
+                  
+                </div>
+
+              </div>
+            </form>
+            
+            
+                </div>
+              </div>
+                </div>
   </div>
-      <div class="form-group">
-        <label for="exampleInputPassword1">Password</label>
-        <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password"/>
-  </div>
-        <div class="form-group form-check">
-          <input type="checkbox" class="form-check-input" id="exampleCheck1"/>
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-</form>);
+  );
 };
 
 

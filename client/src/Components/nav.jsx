@@ -14,7 +14,7 @@ class Nav extends Component {
                     className='rounded-circle'
                     src='img/profile_small.jpg'
                   />
-                  <Link
+                  <Link to="/"
                     data-toggle='dropdown'
                     className='dropdown-toggle'
                     href='/'>

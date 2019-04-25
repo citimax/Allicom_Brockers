@@ -23,8 +23,8 @@ class breadcumps extends Component {
           </div>
           <div className='col-lg-2'>
             <div className="row wrapper ">
-             {/* {this.props.Button} */}
-              <button to="/" type="button" style={{ marginTop: 40 }} onClick={()=>this.props.newClick()} className="btn btn-primary float-left">Create New</button>
+              {this.props.button}
+            
             </div>
           </div>
         </div>

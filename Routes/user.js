@@ -8,6 +8,7 @@ const bcrypt = require("bcrypt");
 
 User.get("/", (req, res) => {
     sql.connect(config, err => {
+       
       new sql.Request()
         .input("UserID", sql.VarChar, AppConstant.userName)
         .input("Terminus", sql.VarChar, AppConstant.Terminus)
