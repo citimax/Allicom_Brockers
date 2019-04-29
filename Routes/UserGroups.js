@@ -2,21 +2,29 @@ const express = require("express");
 const Usergroups = express.Router();
 var sql = require("mssql");
 const config = require("../database");
-const AppConstant = require("../AppConstant");
+
 const Joi = require("joi");
+
 Usergroups.get("/", (req, res) => {
-  sql.connect(config, err => {
-    new sql.Request()
-      .input("UserID", sql.VarChar, AppConstant.userName)
-      .input("Terminus", sql.VarChar, AppConstant.Terminus)
-      .execute("spSelectAllUserGroups", (err, result) => {
+  const pool = new sql.ConnectionPool(config);
+  pool.connect(error => {
+    if (error) {
+      res.json({
+        success: false,
+        message: error.message
+      });
+    } else {
+      const request = new sql.Request(pool);
+      request.input("UserID", sql.VarChar, res.locals.user);
+      request.input("Terminus", sql.VarChar, req.ip[0]);
+      request.execute("spSelectAllUserGroups", (err, result) => {
         if (err) {
           res.json({ success: false, message: err.message });
         } else {
           res.status(200).json(result.recordset);
         }
-        sql.close();
       });
+    }
   });
 })
   .post("/", (req, res) => {
@@ -35,21 +43,28 @@ Usergroups.get("/", (req, res) => {
 
     const result = Joi.validate(req.body, schema);
     if (!result.error) {
-      sql.connect(config, err => {
-        new sql.Request()
-          .input("UserName", sql.VarChar, req.body.UserName)
-          .input("GroupCode", sql.VarChar, req.body.GroupCode)
-          .input("Narration", sql.VarChar, req.body.Narration)
-          .input("Terminus", sql.VarChar, AppConstant.Terminus)
-          .input("UserID", sql.VarChar, AppConstant.userName)
-          .execute("spSaveUserGroups", (err, result) => {
+      const pool = new sql.ConnectionPool(config);
+      pool.connect(error => {
+        if (error) {
+          res.json({
+            success: false,
+            message: error.message
+          });
+        } else {
+          const request = new sql.Request(pool);
+          request.input("UserName", sql.VarChar, req.body.UserName);
+          request.input("GroupCode", sql.VarChar, req.body.GroupCode);
+          request.input("Narration", sql.VarChar, req.body.Narration);
+          request.input("Terminus", sql.VarChar, req.ip[0]);
+          request.input("UserID", sql.VarChar, res.locals.user);
+          request.execute("spSaveUserGroups", (err, result) => {
             if (err) {
               res.json({ success: false, message: err.message });
             } else {
               res.json({ success: true, message: "Saved" });
             }
-            sql.close();
           });
+        }
       });
     } else {
       res.json({ success: false, message: result.error.details[0].message });
@@ -58,39 +73,53 @@ Usergroups.get("/", (req, res) => {
   .delete("/:UserName/:GroupCode", (req, res) => {
     const UserName = req.params.UserName;
     const GroupCode = req.params.GroupCode;
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("UserName", sql.VarChar, UserName)
-        .input("GroupCode", sql.VarChar, GroupCode)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
-        .execute("spDeleteUserGroups", (err, result) => {
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        const request = new sql.Request(pool);
+        request.input("UserName", sql.VarChar, UserName);
+        request.input("GroupCode", sql.VarChar, GroupCode);
+        request.input("UserID", sql.VarChar, res.locals.user);
+        request.input("Terminus", sql.VarChar, req.ip[0]);
+        request.execute("spDeleteUserGroups", (err, result) => {
           if (err) {
             res.json({ success: false, message: err.message });
           } else {
             res.json({ success: true, message: "deleted" });
           }
-          sql.close();
         });
+      }
     });
   })
   .get("/:UserName/:GroupCode", (req, res) => {
     let UserName = req.params.UserName;
     let GroupCode = req.params.GroupCode;
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("UserName", sql.VarChar, UserName)
-        .input("GroupCode", sql.VarChar, GroupCode)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
-        .execute("spSelectUserGroups", (err, result) => {
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        const request = new sql.Request(pool);
+        request.input("UserName", sql.VarChar, UserName);
+        request.input("GroupCode", sql.VarChar, GroupCode);
+        request.input("UserID", sql.VarChar, res.locals.user);
+        request.input("Terminus", sql.VarChar, req.ip[0]);
+        request.execute("spSelectUserGroups", (err, result) => {
           if (err) {
             res.json({ success: false, message: err.message });
           } else {
             res.status(200).send(result.recordset);
           }
-          sql.close();
         });
+      }
     });
   });
 

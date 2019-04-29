@@ -9,17 +9,18 @@ const AppConstant = require("./AppConstant");
 
 function validateToken(req, res, next) {
 
-  var token =
-    req.body.token || req.query.token || req.headers["x-access-token"];
+  var token = req.body.token || req.query.token || req.headers["x-access-token"];
   if (token) {
-
     jwt.verify(token, AppConstant.UserKey, function (err, decoded) {
+
       if (err) {
         return res.json({
           success: false,
           message: "Failed to authenticate token."
         });
       } else {
+        res.locals.user = decoded.data;
+
         next();
       }
     });
@@ -35,23 +36,29 @@ function validateToken(req, res, next) {
 function validaterole(SecurityModule) {
   return function (req, res, next) {
 
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("UserName", sql.VarChar, AppConstant.userName)
-        .input("SecurityModule", sql.VarChar, SecurityModule)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
-        .execute("sp_ValidatePrivilege", (err, result) => {
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        const request = new sql.Request(pool)
+        request.input("UserName", sql.VarChar, res.locals.user)
+        request.input("SecurityModule", sql.VarChar, SecurityModule)
+        request.input("UserID", sql.VarChar, res.locals.user)
+        request.input("Terminus", sql.VarChar, req.ip[0])
+        request.execute("sp_ValidatePrivilege", (err, result) => {
 
           if (err) {
-            sql.close();
             return res.json({
               success: false,
               message: err.message
             });
           } else {
             if (result.recordset.length > 0) {
-              //start
+
               let type = req.method;
               if (type === 'POST') {
 
@@ -65,16 +72,12 @@ function validaterole(SecurityModule) {
               } else
 
               if (type === 'GET') {
+
                 right = result.recordset[0].View;
               }
-
-
               if (right) {
-
-                sql.close();
                 next();
               } else {
-                sql.close();
                 return res.json({
                   success: false,
                   message: "privilage violation. You have insufficient right to access this route."
@@ -90,6 +93,7 @@ function validaterole(SecurityModule) {
           }
         });
 
+      }
     });
   }
 };
@@ -105,14 +109,21 @@ router.post("/", function (req, res) {
 
   Joi.validate(req.body, schema, function (err, value) {
     if (!err) {
-      sql.connect(config, err => {
-        new sql.Request()
-          .input("UserName", sql.VarChar, req.body.username)
-          .execute("spValidateUser", (error, result) => {
+      const pool = new sql.ConnectionPool(config);
+      pool.connect(error => {
+        if (error) {
+          res.json({
+            success: false,
+            message: error.message
+          });
+        } else {
+          const request = new sql.Request(pool)
+          request.input("UserName", sql.VarChar, req.body.username)
+          request.execute("spValidateUser", (error, result) => {
             if (error) {
               res.json({
                 success: false,
-                message: err.message
+                message: error.message
               });
             } else {
               if (result.recordset.length > 0) {
@@ -155,10 +166,8 @@ router.post("/", function (req, res) {
                 });
               }
             }
-            sql.close();
-
-
           });
+        }
       });
     } else {
       res.json({
