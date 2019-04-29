@@ -36,7 +36,7 @@ app.use(function (req, res, next) {
 
 
 app.use('/api/login', auth.router);
-// app.use(auth.validateToken);
+app.use(auth.validateToken);
 app.use("/api/users", auth.validaterole("Users"), UserRoute);
 app.use("/api/company", auth.validaterole("company"), CompanyRoute);
 app.use("/api/currency", auth.validaterole("currency"), currencyRoute);

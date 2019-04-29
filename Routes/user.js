@@ -1,28 +1,37 @@
 const express = require("express");
 const User = express.Router();
 var sql = require("mssql");
-const config = require("../database");
 const AppConstant = require("../AppConstant");
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
+const config = require('../database');
+
+
 
 User.get("/", (req, res) => {
-    sql.connect(config, err => {
-       
-      new sql.Request()
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
-        .execute("spSelectAllUsers", (err, result) => {
+
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        const request = new sql.Request(pool)
+        request.input("UserID", sql.VarChar, res.locals.user)
+        request.input("Terminus", sql.VarChar, req.ip[0])
+        request.execute('spSelectAllUsers', (err, result) => {
           if (err) {
             res.json({
               success: false,
               message: err.message
             });
-          } else {
+          } else
             res.status(200).json(result.recordset);
-          }
-          sql.close();
-        });
+        })
+      }
     });
   })
   .post("/", (req, res) => {
@@ -58,8 +67,15 @@ User.get("/", (req, res) => {
             message: "failed to bcyrpt the password"
           });
         } else {
-          sql.connect(config, err => {
-            new sql.Request()
+          const pool = new sql.ConnectionPool(config);
+          pool.connect(error => {
+            if (error) {
+              res.json({
+                success: false,
+                message: error.message
+              });
+            }
+            new sql.Request(pool)
               .input("UserName", sql.VarChar, req.body.UserName)
               .input("FullNames", sql.VarChar, req.body.FullNames)
               .input("Password", sql.VarChar, hash)
@@ -68,8 +84,8 @@ User.get("/", (req, res) => {
               .input("Telephone", sql.VarChar, req.body.Telephone)
               .input("ExpiryDate", sql.Date, req.body.ExpiryDate)
               .input("IsActive", sql.Bit, req.body.IsActive)
-              .input("UserID", sql.VarChar, AppConstant.userName)
-              .input("Terminus", sql.VarChar, AppConstant.Terminus)
+              .input("UserID", sql.VarChar, res.locals.user)
+              .input("Terminus", sql.VarChar, req.ip)
               .execute("spSaveUsers", (err, result) => {
                 if (err) {
                   res.json({
@@ -82,7 +98,7 @@ User.get("/", (req, res) => {
                     message: "saved"
                   });
                 }
-                sql.close();
+
               });
           });
         }
@@ -96,71 +112,59 @@ User.get("/", (req, res) => {
   })
   .delete("/:username", (req, res) => {
     const username = req.params.username;
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("UserName", sql.VarChar, username)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
-        .execute("spDeleteUsers", (err, result) => {
-          if (err) {
-            res.json({
-              success: false,
-              message: err.message
-            });
-          } else {
-            res.json({
-              success: true,
-              message: "deleted"
-            });
-          }
-          sql.close();
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
         });
+      } else {
+        new sql.Request(pool)
+          .input("UserName", sql.VarChar, username)
+          .input("Terminus", sql.VarChar, req.ip)
+          .execute("spDeleteUsers", (err, result) => {
+            if (err) {
+              res.json({
+                success: false,
+                message: err.message
+              });
+            } else {
+              res.json({
+                success: true,
+                message: "deleted"
+              });
+            }
+          });
+      }
     });
   })
   .get("/:username", (req, res) => {
     const username = req.params.username;
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("UserName", sql.VarChar, username)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
-        .execute("spSelectUsers", (err, result) => {
-          if (err) {
-            res.json({
-              success: false,
-              message: err.message
-            });
-          } else {
-            res.status(200).send(result.recordset);
-          }
-          sql.close();
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
         });
+      } else {
+        new sql.Request(pool)
+          .input("UserName", sql.VarChar, username)
+          .input("Terminus", sql.VarChar, req.ip)
+          .execute("spSelectUsers", (err, result) => {
+            if (err) {
+              res.json({
+                success: false,
+                message: err.message
+              });
+            } else {
+              res.status(200).send(result.recordset);
+            }
+          });
+      }
     });
   })
-  .get('/:UserName/:securitymodule', (req, res) => {
-    const right = "View";
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("UserName", sql.VarChar, req.params.UserName)
-        .input("SecurityModule", sql.VarChar, req.params.securitymodule)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
-        .execute("sp_ValidatePrivilege", (err, result) => {
-          if (err) {
-            res.json({
-              success: false,
-              message: err.message
-            });
-          } else {
-            if (result.recordset[0] + right) {
-              res.send('true.....');
-            }
 
-
-          }
-          sql.close();
-        });
-    });
-  });
-
-  
 
 module.exports = User;

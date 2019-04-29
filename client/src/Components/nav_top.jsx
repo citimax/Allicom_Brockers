@@ -1,7 +1,12 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 class NavTop extends Component {
   render() {
+    const handleClearToken = () => {
+      localStorage.removeItem("token");
+    };
+
     return (
       <div className='row border-bottom'>
         <nav
@@ -23,9 +28,9 @@ class NavTop extends Component {
             </li>
 
             <li>
-              <a href='/login'>
+              <Link to='/' onClick={handleClearToken}>
                 <i className='fa fa-sign-out' /> Log out
-              </a>
+              </Link>
             </li>
           </ul>
         </nav>
