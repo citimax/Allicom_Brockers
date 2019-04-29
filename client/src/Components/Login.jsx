@@ -41,7 +41,7 @@ class Login extends Component {
               this.setRedirect();
             }
           } else {
-            swal("Saved!", "login failed", "error");
+            swal("error!", data.message, "error");
           }
         })
       )
