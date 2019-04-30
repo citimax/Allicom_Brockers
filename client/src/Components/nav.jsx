@@ -4,49 +4,59 @@ class Nav extends Component {
   render() {
     return (
       <div>
-        <nav className='navbar-default navbar-static-side' role='navigation'>
-          <div className='sidebar-collapse'>
-            <ul className='nav metismenu' id='side-menu'>
-              <li className='nav-header'>
-                <div className='dropdown profile-element'>
+        <nav className="navbar-default navbar-static-side" role="navigation">
+          <div className="sidebar-collapse">
+            <ul className="nav metismenu" id="side-menu">
+              <li className="nav-header">
+                <div className="dropdown profile-element">
                   <img
-                    alt='image'
-                    className='rounded-circle'
-                    src='img/profile_small.jpg'
+                    alt="image"
+                    className="rounded-circle"
+                    src="img/profile_small.jpg"
                   />
                   <Link
-                    to='/'
-                    data-toggle='dropdown'
-                    className='dropdown-toggle'
-                    href='/'>
-                    <span className='block m-t-xs font-bold'>
+                    to="/"
+                    data-toggle="dropdown"
+                    className="dropdown-toggle"
+                    href="/"
+                  >
+                    <span className="block m-t-xs font-bold">
                       David Williams
                     </span>
                   </Link>
                 </div>
-                <div className='logo-element'>IN+</div>
+                <div className="logo-element">IN+</div>
               </li>
               <li>
                 <a>
-                  <i class='fa fa-th-large' />{" "}
-                  <span class='nav-label'>system Admin</span>{" "}
-                  <span class='fa arrow' />
+                  <i className="fa fa-th-large" />{" "}
+                  <span className="nav-label">system Admin</span>{" "}
+                  <span className="fa arrow" />
                 </a>
-                <ul className='nav nav-second-level collapse'>
+                <ul className="nav nav-second-level collapse">
                   <li>
-                    <Link to='/users'>Users</Link>
+                    <Link to="/costCenter">costCenter</Link>
                   </li>
                   <li>
-                    <Link to='/usergroups'>User Groups</Link>
+                    <Link to="/users">Users</Link>
                   </li>
                   <li>
-                    <a href='/roles'>Roles</a>
+                    <Link to="/usergroups">User Groups</Link>
                   </li>
                   <li>
-                    <a href='/userroles'>User Roles</a>
+                    <Link to="/roles">Roles</Link>
                   </li>
                   <li>
-                    <a href='/securitygroups'>Security Groups </a>
+                    <Link to="/userroles">User Roles</Link>
+                  </li>
+                  <li>
+                    <Link to="/securitygroups">Security Groups </Link>
+                  </li>
+                  <li>
+                    <Link to="/countries">countries </Link>
+                  </li>
+                  <li>
+                    <Link to="/counties">counties </Link>
                   </li>
                 </ul>
               </li>

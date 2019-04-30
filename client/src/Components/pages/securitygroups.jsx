@@ -9,11 +9,10 @@ class UserGroups extends Component {
     super();
     this.state = {
       reseter: false,
-      usergroups: [],
-      Usersdata: [],
       SecurityGroups: [],
-      UserName: "",
+
       GroupCode: "",
+      GroupName: "",
       Narration: ""
     };
   }
@@ -33,7 +32,7 @@ class UserGroups extends Component {
       dangerMode: false
     }).then(willDelete => {
       if (willDelete) {
-        return fetch("api/Usergroups/" + k.UserName + "/" + k.GroupCode, {
+        return fetch("/api/securityGroups/" + k, {
           method: "Delete",
           headers: {
             "Content-Type": "application/json",
@@ -56,17 +55,19 @@ class UserGroups extends Component {
       }
     });
   };
-  handleEdit = User => {
+  handleEdit = k => {
     const data = {
-      UserName: User.UserName,
-      GroupCode: User.GroupCode,
-      Narration: User.Narration
+      GroupCode: k.GroupCode,
+      GroupName: k.GroupName,
+      Narration: k.Narration
     };
+    console.log(data);
     this.setState(data);
     this.setState({ reseter: true });
   };
-  fetchSecurityGroups = () => {
-    fetch("api/securityGroups", {
+
+  fetchData = () => {
+    fetch("/api/securityGroups", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -83,50 +84,6 @@ class UserGroups extends Component {
       })
       .catch(err => {
         swal("Oops!", err.message, "error");
-      });
-  };
-  //end
-
-  fetchUsers = () => {
-    fetch("api/users", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("token")
-      }
-    })
-      .then(res => res.json())
-      .then(Users => {
-        if (Users.length > 0) {
-          this.setState({ Usersdata: Users });
-        } else {
-          swal("Oops!", Users.message, "error");
-        }
-      })
-      .catch(err => {
-        swal("Oops!", err.message, "error");
-      });
-  };
-  //end
-
-  fetchData = () => {
-    fetch("api/Usergroups", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("token")
-      }
-    })
-      .then(res => res.json())
-      .then(Usergroups => {
-        if (Usergroups.length > 0) {
-          this.setState({ usergroups: Usergroups });
-        } else {
-          swal("Oops!", Usergroups.message, "error");
-        }
-      })
-      .catch(err => {
-        swal("Oops!", err.message, "error");
         swal("Oops!, data.message, error");
       });
   };
@@ -135,12 +92,12 @@ class UserGroups extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const data = {
-      UserName: this.state.UserName,
       GroupCode: this.state.GroupCode,
+      GroupName: this.state.GroupName,
       Narration: this.state.Narration
     };
 
-    this.postData("api/Usergroups", data);
+    this.postData("/api/securityGroups", data);
   };
 
   handleInputChange = event => {
@@ -173,22 +130,10 @@ class UserGroups extends Component {
   }
   componentDidMount() {
     this.fetchData();
-    this.fetchSecurityGroups();
-    this.fetchUsers();
-
-    //this.fetchUsers();
   }
 
   render() {
-    // this.fetchUsers()
-
     const ColumnData = [
-      {
-        label: "UserName",
-        field: "UserName",
-        sort: "asc",
-        width: 250
-      },
       {
         label: "GroupCode",
         field: "GroupCode",
@@ -196,10 +141,16 @@ class UserGroups extends Component {
         width: 270
       },
       {
+        label: "GroupName",
+        field: "GroupName",
+        sort: "asc",
+        width: 250
+      },
+      {
         label: "Narration",
         field: "Narration",
         sort: "asc",
-        width: 200
+        width: 250
       },
       {
         label: "action",
@@ -210,12 +161,12 @@ class UserGroups extends Component {
     ];
 
     const Rowdata1 = [];
-    const rows = [...this.state.usergroups];
+    const rows = [...this.state.SecurityGroups];
     if (rows.length > 0) {
       rows.map((k, i) => {
         const Rowdata = {
-          UserName: k.UserName,
           GroupCode: k.GroupCode,
+          GroupName: k.GroupName,
           Narration: k.Narration,
           action: (
             <span>
@@ -229,7 +180,7 @@ class UserGroups extends Component {
               |{" "}
               <a
                 style={{ color: "#f44542" }}
-                onClick={e => this.handleDelete(k, e)}
+                onClick={e => this.handleDelete(k.GroupCode, e)}
               >
                 {" "}
                 Delete
@@ -244,7 +195,7 @@ class UserGroups extends Component {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"User Groups"}
+            tablename={"SecurityGroups"}
             button={
               <button
                 to="/"
@@ -261,8 +212,6 @@ class UserGroups extends Component {
           <Formdata
             Values={this.state}
             handleSubmit={this.handleSubmit}
-            Usersdata={this.state.Usersdata}
-            SecurityGroups={this.state.SecurityGroups}
             handleInputChange={this.handleInputChange}
           />
         </Wrapper>
@@ -271,7 +220,7 @@ class UserGroups extends Component {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"User Groups"}
+            tablename={"SecurityGroups"}
             button={
               <button
                 to="/"
@@ -310,30 +259,32 @@ const Formdata = props => {
               <div className=" row">
                 <div className="col-sm">
                   <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">UserName</label>
-                    <select
-                      className="form-control"
-                      name="UserName"
-                      value={props.Values.UserName}
-                      onChange={props.handleInputChange}
-                    >
-                      {props.Usersdata.map((user, i) => (
-                        <option key={i}>{user.UserName}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">GroupCode</label>
-                    <select
-                      className="form-control"
-                      name="GroupCode"
+                    <label htmlFor="exampleInputEmail1">GroupCode </label>
+                    <input
                       value={props.Values.GroupCode}
+                      type="text"
+                      name="GroupCode"
+                      // value={props.Values.Narration}
                       onChange={props.handleInputChange}
-                    >
-                      {props.SecurityGroups.map(Group => (
-                        <option key={Group.GroupCode}>{Group.GroupCode}</option>
-                      ))}
-                    </select>
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="GroupCode"
+                    />
+                  </div>
+                </div>
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">GroupName</label>
+                    <input
+                      value={props.Values.GroupName}
+                      type="text"
+                      name="GroupName"
+                      // value={props.Values.Narration}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="GroupName"
+                    />
                   </div>
                 </div>
                 <div className="col-sm">

@@ -9,12 +9,10 @@ class UserGroups extends Component {
     super();
     this.state = {
       reseter: false,
-      usergroups: [],
-      Usersdata: [],
-      SecurityGroups: [],
-      UserName: "",
-      GroupCode: "",
-      Narration: ""
+      Roles: [],
+
+      Narration: "",
+      Role: ""
     };
   }
   handleclick = e => {
@@ -33,7 +31,7 @@ class UserGroups extends Component {
       dangerMode: false
     }).then(willDelete => {
       if (willDelete) {
-        return fetch("api/Usergroups/" + k.UserName + "/" + k.GroupCode, {
+        return fetch("api/roles/" + k, {
           method: "Delete",
           headers: {
             "Content-Type": "application/json",
@@ -56,61 +54,18 @@ class UserGroups extends Component {
       }
     });
   };
-  handleEdit = User => {
+  handleEdit = role => {
     const data = {
-      UserName: User.UserName,
-      GroupCode: User.GroupCode,
-      Narration: User.Narration
+      Narration: role.Narration,
+      Role: role.RoleName
     };
+    console.log(data);
     this.setState(data);
     this.setState({ reseter: true });
   };
-  fetchSecurityGroups = () => {
-    fetch("api/securityGroups", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("token")
-      }
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.length > 0) {
-          this.setState({ SecurityGroups: data });
-        } else {
-          swal("Oops!", data.message, "error");
-        }
-      })
-      .catch(err => {
-        swal("Oops!", err.message, "error");
-      });
-  };
-  //end
-
-  fetchUsers = () => {
-    fetch("api/users", {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        "x-access-token": localStorage.getItem("token")
-      }
-    })
-      .then(res => res.json())
-      .then(Users => {
-        if (Users.length > 0) {
-          this.setState({ Usersdata: Users });
-        } else {
-          swal("Oops!", Users.message, "error");
-        }
-      })
-      .catch(err => {
-        swal("Oops!", err.message, "error");
-      });
-  };
-  //end
 
   fetchData = () => {
-    fetch("api/Usergroups", {
+    fetch("api/roles", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -118,11 +73,11 @@ class UserGroups extends Component {
       }
     })
       .then(res => res.json())
-      .then(Usergroups => {
-        if (Usergroups.length > 0) {
-          this.setState({ usergroups: Usergroups });
+      .then(roles => {
+        if (roles.length > 0) {
+          this.setState({ Roles: roles });
         } else {
-          swal("Oops!", Usergroups.message, "error");
+          swal("Oops!", roles.message, "error");
         }
       })
       .catch(err => {
@@ -135,12 +90,11 @@ class UserGroups extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const data = {
-      UserName: this.state.UserName,
-      GroupCode: this.state.GroupCode,
-      Narration: this.state.Narration
+      Narration: this.state.Narration,
+      RoleName: this.state.Role
     };
 
-    this.postData("api/Usergroups", data);
+    this.postData("api/roles", data);
   };
 
   handleInputChange = event => {
@@ -173,25 +127,13 @@ class UserGroups extends Component {
   }
   componentDidMount() {
     this.fetchData();
-    this.fetchSecurityGroups();
-    this.fetchUsers();
-
-    //this.fetchUsers();
   }
 
   render() {
-    // this.fetchUsers()
-
     const ColumnData = [
       {
-        label: "UserName",
-        field: "UserName",
-        sort: "asc",
-        width: 250
-      },
-      {
-        label: "GroupCode",
-        field: "GroupCode",
+        label: "Role",
+        field: "Role",
         sort: "asc",
         width: 270
       },
@@ -199,7 +141,7 @@ class UserGroups extends Component {
         label: "Narration",
         field: "Narration",
         sort: "asc",
-        width: 200
+        width: 250
       },
       {
         label: "action",
@@ -210,12 +152,11 @@ class UserGroups extends Component {
     ];
 
     const Rowdata1 = [];
-    const rows = [...this.state.usergroups];
+    const rows = [...this.state.Roles];
     if (rows.length > 0) {
       rows.map((k, i) => {
         const Rowdata = {
-          UserName: k.UserName,
-          GroupCode: k.GroupCode,
+          Role: k.RoleName,
           Narration: k.Narration,
           action: (
             <span>
@@ -229,7 +170,7 @@ class UserGroups extends Component {
               |{" "}
               <a
                 style={{ color: "#f44542" }}
-                onClick={e => this.handleDelete(k, e)}
+                onClick={e => this.handleDelete(k.RoleName, e)}
               >
                 {" "}
                 Delete
@@ -244,7 +185,7 @@ class UserGroups extends Component {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"User Groups"}
+            tablename={"Roles"}
             button={
               <button
                 to="/"
@@ -261,8 +202,6 @@ class UserGroups extends Component {
           <Formdata
             Values={this.state}
             handleSubmit={this.handleSubmit}
-            Usersdata={this.state.Usersdata}
-            SecurityGroups={this.state.SecurityGroups}
             handleInputChange={this.handleInputChange}
           />
         </Wrapper>
@@ -271,7 +210,7 @@ class UserGroups extends Component {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"User Groups"}
+            tablename={"Roles"}
             button={
               <button
                 to="/"
@@ -310,30 +249,17 @@ const Formdata = props => {
               <div className=" row">
                 <div className="col-sm">
                   <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">UserName</label>
-                    <select
-                      className="form-control"
-                      name="UserName"
-                      value={props.Values.UserName}
+                    <label htmlFor="exampleInputEmail1">Role </label>
+                    <input
+                      value={props.Values.Role}
+                      type="text"
+                      name="Role"
+                      // value={props.Values.Narration}
                       onChange={props.handleInputChange}
-                    >
-                      {props.Usersdata.map((user, i) => (
-                        <option key={i}>{user.UserName}</option>
-                      ))}
-                    </select>
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">GroupCode</label>
-                    <select
                       className="form-control"
-                      name="GroupCode"
-                      value={props.Values.GroupCode}
-                      onChange={props.handleInputChange}
-                    >
-                      {props.SecurityGroups.map(Group => (
-                        <option key={Group.GroupCode}>{Group.GroupCode}</option>
-                      ))}
-                    </select>
+                      id="exampleInputPassword1"
+                      placeholder="Role"
+                    />
                   </div>
                 </div>
                 <div className="col-sm">
@@ -350,14 +276,19 @@ const Formdata = props => {
                       placeholder="Narration"
                     />
                   </div>
-                </div>
-              </div>
-              <div className="form-group ">
-                <br />
 
-                <button type="submit" className="btn btn-primary">
-                  Save
-                </button>
+                  <div className="form-group ">
+                    <br />
+
+                    <button
+                      type="submit"
+                      className="btn btn-primary"
+                      style={{ margintop: 50 }}
+                    >
+                      Save
+                    </button>
+                  </div>
+                </div>
               </div>
             </form>
           </div>

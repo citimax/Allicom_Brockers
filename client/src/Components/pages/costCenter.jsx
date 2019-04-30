@@ -4,24 +4,25 @@ import Table from "../Table";
 import TableWrapper from "../TableWrappper";
 import Wrapper from "../wrapper";
 import swal from "sweetalert";
-
-class Users extends Component {
+class UserGroups extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
       reseter: false,
-      UserName: "",
-      FullNames: "",
+      CostCenters: [],
+
+      CCCode: "",
+      CCName: "",
+      CompCode: "",
+      Mobile: "",
+      PostalAddress: "",
+      PhysicalAddress: "",
+      WebUrl: "",
+      Status: true,
       Email: "",
-      Password: "",
-      Telephone: "",
-      ConfirmPassword: "",
-      ExpiryDate: "4/25/2099",
-      IsActive: true
+      Telephone: ""
     };
   }
-
   handleclick = e => {
     e.preventDefault();
     if (this.state.reseter === false) {
@@ -30,20 +31,28 @@ class Users extends Component {
       this.setState({ reseter: false });
     }
   };
-  handleStateReset() {
-    this.setState({
-      UserName: "",
-      FullNames: "",
-      Email: "",
-      Password: "",
-      Telephone: "",
-      ConfirmPassword: "",
-      ExpiryDate: "4/25/2099",
-      IsActive: true
-    });
-  }
+
+  handleEdit = k => {
+    const data = {
+      CCCode: k.CCCode,
+      CCName: k.CCName,
+      CompCode: k.CompCode,
+      PhysicalAddress: k.PhysicalAddress,
+      WebUrl: k.WebUrl,
+      Status: k.Status,
+      CompCode: k.CompCode,
+      Mobile: k.Mobile,
+      PostalAddress: k.PostalAddress,
+      Email: k.Email,
+      Telephone: k.Telephone
+    };
+    console.log(data);
+    this.setState(data);
+    this.setState({ reseter: true });
+  };
+
   fetchData = () => {
-    fetch("api/users", {
+    fetch("/api/CostCenter", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -51,23 +60,19 @@ class Users extends Component {
       }
     })
       .then(res => res.json())
-      .then(Users => {
-        if (Users.length > 0) {
-          this.setState({ users: Users });
+      .then(data => {
+        if (data.length > 0) {
+          this.setState({ CostCenters: data });
         } else {
-          swal("Oops!", Users.message, "error");
+          swal("Oops!", data.message, "error");
         }
       })
       .catch(err => {
         swal("Oops!", err.message, "error");
+        swal("Oops!, data.message, error");
       });
   };
-
-  handleInputChange = event => {
-    event.preventDefault();
-    this.setState({ [event.target.name]: event.target.value });
-  };
-  handleDelete = username => {
+  handleDelete = k => {
     swal({
       title: "Are you sure?",
       text: "Are you sure that you want to delete this record?",
@@ -75,7 +80,7 @@ class Users extends Component {
       dangerMode: false
     }).then(willDelete => {
       if (willDelete) {
-        return fetch("api/users/" + username, {
+        return fetch("/api/CostCenter/" + k, {
           method: "Delete",
           headers: {
             "Content-Type": "application/json",
@@ -98,37 +103,37 @@ class Users extends Component {
       }
     });
   };
-  handleEdit = User => {
-    const data = {
-      UserName: User.UserName,
-      FullNames: User.FullNames,
-      Email: User.Email,
-      Password: User.Password,
-      Telephone: User.Telephone,
-      ConfirmPassword: User.ConfirmPassword,
-      ExpiryDate: "4/25/2099",
-      IsActive: true
-    };
-    this.setState(data);
-    this.setState({ reseter: true });
-  };
+
   handleSubmit = event => {
     event.preventDefault();
     const data = {
-      UserName: this.state.UserName,
-      FullNames: this.state.FullNames,
+      CCCode: this.state.CCCode,
+      CCName: this.state.CCName,
+      CompCode: this.state.CompCode,
+      PhysicalAddress: this.state.PhysicalAddress,
+      WebUrl: this.state.WebUrl,
+      Status: this.state.Status,
+      PostalAddress: this.state.PostalAddress,
+      Mobile: this.state.Mobile,
       Email: this.state.Email,
-      Password: this.state.Password,
-      Telephone: this.state.Telephone,
-      ConfirmPassword: this.state.ConfirmPassword,
-      ExpiryDate: "4/25/2099",
-      IsActive: true
+      Telephone: this.state.Telephone
     };
 
-    this.postData("api/users", data);
+    this.postData("/api/CostCenter", data);
+  };
+
+  handleInputChange = event => {
+    event.preventDefault();
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+
+    this.setState({
+      [name]: value
+    });
   };
   postData(url = ``, data = {}) {
-    return fetch(url, {
+    fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -139,7 +144,7 @@ class Users extends Component {
       .then(response =>
         response.json().then(data => {
           this.fetchData();
-          this.handleStateReset();
+
           if (data.success) {
             swal("Saved!", "Record has been saved!", "success");
           } else {
@@ -158,34 +163,64 @@ class Users extends Component {
   render() {
     const ColumnData = [
       {
-        label: "UserName",
-        field: "UserName",
-        sort: "asc",
-        width: 250
-      },
-      {
-        label: "FullNames",
-        field: "FullNames",
+        label: "CCCode",
+        field: "CCCode",
         sort: "asc",
         width: 270
       },
       {
-        label: "Email",
-        field: "Email",
+        label: "CCName",
+        field: "CCName",
         sort: "asc",
-        width: 200
+        width: 250
+      },
+      {
+        label: "CompCode",
+        field: "CompCode",
+        sort: "asc",
+        width: 250
+      },
+      {
+        label: "Mobile",
+        field: "Mobile",
+        sort: "asc",
+        width: 250
       },
       {
         label: "Telephone",
         field: "Telephone",
         sort: "asc",
-        width: 200
+        width: 250
       },
       {
-        label: "ExpiryDate",
-        field: "ExpiryDate",
+        label: "Email",
+        field: "Email",
         sort: "asc",
-        width: 200
+        width: 250
+      },
+      {
+        label: "PostalAddress",
+        field: "PostalAddress",
+        sort: "asc",
+        width: 250
+      },
+      {
+        label: "PhysicalAddress",
+        field: "PhysicalAddress",
+        sort: "asc",
+        width: 250
+      },
+      {
+        label: "WebUrl",
+        field: "WebUrl",
+        sort: "asc",
+        width: 250
+      },
+      {
+        label: "Status",
+        field: "Status",
+        sort: "asc",
+        width: 250
       },
       {
         label: "action",
@@ -194,17 +229,22 @@ class Users extends Component {
         width: 200
       }
     ];
-    let Rowdata1 = [];
-    const Rows = [...this.state.users];
 
-    if (Rows.length > 0) {
-      Rows.map((k, i) => {
-        let Rowdata = {
-          username: k.UserName,
-          FullNames: k.FullNames,
-          Email: k.Email,
+    const Rowdata1 = [];
+    const rows = [...this.state.CostCenters];
+    if (rows.length > 0) {
+      rows.map((k, i) => {
+        const Rowdata = {
+          CCCode: k.CCCode,
+          CCName: k.CCName,
+          CompCode: k.CompCode,
+          Mobile: k.Mobile,
           Telephone: k.Telephone,
-          ExpiryDate: k.ExpiryDate,
+          Email: k.Email,
+          PostalAddress: k.PostalAddress,
+          PhysicalAddress: k.PhysicalAddress,
+          WebUrl: k.WebUrl,
+          Status: k.Status.toString(),
           action: (
             <span>
               {" "}
@@ -216,8 +256,8 @@ class Users extends Component {
               </a>
               |{" "}
               <a
-                style={{ color: "#007bff" }}
-                onClick={e => this.handleDelete(k.UserName, e)}
+                style={{ color: "#f44542" }}
+                onClick={e => this.handleDelete(k.CCCode, e)}
               >
                 {" "}
                 Delete
@@ -228,12 +268,11 @@ class Users extends Component {
         Rowdata1.push(Rowdata);
       });
     }
-
     if (this.state.reseter) {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"Users"}
+            tablename={"CostCenter"}
             button={
               <button
                 to="/"
@@ -258,9 +297,10 @@ class Users extends Component {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"Users"}
+            tablename={"CostCenter"}
             button={
               <button
+                to="/"
                 type="button"
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
@@ -270,6 +310,7 @@ class Users extends Component {
               </button>
             }
           />
+
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
@@ -295,18 +336,61 @@ const Formdata = props => {
               <div className=" row">
                 <div className="col-sm">
                   <div className="form-group">
-                    <label htmlFor="Username">UserName</label>
+                    <label htmlFor="CCCode">CostCenter Code</label>
                     <input
                       type="text"
-                      name="UserName"
-                      value={props.Values.UserName}
+                      name="CCCode"
+                      value={props.Values.CCCode}
                       onChange={props.handleInputChange}
                       className="form-control"
-                      id="exampleInputEmail1"
+                      id="CCCode1"
                       aria-describedby="emailHelp"
-                      placeholder="Enter Username"
+                      placeholder="Enter CCCode"
+                      required
                     />
                   </div>
+                  <div className="form-group">
+                    <label htmlFor="CCCode">CostCenter Name</label>
+                    <input
+                      type="text"
+                      name="CCName"
+                      value={props.Values.CCName}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="CCName"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter CCName"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="Mobile">Mobile</label>
+                    <input
+                      name="Mobile"
+                      type="text"
+                      value={props.Values.Mobile}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="Mobile"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="CompCode">CompCode</label>
+                    <input
+                      type="text"
+                      name="CompCode"
+                      value={props.Values.CompCode}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="CompCode"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter CompCode"
+                      required
+                    />
+                  </div>
+
                   <div className="form-group">
                     <label htmlFor="exampleInputEmail1">Email address</label>
                     <input
@@ -318,34 +402,39 @@ const Formdata = props => {
                       id="Email"
                       aria-describedby="emailHelp"
                       placeholder="Enter email"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Password</label>
-                    <input
-                      name="Password"
-                      type="Password"
-                      onChange={props.handleInputChange}
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Password"
+                      required
                     />
                   </div>
                 </div>
+
                 <div className="col-sm">
                   <div className="form-group">
-                    <label htmlFor="FullNames">FullNames</label>
+                    <label htmlFor="FullNames">PostalAddress</label>
                     <input
                       type="text"
-                      name="FullNames"
-                      value={props.Values.FullNames}
+                      name="PostalAddress"
+                      value={props.Values.PostalAddress}
                       onChange={props.handleInputChange}
                       className="form-control"
-                      id="FullNames"
-                      placeholder="FullNames"
+                      id="PostalAddress"
+                      placeholder="PostalAddress"
+                      required
                     />
                   </div>
-
+                  <div className="form-group">
+                    <label htmlFor="PhysicalAddress">PhysicalAddress</label>
+                    <input
+                      type="text"
+                      name="PhysicalAddress"
+                      value={props.Values.PhysicalAddress}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="PhysicalAddress"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter PhysicalAddress"
+                      required
+                    />
+                  </div>
                   <div className="form-group">
                     <label htmlFor="Telephone">Telephone</label>
                     <input
@@ -356,18 +445,31 @@ const Formdata = props => {
                       onChange={props.handleInputChange}
                       id="Telephone"
                       placeholder="Telephone"
+                      required
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="ConfirmPassword">Confirm Password</label>
+                  <div className="checkbox">
                     <input
-                      type="password"
-                      name="ConfirmPassword"
+                      type="checkbox"
+                      name="Status"
+                      checked={props.Values.Status}
+                      onChange={props.handleInputChange}
+                      id="Status"
+                    />
+                    <label htmlFor="Status">Active Status</label>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="ConfirmPassword">WebUrl</label>
+                    <input
+                      type="text"
+                      name="WebUrl"
+                      value={props.Values.WebUrl}
                       onChange={props.handleInputChange}
                       className="form-control"
-                      id="ConfirmPassword"
+                      id="WebUrl"
                       aria-describedby="emailHelp"
-                      placeholder="ConfirmPassword"
+                      placeholder="WebUrl"
+                      required
                     />
                   </div>
                 </div>
@@ -383,4 +485,4 @@ const Formdata = props => {
   );
 };
 
-export default Users;
+export default UserGroups;
