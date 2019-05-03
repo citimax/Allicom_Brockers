@@ -34,19 +34,29 @@ class Nav extends Component {
                 </a>
                 <ul className='nav nav-second-level collapse'>
                   <li>
+                    <Link to='/costCenter'>costCenter</Link>
+                  </li>
+                  <li>
                     <Link to='/users'>Users</Link>
                   </li>
                   <li>
                     <Link to='/usergroups'>User Groups</Link>
                   </li>
                   <li>
-                    <a href='/roles'>Roles</a>
+                    <Link to='/roles'>Roles</Link>
                   </li>
+
                   <li>
                     <Link to='/userroles'>User Roles</Link>
                   </li>
                   <li>
-                    <a href='/securitygroups'>Security Groups </a>
+                    <Link to='/securitygroups'>Security Groups </Link>
+                  </li>
+                  <li>
+                    <Link to='/countries'>countries </Link>
+                  </li>
+                  <li>
+                    <Link to='/counties'>counties </Link>
                   </li>
                 </ul>
               </li>
