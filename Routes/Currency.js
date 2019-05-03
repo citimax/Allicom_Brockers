@@ -7,8 +7,9 @@ const Joi = require("joi");
 const bcrypt = require("bcrypt");
 
 Currency.get("/", (req, res) => {
-    sql.connect(config, err => {
-      new sql.Request()
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      new sql.Request(pool)
         .input("UserID", sql.VarChar, AppConstant.userName)
         .input("Terminus", sql.VarChar, AppConstant.Terminus)
         .execute("spSelectAllCurrencies", (err, result) => {

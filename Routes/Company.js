@@ -27,7 +27,7 @@ Company.get("/", (req, res) => {
   .post("/", (req, res) => {
     const schema = Joi.object().keys({
       CompCode: Joi.string()
-        .min(3)
+        .min(1)
         .max(50)
         .required(),
       CompName: Joi.string()

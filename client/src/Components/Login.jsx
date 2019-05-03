@@ -37,6 +37,7 @@ class Login extends Component {
         response.json().then(data => {
           if (data.success) {
             localStorage.setItem("token", data.token);
+            localStorage.setItem("UserData", data.userdata);
             {
               this.setRedirect();
             }

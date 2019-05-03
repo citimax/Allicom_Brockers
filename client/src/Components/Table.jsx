@@ -7,7 +7,11 @@ class Table extends Component {
       columns: this.props.columns,
       rows: this.props.Rows
     };
-    return <MDBDataTable striped bordered hover data={data} />;
+    return (
+      <div className='table-responsive'>
+        <MDBDataTable striped bordered hover data={data} />
+      </div>
+    );
   }
 }
 

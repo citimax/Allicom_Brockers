@@ -6,16 +6,42 @@
   <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" />
   <link href="%PUBLIC_URL%/css/bootstrap.min.css" rel="stylesheet">
   <link href="%PUBLIC_URL%/font-awesome/css/font-awesome.css" rel="stylesheet">
+
   <link href="%PUBLIC_URL%/css/plugins/iCheck/custom.css" rel="stylesheet">
 
-  <link href="%PUBLIC_URL%/css/plugins/dataTables/datatables.min.css" rel="stylesheet">
+  <link href="%PUBLIC_URL%/css/plugins/chosen/bootstrap-chosen.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/bootstrap-tagsinput/bootstrap-tagsinput.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/colorpicker/bootstrap-colorpicker.min.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/cropper/cropper.min.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/switchery/switchery.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/jasny/jasny-bootstrap.min.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/nouslider/jquery.nouislider.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/datapicker/datepicker3.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/ionRangeSlider/ion.rangeSlider.css" rel="stylesheet">
+  <link href="%PUBLIC_URL%/css/plugins/ionRangeSlider/ion.rangeSlider.skinFlat.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/clockpicker/clockpicker.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/daterangepicker/daterangepicker-bs3.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/select2/select2.min.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/touchspin/jquery.bootstrap-touchspin.min.css" rel="stylesheet">
+
+  <link href="%PUBLIC_URL%/css/plugins/dualListbox/bootstrap-duallistbox.min.css" rel="stylesheet">
 
   <link href="%PUBLIC_URL%/css/animate.css" rel="stylesheet">
   <link href="%PUBLIC_URL%/css/style.css" rel="stylesheet">
-  <link href="%PUBLIC_URL%/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-  <meta name="theme-color" content="#000000" />
-
   <!--
       manifest.json provides metadata used when your web app is installed on a
       user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
@@ -36,67 +62,7 @@
 <body>
   <noscript>You need to enable JavaScript to run this app.</noscript>
   <div id="root"></div>
-
-  <script src="%PUBLIC_URL%/js/jquery-3.1.1.min.js"></script>
-  <script src="%PUBLIC_URL%/js/popper.min.js"></script>
-  <script src="%PUBLIC_URL%/js/bootstrap.js"></script>
-  <script src="%PUBLIC_URL%/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-  <script src="%PUBLIC_URL%/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-  <script src="%PUBLIC_URL%/js/plugins/dataTables/datatables.min.js"></script>
-  <script src="%PUBLIC_URL%/js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
-
-  <!-- Custom and plugin javascript -->
-  <script src="%PUBLIC_URL%/js/inspinia.js"></script>
-  <script src="%PUBLIC_URL%/js/plugins/pace/pace.min.js"></script>
-  <!-- iCheck -->
-  <script src="%PUBLIC_URL%/js/plugins/iCheck/icheck.min.js"></script>
-  <script>
-    $(document).ready(function () {
-      $('.i-checks').iCheck({
-        checkboxClass: 'icheckbox_square-green',
-        radioClass: 'iradio_square-green',
-      });
-    });
-  </script>
-  <script>
-    $(document).ready(function () {
-      $('.dataTables-example').DataTable({
-        pageLength: 25,
-        responsive: true,
-        dom: '<"html5buttons"B>lTfgitp',
-        buttons: [{
-            extend: 'copy'
-          },
-          {
-            extend: 'csv'
-          },
-          {
-            extend: 'excel',
-            title: 'ExampleFile'
-          },
-          {
-            extend: 'pdf',
-            title: 'ExampleFile'
-          },
-
-          {
-            extend: 'print',
-            customize: function (win) {
-              $(win.document.body).addClass('white-bg');
-              $(win.document.body).css('font-size', '10px');
-
-              $(win.document.body).find('table')
-                .addClass('compact')
-                .css('font-size', 'inherit');
-            }
-          }
-        ]
-
-      });
-
-    });
-  </script>
 </body>
+
 
 </html>

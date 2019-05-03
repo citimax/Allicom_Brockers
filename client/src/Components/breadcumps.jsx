@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 import { Link } from "react-router-dom";
 class breadcumps extends Component {
- 
   render() {
     return (
       <div>
@@ -17,15 +16,12 @@ class breadcumps extends Component {
                 <a>{this.props.tablename}</a>
               </li>
               <li className='breadcrumb-item active'>
-                <strong>{this.props.tablename} list</strong>
+                <strong>{this.props.tablename} </strong>
               </li>
             </ol>
           </div>
           <div className='col-lg-2'>
-            <div className="row wrapper ">
-              {this.props.button}
-            
-            </div>
+            <div className='row wrapper '>{this.props.button}</div>
           </div>
         </div>
       </div>

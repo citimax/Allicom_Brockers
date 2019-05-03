@@ -27,10 +27,10 @@ class Nav extends Component {
                 <div className='logo-element'>IN+</div>
               </li>
               <li>
-                <a>
-                  <i class='fa fa-th-large' />{" "}
-                  <span class='nav-label'>system Admin</span>{" "}
-                  <span class='fa arrow' />
+                <a href=''>
+                  <i className='fa fa-th-large' />{" "}
+                  <span className='nav-label'>System Admin</span>{" "}
+                  <span className='fa arrow' />
                 </a>
                 <ul className='nav nav-second-level collapse'>
                   <li>
@@ -43,7 +43,7 @@ class Nav extends Component {
                     <a href='/roles'>Roles</a>
                   </li>
                   <li>
-                    <a href='/userroles'>User Roles</a>
+                    <Link to='/userroles'>User Roles</Link>
                   </li>
                   <li>
                     <a href='/securitygroups'>Security Groups </a>

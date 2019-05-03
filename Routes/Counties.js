@@ -5,8 +5,9 @@ const config = require("../database");
 const AppConstant = require("../AppConstant");
 const Joi = require("joi");
 Counties.get("/", (req, res) => {
-  sql.connect(config, err => {
-    new sql.Request()
+   const pool = new sql.ConnectionPool(config);
+   pool.connect(error => {
+    new sql.Request(pool)
       .input("UserID", sql.VarChar, AppConstant.userName)
       .input("Terminus", sql.VarChar, AppConstant.Terminus)
       .execute("spSelectAllCounties", (err, result) => {

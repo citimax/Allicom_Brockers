@@ -5,20 +5,20 @@ import TableWrapper from "../TableWrappper";
 import Wrapper from "../wrapper";
 import swal from "sweetalert";
 
-class Users extends Component {
+class UserRoles extends Component {
   constructor() {
     super();
     this.state = {
-      users: [],
-      reseter: false,
-      UserName: "",
-      FullNames: "",
-      Email: "",
-      Password: "",
-      Telephone: "",
-      ConfirmPassword: "",
-      ExpiryDate: "4/25/2099",
-      IsActive: true
+      UserRoles: [],
+      UserGroup: "Admin",
+      SecurityModule: "company",
+      View: true,
+      Add: true,
+      Edit: true,
+      Delete: true,
+      Export: true,
+      Import: true,
+      ExpiryDate: "4/25/2099"
     };
   }
 
@@ -32,18 +32,19 @@ class Users extends Component {
   };
   handleStateReset() {
     this.setState({
-      UserName: "",
-      FullNames: "",
-      Email: "",
-      Password: "",
-      Telephone: "",
-      ConfirmPassword: "",
-      ExpiryDate: "4/25/2099",
-      IsActive: true
+      UserGroup: "Admin",
+      SecurityModule: "company",
+      View: true,
+      Add: true,
+      Edit: false,
+      Delete: true,
+      Export: true,
+      Import: true,
+      ExpiryDate: "4/25/2099"
     });
   }
   fetchData = () => {
-    fetch("api/users", {
+    fetch("api/userRoles", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -51,11 +52,11 @@ class Users extends Component {
       }
     })
       .then(res => res.json())
-      .then(Users => {
-        if (Users.length > 0) {
-          this.setState({ users: Users });
+      .then(UserRoles => {
+        if (UserRoles.length > 0) {
+          this.setState({ UserRoles: UserRoles });
         } else {
-          swal("Oops!", Users.message, "error");
+          swal("Oops!", UserRoles.message, "error");
         }
       })
       .catch(err => {
@@ -65,12 +66,14 @@ class Users extends Component {
 
   handleInputChange = event => {
     event.preventDefault();
+
     const target = event.target;
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({ [name]: value });
+    console.log(value);
   };
-  handleDelete = username => {
+  handleDelete = User => {
     swal({
       title: "Are you sure?",
       text: "Are you sure that you want to delete this record?",
@@ -78,13 +81,16 @@ class Users extends Component {
       dangerMode: false
     }).then(willDelete => {
       if (willDelete) {
-        return fetch("api/users/" + username, {
-          method: "Delete",
-          headers: {
-            "Content-Type": "application/json",
-            "x-access-token": localStorage.getItem("token")
+        return fetch(
+          "api/userRoles/" + User.username + "/" + User.SecurityModule,
+          {
+            method: "Delete",
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": localStorage.getItem("token")
+            }
           }
-        })
+        )
           .then(response =>
             response.json().then(data => {
               if (data.success) {
@@ -101,16 +107,17 @@ class Users extends Component {
       }
     });
   };
-  handleEdit = User => {
+  handleEdit = UserRole => {
     const data = {
-      UserName: User.UserName,
-      FullNames: User.FullNames,
-      Email: User.Email,
-      Password: User.Password,
-      Telephone: User.Telephone,
-      ConfirmPassword: User.ConfirmPassword,
-      ExpiryDate: User.ExpiryDate,
-      IsActive: true
+      UserGroup: UserRole.UserGroup,
+      SecurityModule: UserRole.SecurityModule,
+      View: UserRole.View.toString(),
+      Add: UserRole.Add,
+      Edit: UserRole.Edit,
+      Delete: UserRole.Delete,
+      Export: UserRole.Export,
+      Import: UserRole.Import,
+      ExpiryDate: UserRole.ExpiryDate
     };
     this.setState(data);
     this.setState({ reseter: true });
@@ -118,17 +125,18 @@ class Users extends Component {
   handleSubmit = event => {
     event.preventDefault();
     const data = {
-      UserName: this.state.UserName,
-      FullNames: this.state.FullNames,
-      Email: this.state.Email,
-      Password: this.state.Password,
-      Telephone: this.state.Telephone,
-      ConfirmPassword: this.state.ConfirmPassword,
-      ExpiryDate: this.state.ExpiryDate,
-      IsActive: true
+      UserGroup: this.state.UserGroup,
+      SecurityModule: this.state.SecurityModule,
+      View: this.state.View,
+      Add: this.state.Add,
+      Edit: this.state.Edit,
+      Delete: this.state.Delete,
+      Export: this.state.Export,
+      Import: this.state.Import,
+      ExpiryDate: this.state.ExpiryDate
     };
 
-    this.postData("api/users", data);
+    this.postData("api/userRoles", data);
   };
   postData(url = ``, data = {}) {
     return fetch(url, {
@@ -161,26 +169,50 @@ class Users extends Component {
   render() {
     const ColumnData = [
       {
-        label: "UserName",
-        field: "UserName",
+        label: "UserGroup",
+        field: "UserGroup",
         sort: "asc",
         width: 250
       },
       {
-        label: "FullNames",
-        field: "FullNames",
+        label: "SecurityModule",
+        field: "SecurityModule",
         sort: "asc",
         width: 270
       },
       {
-        label: "Email",
-        field: "Email",
+        label: "View",
+        field: "View",
         sort: "asc",
         width: 200
       },
       {
-        label: "Telephone",
-        field: "Telephone",
+        label: "Add",
+        field: "Add",
+        sort: "asc",
+        width: 200
+      },
+      {
+        label: "Edit",
+        field: "Edit",
+        sort: "asc",
+        width: 200
+      },
+      {
+        label: "Delete",
+        field: "Delete",
+        sort: "asc",
+        width: 200
+      },
+      {
+        label: "Export",
+        field: "Export",
+        sort: "asc",
+        width: 200
+      },
+      {
+        label: "Import",
+        field: "Import",
         sort: "asc",
         width: 200
       },
@@ -198,15 +230,19 @@ class Users extends Component {
       }
     ];
     let Rowdata1 = [];
-    const Rows = [...this.state.users];
+    const Rows = [...this.state.UserRoles];
 
     if (Rows.length > 0) {
       Rows.map((k, i) => {
         let Rowdata = {
-          username: k.UserName,
-          FullNames: k.FullNames,
-          Email: k.Email,
-          Telephone: k.Telephone,
+          UserGroup: k.UserGroup,
+          SecurityModule: k.SecurityModule,
+          View: k.View.toString(),
+          Add: k.Add.toString(),
+          Edit: k.Edit.toString(),
+          Delete: k.Delete.toString(),
+          Export: k.Export.toString(),
+          Import: k.Import.toString(),
           ExpiryDate: k.ExpiryDate,
           action: (
             <span>
@@ -219,7 +255,7 @@ class Users extends Component {
               |{" "}
               <a
                 style={{ color: "#007bff" }}
-                onClick={e => this.handleDelete(k.UserName, e)}>
+                onClick={e => this.handleDelete(k, e)}>
                 {" "}
                 Delete
               </a>
@@ -234,7 +270,7 @@ class Users extends Component {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"Users"}
+            tablename={"User Roles"}
             button={
               <button
                 to='/'
@@ -258,7 +294,7 @@ class Users extends Component {
       return (
         <Wrapper>
           <Breadcumps
-            tablename={"Users"}
+            tablename={"User Roles"}
             button={
               <button
                 type='button'
@@ -277,6 +313,7 @@ class Users extends Component {
     }
   }
 }
+
 const Formdata = props => {
   return (
     <div className='container-fluid'>
@@ -294,31 +331,72 @@ const Formdata = props => {
               <div className=' row'>
                 <div className='col-sm'>
                   <div className='form-group'>
-                    <label htmlFor='Username'>UserName</label>
+                    <label htmlFor='Username'>UserGroup</label>
                     <input
                       type='text'
-                      name='UserName'
-                      value={props.Values.UserName}
+                      name='UserGroup'
+                      value={props.Values.UserGroup}
                       onChange={props.handleInputChange}
                       className='form-control'
                       id='exampleInputEmail1'
                       aria-describedby='emailHelp'
-                      placeholder='Enter Username'
+                      placeholder='Enter UserGroup'
                       required
                     />
                   </div>
-                  <div className='form-group'>
-                    <label htmlFor='exampleInputEmail1'>Email address</label>
+                  <div className='checkbox'>
                     <input
-                      type='email'
-                      name='Email'
-                      required
-                      value={props.Values.Email}
-                      className='form-control'
+                      id='View'
+                      type='checkbox'
+                      name='View'
                       onChange={props.handleInputChange}
-                      id='Email'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter email'
+                      checked={props.Values.View}
+                    />
+                    <label htmlFor='View'>View</label>
+                  </div>
+                  <div className='checkbox'>
+                    <input
+                      id='Add'
+                      type='checkbox'
+                      name='Add'
+                      onChange={props.handleInputChange}
+                      checked={props.Values.Add}
+                    />
+                    <label htmlFor='Add'>Add</label>
+                  </div>
+                  <div className='checkbox'>
+                    <input
+                      id='Edit'
+                      type='checkbox'
+                      name='Edit'
+                      onChange={props.handleInputChange}
+                      checked={props.Values.Edit}
+                    />
+                    <label htmlFor='Edit'>Edit</label>
+                  </div>
+                  <div className='checkbox'>
+                    <input
+                      id='Delete'
+                      type='checkbox'
+                      name='Delete'
+                      onChange={props.handleInputChange}
+                      checked={props.Values.Delete}
+                    />
+                    <label htmlFor='Delete'>Delete</label>
+                  </div>
+                </div>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='SecurityModule'>SecurityModule</label>
+                    <input
+                      type='text'
+                      name='SecurityModule'
+                      checked={props.Values.SecurityModule}
+                      onChange={props.handleInputChange}
+                      className='form-control'
+                      id='SecurityModule'
+                      placeholder='SecurityModule'
+                      required
                     />
                   </div>
                   <div className='form-group' id='data_1'>
@@ -330,73 +408,32 @@ const Formdata = props => {
                       <input
                         name='ExpiryDate'
                         type='date'
-                        required
                         onChange={props.handleInputChange}
-                        value={props.Values.ExpiryDate}
+                        defaultValue={props.Values.ExpiryDate}
                         className='form-control'
                       />
                     </div>
                   </div>
-                  <div className='form-group'>
-                    <label htmlFor='exampleInputPassword1'>Password</label>
-                    <input
-                      name='Password'
-                      type='Password'
-                      required
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='exampleInputPassword1'
-                      placeholder='Password'
-                    />
-                  </div>
-                </div>
-                <div className='col-sm'>
-                  <div className='form-group'>
-                    <label htmlFor='FullNames'>FullNames</label>
-                    <input
-                      type='text'
-                      name='FullNames'
-                      value={props.Values.FullNames}
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='FullNames'
-                      placeholder='FullNames'
-                    />
-                  </div>
 
-                  <div className='form-group'>
-                    <label htmlFor='Telephone'>Telephone</label>
+                  <div className='checkbox'>
                     <input
-                      type='text'
-                      name='Telephone'
-                      value={props.Values.Telephone}
-                      className='form-control'
+                      id='Export'
+                      type='checkbox'
+                      name='Export'
                       onChange={props.handleInputChange}
-                      id='Telephone'
-                      placeholder='Telephone'
+                      checked={props.Values.Export}
                     />
+                    <label htmlFor='Export'>Export</label>
                   </div>
                   <div className='checkbox'>
                     <input
-                      id='checkbox1'
+                      id='Import'
                       type='checkbox'
-                      name='IsActive'
+                      name='Import'
                       onChange={props.handleInputChange}
-                      checked={props.Values.IsActive}
+                      checked={props.Values.Import}
                     />
-                    <label htmlFor='checkbox1'>is Active</label>
-                  </div>
-                  <div className='form-group'>
-                    <label htmlFor='ConfirmPassword'>Confirm Password</label>
-                    <input
-                      type='password'
-                      name='ConfirmPassword'
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='ConfirmPassword'
-                      aria-describedby='emailHelp'
-                      placeholder='ConfirmPassword'
-                    />
+                    <label htmlFor='Import'>Import</label>
                   </div>
                 </div>
               </div>
@@ -411,4 +448,4 @@ const Formdata = props => {
   );
 };
 
-export default Users;
+export default UserRoles;
