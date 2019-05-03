@@ -27,7 +27,7 @@ class Nav extends Component {
                 <div className='logo-element'>IN+</div>
               </li>
               <li>
-                <a href=''>
+                <a href='/'>
                   <i className='fa fa-th-large' />{" "}
                   <span className='nav-label'>System Admin</span>{" "}
                   <span className='fa arrow' />

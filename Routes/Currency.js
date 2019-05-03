@@ -10,8 +10,8 @@ Currency.get("/", (req, res) => {
     const pool = new sql.ConnectionPool(config);
     pool.connect(error => {
       new sql.Request(pool)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
         .execute("spSelectAllCurrencies", (err, result) => {
           if (err) {
             res.json({
@@ -44,8 +44,8 @@ Currency.get("/", (req, res) => {
           .input("CurrCode", sql.VarChar, req.body.CurrCode)
           .input("CurrDesc", sql.VarChar, req.body.CurrDesc)
           .input("CurrPrec", sql.Int, 2)
-          .input("UserID", sql.VarChar, AppConstant.userName)
-          .input("Terminus", sql.VarChar, AppConstant.Terminus)
+          .input("UserID", sql.VarChar, res.locals.user)
+          .input("Terminus", sql.VarChar, Areq.ip[0])
 
           .execute("spSaveCurrencies", (err, result) => {
             if (err) {
@@ -74,8 +74,8 @@ Currency.get("/", (req, res) => {
     sql.connect(config, err => {
       new sql.Request()
         .input("CurrCode", sql.VarChar, CurrCode)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, Areq.ip[0])
         .execute("spDeleteCurrencies", (err, result) => {
           if (err) {
             res.json({
@@ -97,8 +97,8 @@ Currency.get("/", (req, res) => {
     sql.connect(config, err => {
       new sql.Request()
         .input("CurrCode", sql.VarChar, CurrCode)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, Areq.ip[0])
         .execute("spSelectCurrencies", (err, result) => {
           if (err) {
             res.json({

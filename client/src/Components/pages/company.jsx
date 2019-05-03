@@ -11,7 +11,9 @@ class Company extends Component {
     super();
     this.state = {
       company: [],
-      CountyData: {},
+      CountyData: [],
+      CurrencyData: [],
+      CountryData: [],
       reseter: false,
       CompCode: "001",
       CompName: "0",
@@ -90,9 +92,51 @@ class Company extends Component {
       .then(res => res.json())
       .then(county => {
         if (county.length > 0) {
-                  this.setState({ CountyData: county });
+          this.setState({ CountyData: county });
         } else {
           swal("Oops!", county.message, "error");
+        }
+      })
+      .catch(err => {
+        swal("Oops!", err.message, "error");
+      });
+  };
+
+  fetchCountries = () => {
+    fetch("api/Countries", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token")
+      }
+    })
+      .then(res => res.json())
+      .then(CountryData => {
+        if (CountryData.length > 0) {
+          this.setState({ CountryData: CountryData });
+        } else {
+          swal("Oops!", CountryData.message, "error");
+        }
+      })
+      .catch(err => {
+        swal("Oops!", err.message, "error");
+      });
+  };
+
+  fetchCurrency = () => {
+    fetch("api/currency", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        "x-access-token": localStorage.getItem("token")
+      }
+    })
+      .then(res => res.json())
+      .then(CurrencyData => {
+        if (CurrencyData.length > 0) {
+          this.setState({ CurrencyData: CurrencyData });
+        } else {
+          swal("Oops!", CurrencyData.message, "error");
         }
       })
       .catch(err => {
@@ -108,8 +152,11 @@ class Company extends Component {
     this.setState({ [name]: value });
   };
 
-  handleSelectChange = County => {
-    this.setState({ County });
+  handleSelectChange = (County, actionMeta) => {
+    this.setState({ [actionMeta.name]: County });
+  };
+  handleSelectCountry = Country => {
+    this.setState({ Country });
   };
   handleDelete = company => {
     swal({
@@ -174,15 +221,15 @@ class Company extends Component {
       Website: this.state.Website,
       PostalAddress: this.state.PostalAddress,
       Street: this.state.Street,
-      Country: this.state.Country,
-      County: this.state.County,
+      Country: this.state.Country.value,
+      County: this.state.County.value,
       PINNo: this.state.PINNo,
       NHIFNo: this.state.NHIFNo,
       NSSFNo: this.state.NSSFNo,
       // Logo: this.state.Logo,
-      BaseCurr: this.state.BaseCurr
+      BaseCurr: this.state.BaseCurr.value
     };
-
+    console.log(data);
     this.postData("api/company", data);
   };
   postData(url = ``, data = {}) {
@@ -213,10 +260,10 @@ class Company extends Component {
   componentDidMount() {
     this.fetchData();
     this.fetchCounty();
+    this.fetchCurrency();
+    this.fetchCountries();
   }
-  componentDidUpdate() {
-    this.fetchCounty();
-  }
+
   render() {
     const ColumnData = [
       {
@@ -374,7 +421,7 @@ class Company extends Component {
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
             handleSelectChange={this.handleSelectChange}
-            CountyData={this.state.CountyData}
+            Collections={this.state}
           />
         </Wrapper>
       );
@@ -402,14 +449,26 @@ class Company extends Component {
   }
 }
 const Formdata = props => {
-  let CountyData = [...props.CountyData];
-  const options = CountyData.map((k, i) => {
+  // const { Countyoptions, CurrencyDataOtions, CountryDataOtions } = [...props.Collections]
+  const Countyoptions = [...props.Collections.CountyData].map((k, i) => {
     return {
       value: k.CountyCode.toString(),
       label: k.CountyName.toString()
     };
   });
-  console.log(options);
+
+  const CurrencyDataOtions = [...props.Collections.CurrencyData].map((k, i) => {
+    return {
+      value: k.CurrCode,
+      label: k.CurrDesc
+    };
+  });
+  const CountryDataOtions = [...props.Collections.CountryData].map((k, i) => {
+    return {
+      value: k.CountryCode,
+      label: k.CountryName
+    };
+  });
   return (
     <div className='container-fluid'>
       <div className='col-sm-12'>
@@ -490,6 +549,7 @@ const Formdata = props => {
                       value={props.Values.Country}
                       onChange={props.handleSelectChange}
                       placeholder='Enter Country'
+                      options={CountryDataOtions}
                     />
                   </div>
                   <div className='form-group'>
@@ -576,9 +636,12 @@ const Formdata = props => {
                     <label htmlFor='County'>County</label>
                     <Select
                       name='County'
+                      className='form-group'
+                      selectedValue={props.Values.County}
                       value={props.Values.County}
                       onChange={props.handleSelectChange}
-                      options={options}
+                      options={Countyoptions}
+                      defaultValue={{ label: "Select", value: 0 }}
                       placeholder='Enter County'
                     />
                   </div>
@@ -604,6 +667,7 @@ const Formdata = props => {
                       value={props.Values.BaseCurr}
                       onChange={props.handleSelectChange}
                       placeholder='Enter BaseCurr'
+                      options={CurrencyDataOtions}
                     />
                   </div>
                 </div>

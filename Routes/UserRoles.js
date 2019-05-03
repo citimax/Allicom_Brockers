@@ -5,20 +5,23 @@ const config = require("../database");
 const AppConstant = require("../AppConstant");
 const Joi = require("joi");
 UserRoles.get("/", (req, res) => {
-  sql.connect(config, err => {
-    new sql.Request()
-      .input("UserID", sql.VarChar, AppConstant.userName)
-      .input("Terminus", sql.VarChar, AppConstant.Terminus)
-      .execute("spSelectAllUserRoles", (err, result) => {
-        if (err) {
-          res.json({ success: false, message: err.message });
-        } else {
-          res.status(200).json(result.recordset);
-        }
-        sql.close();
-      });
-  });
-})
+    sql.connect(config, err => {
+      new sql.Request()
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
+        .execute("spSelectAllUserRoles", (err, result) => {
+          if (err) {
+            res.json({
+              success: false,
+              message: err.message
+            });
+          } else {
+            res.status(200).json(result.recordset);
+          }
+          sql.close();
+        });
+    });
+  })
   .post("/", (req, res) => {
     const schema = Joi.object().keys({
       UserGroup: Joi.string()
@@ -50,19 +53,28 @@ UserRoles.get("/", (req, res) => {
           .input("Export", sql.Bit, req.body.Export)
           .input("Import", sql.Bit, req.body.Export)
           .input("ExpiryDate", sql.Date, req.body.ExpiryDate)
-          .input("Terminus", sql.VarChar, AppConstant.Terminus)
-          .input("UserID", sql.VarChar, AppConstant.userName)
+          .input("Terminus", sql.VarChar, req.ip[0])
+          .input("UserID", sql.VarChar, res.locals.user)
           .execute("spSaveUserRoles", (err, result) => {
             if (err) {
-              res.json({ success: false, message: err.message });
+              res.json({
+                success: false,
+                message: err.message
+              });
             } else {
-              res.json({ success: true, message: "Saved" });
+              res.json({
+                success: true,
+                message: "Saved"
+              });
             }
             sql.close();
           });
       });
     } else {
-      res.json({ success: false, message: result.error.details[0].message });
+      res.json({
+        success: false,
+        message: result.error.details[0].message
+      });
     }
   })
   .delete("/:UserGroup/:SecurityModule", (req, res) => {
@@ -72,13 +84,19 @@ UserRoles.get("/", (req, res) => {
       new sql.Request()
         .input("UserGroup", sql.VarChar, UserGroup)
         .input("SecurityModule", sql.VarChar, SecurityModule)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
         .execute("spDeleteUserRoles", (err, result) => {
           if (err) {
-            res.json({ success: false, message: err.message });
+            res.json({
+              success: false,
+              message: err.message
+            });
           } else {
-            res.json({ success: true, message: "deleted" });
+            res.json({
+              success: true,
+              message: "deleted"
+            });
           }
           sql.close();
         });
@@ -91,11 +109,14 @@ UserRoles.get("/", (req, res) => {
       new sql.Request()
         .input("UserGroup", sql.VarChar, UserGroup)
         .input("SecurityModule", sql.VarChar, SecurityModule)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
         .execute("spSelectUserRoles", (err, result) => {
           if (err) {
-            res.json({ success: false, message: err.message });
+            res.json({
+              success: false,
+              message: err.message
+            });
           } else {
             res.status(200).send(result.recordset);
           }

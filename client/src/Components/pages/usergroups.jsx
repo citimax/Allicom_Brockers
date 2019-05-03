@@ -5,9 +5,10 @@ import TableWrapper from "../TableWrappper";
 import Wrapper from "../wrapper";
 import swal from "sweetalert";
 class UserGroups extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
+      reseter: false,
       usergroups: [],
       Usersdata: [],
       SecurityGroups: [],
@@ -16,6 +17,54 @@ class UserGroups extends Component {
       Narration: ""
     };
   }
+  handleclick = e => {
+    e.preventDefault();
+    if (this.state.reseter === false) {
+      this.setState({ reseter: true });
+    } else {
+      this.setState({ reseter: false });
+    }
+  };
+  handleDelete = k => {
+    swal({
+      title: "Are you sure?",
+      text: "Are you sure that you want to delete this record?",
+      icon: "warning",
+      dangerMode: false
+    }).then(willDelete => {
+      if (willDelete) {
+        return fetch("api/Usergroups/" + k.UserName + "/" + k.GroupCode, {
+          method: "Delete",
+          headers: {
+            "Content-Type": "application/json",
+            "x-access-token": localStorage.getItem("token")
+          }
+        })
+          .then(response =>
+            response.json().then(data => {
+              if (data.success) {
+                swal("Deleted!", "Record has been deleted!", "success");
+              } else {
+                swal("error!", data.message, "error");
+              }
+              this.fetchData();
+            })
+          )
+          .catch(err => {
+            swal("Oops!", err.message, "error");
+          });
+      }
+    });
+  };
+  handleEdit = User => {
+    const data = {
+      UserName: User.UserName,
+      GroupCode: User.GroupCode,
+      Narration: User.Narration
+    };
+    this.setState(data);
+    this.setState({ reseter: true });
+  };
   fetchSecurityGroups = () => {
     fetch("api/securityGroups", {
       method: "GET",
@@ -91,14 +140,15 @@ class UserGroups extends Component {
       Narration: this.state.Narration
     };
 
-    this.postData("api/users", data);
+    this.postData("api/Usergroups", data);
   };
+
   handleInputChange = event => {
     event.preventDefault();
     this.setState({ [event.target.name]: event.target.value });
   };
   postData(url = ``, data = {}) {
-    return fetch(url, {
+    fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -109,7 +159,7 @@ class UserGroups extends Component {
       .then(response =>
         response.json().then(data => {
           this.fetchData();
-          this.handleStateReset();
+
           if (data.success) {
             swal("Saved!", "Record has been saved!", "success");
           } else {
@@ -128,10 +178,10 @@ class UserGroups extends Component {
 
     //this.fetchUsers();
   }
-  componentWillMount() {}
+
   render() {
     // this.fetchUsers()
-    console.log(this.state);
+
     const ColumnData = [
       {
         label: "UserName",
@@ -150,101 +200,170 @@ class UserGroups extends Component {
         field: "Narration",
         sort: "asc",
         width: 200
+      },
+      {
+        label: "action",
+        field: "action",
+        sort: "asc",
+        width: 200
       }
     ];
+
     const Rowdata1 = [];
     const rows = [...this.state.usergroups];
-    rows.map(function(k) {
-      const Rowdata = {
-        UserName: k.UserName,
-        GroupCode: k.GroupCode,
-        Narration: k.Narration
-      };
-      Rowdata1.push(Rowdata);
-    });
+    if (rows.length > 0) {
+      rows.map((k, i) => {
+        const Rowdata = {
+          UserName: k.UserName,
+          GroupCode: k.GroupCode,
+          Narration: k.Narration,
+          action: (
+            <span>
+              {" "}
+              <a
+                style={{ color: "#007bff" }}
+                onClick={e => this.handleEdit(k, e)}
+              >
+                Edit
+              </a>
+              |{" "}
+              <a
+                style={{ color: "#f44542" }}
+                onClick={e => this.handleDelete(k, e)}
+              >
+                {" "}
+                Delete
+              </a>
+            </span>
+          )
+        };
+        Rowdata1.push(Rowdata);
+      });
+    }
+    if (this.state.reseter) {
+      return (
+        <Wrapper>
+          <Breadcumps
+            tablename={"User Groups"}
+            button={
+              <button
+                to="/"
+                type="button"
+                style={{ marginTop: 40 }}
+                onClick={this.handleclick}
+                className="btn btn-primary float-left"
+              >
+                Go Back
+              </button>
+            }
+          />
 
-    return (
-      <Wrapper>
-        <Breadcumps tablename={"User Groups"} />
-        <div className='container-fluid'>
-          <div className='col-sm-12'>
-            <div className='ibox '>
-              <div className='ibox-title'>
-                <div className='ibox-tools'>
-                  <a className='close-link'>
-                    <i className='fa fa-times' />
-                  </a>
-                </div>
-              </div>
-              <div className='ibox-content'>
-                <form onSubmit={this.handleSubmit}>
-                  <div className=' row'>
-                    <div className='col-sm'>
-                      <div className='form-group'>
-                        <label htmlFor='exampleInputEmail1'>UserName</label>
-                        <select
-                          className='form-control'
-                          name='UserName'
-                          onChange={this.handleInputChange}>
-                          {this.state.Usersdata.map((user, i) => (
-                            <option value={user.UserName} key={i}>
-                              {user.UserName}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                      <div className='form-group'>
-                        <label htmlFor='exampleInputEmail1'>GroupCode</label>
-                        <select name='GroupCode' className='form-control'>
-                          {this.state.SecurityGroups.map(Group => (
-                            <option
-                              value={Group.GroupCode}
-                              key={Group.GroupCode}
-                              onChange={this.handleInputChange}>
-                              {Group.GroupCode}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </div>
-                    <div className='col-sm'>
-                      <div className='form-group'>
-                        <label htmlFor='exampleInputPassword1'>Narration</label>
-                        <input
-                          value={this.state.GroupCode}
-                          type='text'
-                          name='Narration'
-                          // value={props.Values.Narration}
-                          onChange={this.handleInputChange}
-                          className='form-control'
-                          id='exampleInputPassword1'
-                          placeholder='Narration'
-                        />
-                      </div>
+          <Formdata
+            Values={this.state}
+            handleSubmit={this.handleSubmit}
+            Usersdata={this.state.Usersdata}
+            SecurityGroups={this.state.SecurityGroups}
+            handleInputChange={this.handleInputChange}
+          />
+        </Wrapper>
+      );
+    } else {
+      return (
+        <Wrapper>
+          <Breadcumps
+            tablename={"User Groups"}
+            button={
+              <button
+                to="/"
+                type="button"
+                style={{ marginTop: 40 }}
+                onClick={this.handleclick}
+                className="btn btn-primary float-left"
+              >
+                Create New
+              </button>
+            }
+          />
 
-                      <div className='form-group '>
-                        <br />
-
-                        <button
-                          type='submit'
-                          className='btn btn-primary'
-                          style={{ margintop: 50 }}>
-                          Save
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-        <TableWrapper>
-          <Table Rows={Rowdata1} columns={ColumnData} />
-        </TableWrapper>
-      </Wrapper>
-    );
+          <TableWrapper>
+            <Table Rows={Rowdata1} columns={ColumnData} />
+          </TableWrapper>
+        </Wrapper>
+      );
+    }
   }
 }
+const Formdata = props => {
+  return (
+    <div className="container-fluid">
+      <div className="col-sm-12">
+        <div className="ibox ">
+          <div className="ibox-title">
+            <div className="ibox-tools">
+              <a className="close-link">
+                <i className="fa fa-times" />
+              </a>
+            </div>
+          </div>
+          <div className="ibox-content">
+            <form onSubmit={props.handleSubmit}>
+              <div className=" row">
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="exampleInputEmail1">UserName</label>
+                    <select
+                      className="form-control"
+                      name="UserName"
+                      value={props.Values.UserName}
+                      onChange={props.handleInputChange}
+                    >
+                      {props.Usersdata.map((user, i) => (
+                        <option key={i}>{user.UserName}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="exampleInputEmail1">GroupCode</label>
+                    <select
+                      className="form-control"
+                      name="GroupCode"
+                      value={props.Values.GroupCode}
+                      onChange={props.handleInputChange}
+                    >
+                      {props.SecurityGroups.map(Group => (
+                        <option key={Group.GroupCode}>{Group.GroupCode}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="exampleInputPassword1">Narration</label>
+                    <textarea
+                      value={props.Values.Narration}
+                      type="text"
+                      name="Narration"
+                      // value={props.Values.Narration}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="exampleInputPassword1"
+                      placeholder="Narration"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="form-group ">
+                <br />
 
+                <button type="submit" className="btn btn-primary">
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
 export default UserGroups;

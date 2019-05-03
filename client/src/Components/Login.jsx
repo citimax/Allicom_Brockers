@@ -37,7 +37,8 @@ class Login extends Component {
         response.json().then(data => {
           if (data.success) {
             localStorage.setItem("token", data.token);
-            localStorage.setItem("UserData", data.userdata);
+            localStorage.setItem("UserData", data.userdata[0].UserName);
+            console.log(localStorage.getItem("UserData"));
             {
               this.setRedirect();
             }
@@ -58,7 +59,7 @@ class Login extends Component {
   };
   renderRedirect = () => {
     if (this.state.redirect) {
-      return <Redirect to='/users' />;
+      return <Redirect to='/profile' />;
     }
   };
 

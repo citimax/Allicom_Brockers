@@ -9,8 +9,8 @@ const bcrypt = require("bcrypt");
 Roles.get("/", (req, res) => {
         sql.connect(config, err => {
             new sql.Request()
-                .input("UserID", sql.VarChar, AppConstant.userName)
-                .input("Terminus", sql.VarChar, AppConstant.Terminus)
+                .input("UserID", sql.VarChar, res.locals.user)
+                .input("Terminus", sql.VarChar, req.ip[0])
                 .execute("spSelectAllSecurityGroups", (err, result) => {
                     if (err) {
                         res.json({
@@ -47,8 +47,8 @@ Roles.get("/", (req, res) => {
                     .input("GroupCode", sql.VarChar, req.body.GroupCode)
                     .input("GroupName", sql.VarChar, req.body.GroupName)
                     .input("Narration", sql.VarChar, req.body.Narration)
-                    .input("UserID", sql.VarChar, AppConstant.userName)
-                    .input("Terminus", sql.VarChar, AppConstant.Terminus)
+                    .input("UserID", sql.VarChar, res.locals.user)
+                    .input("Terminus", sql.VarChar, req.ip[0])
                     .execute("spSaveSecurityGroups", (err, result) => {
                         if (err) {
                             res.json({
@@ -76,8 +76,8 @@ Roles.get("/", (req, res) => {
         sql.connect(config, err => {
             new sql.Request()
                 .input("GroupCode", sql.VarChar, GroupCode)
-                .input("UserID", sql.VarChar, AppConstant.userName)
-                .input("Terminus", sql.VarChar, AppConstant.Terminus)
+                .input("UserID", sql.VarChar, res.locals.user)
+                .input("Terminus", sql.VarChar, req.ip[0])
                 .execute("spDeleteSecurityGroups", (err, result) => {
                     if (err) {
                         res.json({
@@ -99,8 +99,8 @@ Roles.get("/", (req, res) => {
         sql.connect(config, err => {
             new sql.Request()
                 .input("GroupCode", sql.VarChar, GroupCode)
-                .input("UserID", sql.VarChar, AppConstant.userName)
-                .input("Terminus", sql.VarChar, AppConstant.Terminus)
+                .input("UserID", sql.VarChar, res.locals.user)
+                .input("Terminus", sql.VarChar, req.ip[0])
                 .execute("spSelectSecurityGroups", (err, result) => {
                     if (err) {
                         res.json({
