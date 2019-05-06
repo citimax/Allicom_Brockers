@@ -1,11 +1,11 @@
 const express = require("express");
-const Roles = express.Router();
+const PaymentModes = express.Router();
 var sql = require("mssql");
-const config = require("../database");
+const config = require("../../database");
 
 const Joi = require("joi");
 
-Roles.get("/", (req, res) => {
+PaymentModes.get("/", (req, res) => {
   const pool = new sql.ConnectionPool(config);
   pool.connect(error => {
     if (error) {
@@ -14,10 +14,9 @@ Roles.get("/", (req, res) => {
         message: error.message
       });
     } else {
-      const request = new sql.Request(pool)
-        .input("UserID", sql.VarChar, res.locals.user)
-        .input("Terminus", sql.VarChar, req.ip[0])
-        .execute("spSelectAllRoles", (err, result) => {
+      const request = new sql.Request(pool).execute(
+        "spSelectAllModesOfpayments",
+        (err, result) => {
           if (err) {
             res.json({
               success: false,
@@ -26,17 +25,18 @@ Roles.get("/", (req, res) => {
           } else {
             res.status(200).json(result.recordset);
           }
-        });
+        }
+      );
     }
   });
 })
   .post("/", (req, res) => {
     const schema = Joi.object().keys({
-      RoleName: Joi.string()
+      Code: Joi.string()
         .min(3)
-        .max(50)
+        .max(500)
         .required(),
-      Narration: Joi.string()
+      Name: Joi.string()
         .min(3)
         .max(500)
         .required()
@@ -53,11 +53,12 @@ Roles.get("/", (req, res) => {
           });
         } else {
           const request = new sql.Request(pool);
-          request.input("RoleName", sql.VarChar, req.body.RoleName);
-          request.input("Narration", sql.VarChar, req.body.Narration);
-          request.input("UserID", sql.VarChar, res.locals.user);
+          request.input("CompCode", sql.VarChar, res.locals.CompCode);
+          request.input("Code", sql.VarChar, req.body.Code);
+          request.input("Name", sql.VarChar, req.body.Name);
+          request.input("UserId", sql.VarChar, res.locals.user);
           request.input("Terminus", sql.VarChar, req.ip[0]);
-          request.execute("spSaveRoles", (err, result) => {
+          request.execute("spSaveModesOfpayments", (err, result) => {
             if (err) {
               res.json({
                 success: false,
@@ -79,8 +80,8 @@ Roles.get("/", (req, res) => {
       });
     }
   })
-  .delete("/:RoleName", (req, res) => {
-    const RoleName = req.params.RoleName;
+  .delete("/:Code", (req, res) => {
+    const Code = req.params.Code;
     const pool = new sql.ConnectionPool(config);
     pool.connect(error => {
       if (error) {
@@ -90,10 +91,11 @@ Roles.get("/", (req, res) => {
         });
       } else {
         const request = new sql.Request(pool);
-        request.input("RoleName", sql.VarChar, RoleName);
-        request.input("UserID", sql.VarChar, res.locals.user);
+        request.input("CompCode", sql.VarChar, res.locals.CompCode);
+        request.input("Code", sql.VarChar, Code);
+        request.input("UserId", sql.VarChar, res.locals.user);
         request.input("Terminus", sql.VarChar, req.ip[0]);
-        request.execute("spDeleteRoles", (err, result) => {
+        request.execute("spDeleteModesOfpayments", (err, result) => {
           if (err) {
             res.json({
               success: false,
@@ -109,8 +111,8 @@ Roles.get("/", (req, res) => {
       }
     });
   })
-  .get("/:RoleName", (req, res) => {
-    const RoleName = req.params.RoleName;
+  .get("/:Code", (req, res) => {
+    const Code = req.params.Code;
     const pool = new sql.ConnectionPool(config);
     pool.connect(error => {
       if (error) {
@@ -120,10 +122,9 @@ Roles.get("/", (req, res) => {
         });
       } else {
         const request = new sql.Request(pool);
-        request.input("RoleName", sql.VarChar, RoleName);
-        request.input("UserID", sql.VarChar, res.locals.user);
-        request.input("Terminus", sql.VarChar, req.ip[0]);
-        request.execute("spSelectRoles", (err, result) => {
+        request.input("CompCode", sql.VarChar, res.locals.CompCode);
+        request.input("Code", sql.VarChar, Code);
+        request.execute("spSelectModesOfpayments", (err, result) => {
           if (err) {
             res.json({
               success: false,
@@ -132,9 +133,10 @@ Roles.get("/", (req, res) => {
           } else {
             res.status(200).json(result.recordset);
           }
+          sql.close();
         });
       }
     });
   });
 
-module.exports = Roles;
+module.exports = PaymentModes;
