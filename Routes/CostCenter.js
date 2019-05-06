@@ -5,20 +5,23 @@ const config = require("../database");
 const AppConstant = require("../AppConstant");
 const Joi = require("joi");
 CostCenter.get("/", (req, res) => {
-  sql.connect(config, err => {
-    new sql.Request()
-      .input("UserID", sql.VarChar, AppConstant.userName)
-      .input("Terminus", sql.VarChar, AppConstant.Terminus)
-      .execute("spSelectAllCostCenter", (err, result) => {
-        if (err) {
-          res.json({ success: false, message: err.message });
-        } else {
-          res.status(200).json(result.recordset);
-        }
-        sql.close();
-      });
-  });
-})
+    sql.connect(config, err => {
+      new sql.Request()
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
+        .execute("spSelectAllCostCenter", (err, result) => {
+          if (err) {
+            res.json({
+              success: false,
+              message: err.message
+            });
+          } else {
+            res.status(200).json(result.recordset);
+          }
+          sql.close();
+        });
+    });
+  })
   .post("/", (req, res) => {
     const schema = Joi.object().keys({
       CCCode: Joi.string()
@@ -66,19 +69,28 @@ CostCenter.get("/", (req, res) => {
           .input("PhysicalAddress", sql.VarChar, req.body.PhysicalAddress)
           .input("WebUrl", sql.VarChar, req.body.WebUrl)
           .input("Status", sql.Bit, req.body.Status)
-          .input("Terminus", sql.VarChar, AppConstant.Terminus)
-          .input("UserID", sql.VarChar, AppConstant.userName)
+          .input("Terminus", sql.VarChar, req.ip[0])
+          .input("UserID", sql.VarChar, res.locals.user)
           .execute("spSaveCostCenter", (err, result) => {
             if (err) {
-              res.json({ success: false, message: err.message });
+              res.json({
+                success: false,
+                message: err.message
+              });
             } else {
-              res.json({ success: true, message: "Saved" });
+              res.json({
+                success: true,
+                message: "Saved"
+              });
             }
             sql.close();
           });
       });
     } else {
-      res.json({ success: false, message: result.error.details[0].message });
+      res.json({
+        success: false,
+        message: result.error.details[0].message
+      });
     }
   })
   .delete("/:CCCode", (req, res) => {
@@ -86,13 +98,19 @@ CostCenter.get("/", (req, res) => {
     sql.connect(config, err => {
       new sql.Request()
         .input("CCCode", sql.VarChar, CCCode)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
         .execute("spDeleteCostCenter", (err, result) => {
           if (err) {
-            res.json({ success: false, message: err.message });
+            res.json({
+              success: false,
+              message: err.message
+            });
           } else {
-            res.json({ success: true, message: "deleted" });
+            res.json({
+              success: true,
+              message: "deleted"
+            });
           }
           sql.close();
         });
@@ -103,11 +121,14 @@ CostCenter.get("/", (req, res) => {
     sql.connect(config, err => {
       new sql.Request()
         .input("CCCode", sql.VarChar, CCCode)
-        .input("UserID", sql.VarChar, AppConstant.userName)
-        .input("Terminus", sql.VarChar, AppConstant.Terminus)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
         .execute("spSelectCostCenter", (err, result) => {
           if (err) {
-            res.json({ success: false, message: err.message });
+            res.json({
+              success: false,
+              message: err.message
+            });
           } else {
             res.status(200).send(result.recordset);
           }

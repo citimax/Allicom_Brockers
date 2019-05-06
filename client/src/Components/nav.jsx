@@ -14,22 +14,21 @@ class Nav extends Component {
                     className='rounded-circle'
                     src='img/profile_small.jpg'
                   />
-                  <Link
-                    to='/'
+                  <a
+                    href='/profile'
                     data-toggle='dropdown'
-                    className='dropdown-toggle'
-                    href='/'>
+                    className='dropdown-toggle'>
                     <span className='block m-t-xs font-bold'>
                       David Williams
                     </span>
-                  </Link>
+                  </a>
                 </div>
                 <div className='logo-element'>IN+</div>
               </li>
               <li>
-                <a href='/'>
-                  <i className='fa fa-th-large' />{" "}
-                  <span className='nav-label'>System Admin</span>{" "}
+                <a href='/profile'>
+                  <i className='fa fa-th-large' />
+                  <span className='nav-label'>System Admin</span>
                   <span className='fa arrow' />
                 </a>
                 <ul className='nav nav-second-level collapse'>
