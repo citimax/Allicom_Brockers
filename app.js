@@ -14,6 +14,8 @@ const Usergroups = require("./Routes/UserGroups");
 const UserRoles = require("./Routes/UserRoles");
 const RolesRoute = require('./Routes/Roles');
 const SecurityGroupsRoute = require('./Routes/SecurityGroups');
+const Clients = require('./Routes/Underwriting/ClientsInfo')
+const vehicleMake = require('./Routes/Underwriting/VehicleMake')
 const auth = require('./auth');
 
 
@@ -48,7 +50,8 @@ app.use("/api/Usergroups", auth.validaterole("Usergroups"), Usergroups);
 app.use("/api/UserRoles", auth.validaterole("UserRoles"), UserRoles);
 app.use('/api/roles', auth.validaterole("roles"), RolesRoute);
 app.use('/api/securityGroups', auth.validaterole("securityGroups"), SecurityGroupsRoute);
-
+app.use('/api/clients', auth.validaterole("securityGroups"), Clients);
+app.use('/api/vehiclemake', auth.validaterole("securityGroups"), vehicleMake);
 
 app.use(bodyParser.urlencoded({
   extended: false

@@ -10,6 +10,7 @@ const AppConstant = require("./AppConstant");
 function validateToken(req, res, next) {
 
   var token = req.body.token || req.query.token || req.headers["x-access-token"];
+  var token = req.body.token || req.query.token || req.headers["x-access-token"];
   if (token) {
     jwt.verify(token, AppConstant.UserKey, function (err, decoded) {
 
@@ -20,6 +21,7 @@ function validateToken(req, res, next) {
         });
       } else {
         res.locals.user = decoded.data;
+        res.locals.CompCode = "001";
 
         next();
       }
