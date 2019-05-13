@@ -27,11 +27,11 @@ class Nav extends Component {
                 <div className="logo-element">IN+</div>
               </li>
               <li>
-                <a href="/profile">
+                <Link to="/profile">
                   <i className="fa fa-th-large" />
                   <span className="nav-label">System Admin</span>
                   <span className="fa arrow" />
-                </a>
+                </Link>
                 <ul className="nav nav-second-level collapse">
                   <li>
                     <Link to="/costCenter">costCenter</Link>
@@ -69,28 +69,28 @@ class Nav extends Component {
                 </a>
                 <ul className="nav nav-second-level collapse">
                   <li>
-                    <Link to="/counties">counties </Link>
+                    <Link to="/PolicyCategories">Policy categories </Link>
                   </li>
                   <li>
-                    <a href="graph_morris.html">Morris.js Charts</a>
+                    <Link to="/PaymentModes">Modes of Payment</Link>
                   </li>
                   <li>
-                    <a href="graph_rickshaw.html">Rickshaw Charts</a>
+                    <Link to="/motorvehicles">Motor Vehicles</Link>
                   </li>
                   <li>
-                    <a href="graph_chartjs.html">Chart.js</a>
+                    <Link to="graph_chartjs.html">Chart.js</Link>
                   </li>
                   <li>
-                    <a href="graph_chartist.html">Chartist</a>
+                    <Link to="graph_chartist.html">Chartist</Link>
                   </li>
                   <li>
-                    <a href="c3.html">c3 charts</a>
+                    <Link to="c3.html">c3 charts</Link>
                   </li>
                   <li>
-                    <a href="graph_peity.html">Peity Charts</a>
+                    <Link to="graph_peity.html">Peity Charts</Link>
                   </li>
                   <li>
-                    <a href="graph_sparkline.html">Sparkline Charts</a>
+                    <Link to="graph_sparkline.html">Sparkline Charts</Link>
                   </li>
                 </ul>
               </li>

@@ -17,6 +17,7 @@ const auth = require("./auth");
 const PaymentModes = require("./Routes/Underwriting/PaymentModes");
 const PolicyCategories = require("./Routes/Underwriting/PolicyCategories");
 const PolicyClasses = require("./Routes/Underwriting/PolicyClasses");
+
 app.use(
   bodyParser.urlencoded({
     extended: false
