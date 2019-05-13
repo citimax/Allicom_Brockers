@@ -4,58 +4,93 @@ class Nav extends Component {
   render() {
     return (
       <div>
-        <nav className='navbar-default navbar-static-side' role='navigation'>
-          <div className='sidebar-collapse'>
-            <ul className='nav metismenu' id='side-menu'>
-              <li className='nav-header'>
-                <div className='dropdown profile-element'>
+        <nav className="navbar-default navbar-static-side" role="navigation">
+          <div className="sidebar-collapse">
+            <ul className="nav metismenu" id="side-menu">
+              <li className="nav-header">
+                <div className="dropdown profile-element">
                   <img
-                    alt='image'
-                    className='rounded-circle'
-                    src='img/profile_small.jpg'
+                    alt="image"
+                    className="rounded-circle"
+                    src="img/profile_small.jpg"
                   />
                   <a
-                    href='/profile'
-                    data-toggle='dropdown'
-                    className='dropdown-toggle'>
-                    <span className='block m-t-xs font-bold'>
+                    href="/profile"
+                    data-toggle="dropdown"
+                    className="dropdown-toggle"
+                  >
+                    <span className="block m-t-xs font-bold">
                       David Williams
                     </span>
                   </a>
                 </div>
-                <div className='logo-element'>IN+</div>
+                <div className="logo-element">IN+</div>
               </li>
               <li>
-                <a href='/profile'>
-                  <i className='fa fa-th-large' />
-                  <span className='nav-label'>System Admin</span>
-                  <span className='fa arrow' />
-                </a>
-                <ul className='nav nav-second-level collapse'>
+                <Link to="/profile">
+                  <i className="fa fa-th-large" />
+                  <span className="nav-label">System Admin</span>
+                  <span className="fa arrow" />
+                </Link>
+                <ul className="nav nav-second-level collapse">
                   <li>
-                    <Link to='/costCenter'>costCenter</Link>
+                    <Link to="/costCenter">costCenter</Link>
                   </li>
                   <li>
-                    <Link to='/users'>Users</Link>
+                    <Link to="/users">Users</Link>
                   </li>
                   <li>
-                    <Link to='/usergroups'>User Groups</Link>
+                    <Link to="/usergroups">User Groups</Link>
                   </li>
                   <li>
-                    <Link to='/roles'>Roles</Link>
+                    <Link to="/roles">Roles</Link>
                   </li>
 
                   <li>
-                    <Link to='/userroles'>User Roles</Link>
+                    <Link to="/userroles">User Roles</Link>
                   </li>
                   <li>
-                    <Link to='/securitygroups'>Security Groups </Link>
+                    <Link to="/securitygroups">Security Groups </Link>
                   </li>
                   <li>
-                    <Link to='/countries'>countries </Link>
+                    <Link to="/countries">countries </Link>
                   </li>
                   <li>
-                    <Link to='/counties'>counties </Link>
+                    <Link to="/counties">counties </Link>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="#">
+                  <i className="fa fa-bar-chart-o" />{" "}
+                  <span className="nav-label">UnderWriting</span>
+                  <span className="fa arrow" />
+                </a>
+                <ul className="nav nav-second-level collapse">
+                  <li>
+                    <Link to="/PolicyCategories">Policy categories </Link>
+                  </li>
+                  <li>
+                    <Link to="/PaymentModes">Modes of Payment</Link>
+                  </li>
+                  <li>
+                    <Link to="/motorvehicles">Motor Vehicles</Link>
+                  </li>
+                  <li>
+                    <Link to="graph_chartjs.html">Chart.js</Link>
+                  </li>
+                  <li>
+                    <Link to="graph_chartist.html">Chartist</Link>
+                  </li>
+                  <li>
+                    <Link to="c3.html">c3 charts</Link>
+                  </li>
+                  <li>
+                    <Link to="graph_peity.html">Peity Charts</Link>
+                  </li>
+                  <li>
+                    <Link to="graph_sparkline.html">Sparkline Charts</Link>
                   </li>
                 </ul>
               </li>

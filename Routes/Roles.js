@@ -2,26 +2,32 @@ const express = require("express");
 const Roles = express.Router();
 var sql = require("mssql");
 const config = require("../database");
-const AppConstant = require("../AppConstant");
+
 const Joi = require("joi");
-const bcrypt = require("bcrypt");
 
 Roles.get("/", (req, res) => {
-  sql.connect(config, err => {
-    new sql.Request()
-      .input("UserID", sql.VarChar, res.locals.user)
-      .input("Terminus", sql.VarChar, req.ip[0])
-      .execute("spSelectAllRoles", (err, result) => {
-        if (err) {
-          res.json({
-            success: false,
-            message: err.message
-          });
-        } else {
-          res.status(200).json(result.recordset);
-        }
-        sql.close();
+  const pool = new sql.ConnectionPool(config);
+  pool.connect(error => {
+    if (error) {
+      res.json({
+        success: false,
+        message: error.message
       });
+    } else {
+      const request = new sql.Request(pool)
+        .input("UserID", sql.VarChar, res.locals.user)
+        .input("Terminus", sql.VarChar, req.ip[0])
+        .execute("spSelectAllRoles", (err, result) => {
+          if (err) {
+            res.json({
+              success: false,
+              message: err.message
+            });
+          } else {
+            res.status(200).json(result.recordset);
+          }
+        });
+    }
   });
 })
   .post("/", (req, res) => {
@@ -38,13 +44,20 @@ Roles.get("/", (req, res) => {
 
     const result = Joi.validate(req.body, schema);
     if (!result.error) {
-      sql.connect(config, err => {
-        new sql.Request()
-          .input("RoleName", sql.VarChar, req.body.RoleName)
-          .input("Narration", sql.VarChar, req.body.Narration)
-          .input("UserID", sql.VarChar, res.locals.user)
-          .input("Terminus", sql.VarChar, req.ip[0])
-          .execute("spSaveRoles", (err, result) => {
+      const pool = new sql.ConnectionPool(config);
+      pool.connect(error => {
+        if (error) {
+          res.json({
+            success: false,
+            message: error.message
+          });
+        } else {
+          const request = new sql.Request(pool);
+          request.input("RoleName", sql.VarChar, req.body.RoleName);
+          request.input("Narration", sql.VarChar, req.body.Narration);
+          request.input("UserID", sql.VarChar, res.locals.user);
+          request.input("Terminus", sql.VarChar, req.ip[0]);
+          request.execute("spSaveRoles", (err, result) => {
             if (err) {
               res.json({
                 success: false,
@@ -56,8 +69,8 @@ Roles.get("/", (req, res) => {
                 message: "saved"
               });
             }
-            sql.close();
           });
+        }
       });
     } else {
       res.json({
@@ -68,12 +81,19 @@ Roles.get("/", (req, res) => {
   })
   .delete("/:RoleName", (req, res) => {
     const RoleName = req.params.RoleName;
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("RoleName", sql.VarChar, RoleName)
-        .input("UserID", sql.VarChar, res.locals.user)
-        .input("Terminus", sql.VarChar, req.ip[0])
-        .execute("spDeleteRoles", (err, result) => {
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        const request = new sql.Request(pool);
+        request.input("RoleName", sql.VarChar, RoleName);
+        request.input("UserID", sql.VarChar, res.locals.user);
+        request.input("Terminus", sql.VarChar, req.ip[0]);
+        request.execute("spDeleteRoles", (err, result) => {
           if (err) {
             res.json({
               success: false,
@@ -85,18 +105,25 @@ Roles.get("/", (req, res) => {
               message: "deleted"
             });
           }
-          sql.close();
         });
+      }
     });
   })
   .get("/:RoleName", (req, res) => {
     const RoleName = req.params.RoleName;
-    sql.connect(config, err => {
-      new sql.Request()
-        .input("RoleName", sql.VarChar, RoleName)
-        .input("UserID", sql.VarChar, res.locals.user)
-        .input("Terminus", sql.VarChar, req.ip[0])
-        .execute("spSelectRoles", (err, result) => {
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
+        });
+      } else {
+        const request = new sql.Request(pool);
+        request.input("RoleName", sql.VarChar, RoleName);
+        request.input("UserID", sql.VarChar, res.locals.user);
+        request.input("Terminus", sql.VarChar, req.ip[0]);
+        request.execute("spSelectRoles", (err, result) => {
           if (err) {
             res.json({
               success: false,
@@ -105,8 +132,8 @@ Roles.get("/", (req, res) => {
           } else {
             res.status(200).json(result.recordset);
           }
-          sql.close();
         });
+      }
     });
   });
 
