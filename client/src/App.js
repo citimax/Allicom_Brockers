@@ -13,7 +13,9 @@ import counties from "./Components/pages/counties";
 import securitygroups from "./Components/pages/securitygroups";
 import costCenter from "./Components/pages/costCenter";
 import PolicyCategories from "./Components/pages/Underwriting/PolicyCategories";
-import PaymentModes from "./Components/pages/Underwriting/PaymentModes"
+import PaymentModes from "./Components/pages/Underwriting/PaymentModes";
+import InsuranceCompanies from "./Components/pages/Underwriting/Insurer";
+import PolicyClasses from "./Components/pages/Underwriting/PolicyClasses";
 class App extends Component {
   render() {
     return (
@@ -33,6 +35,8 @@ class App extends Component {
         <Route path="/usergroups" exact component={UsergroupsPage} />
         <Route path="/PolicyCategories" exact component={PolicyCategories} />
         <Route path="/PaymentModes" exact component={PaymentModes} />
+        <Route path="/Insurer" exact component={InsuranceCompanies} />
+        <Route path="/PolicyClasses" exact component={PolicyClasses} />
       </BrowserRouter>
     );
   }

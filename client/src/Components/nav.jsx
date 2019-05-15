@@ -78,10 +78,10 @@ class Nav extends Component {
                     <Link to="/motorvehicles">Motor Vehicles</Link>
                   </li>
                   <li>
-                    <Link to="graph_chartjs.html">Chart.js</Link>
+                    <Link to="/Insurer">Insurance Companies</Link>
                   </li>
                   <li>
-                    <Link to="graph_chartist.html">Chartist</Link>
+                    <Link to="/PolicyClasses">PolicyClasses</Link>
                   </li>
                   <li>
                     <Link to="c3.html">c3 charts</Link>

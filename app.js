@@ -11,23 +11,24 @@ const CostCenter = require("./Routes/CostCenter");
 const CompanyCostCenterAccess = require("./Routes/CompanyCostCenterAccess");
 const Usergroups = require("./Routes/UserGroups");
 const UserRoles = require("./Routes/UserRoles");
-const RolesRoute = require('./Routes/Roles');
-const SecurityGroupsRoute = require('./Routes/SecurityGroups');
-const Clients = require('./Routes/Underwriting/ClientsInfo')
-const vehicleMake = require('./Routes/Underwriting/VehicleMake')
-const auth = require('./auth');
+const RolesRoute = require("./Routes/Roles");
+const SecurityGroupsRoute = require("./Routes/SecurityGroups");
+const Clients = require("./Routes/Underwriting/ClientsInfo");
+const vehicleMake = require("./Routes/Underwriting/VehicleMake");
+const auth = require("./auth");
 const PaymentModes = require("./Routes/Underwriting/PaymentModes");
 const PolicyCategories = require("./Routes/Underwriting/PolicyCategories");
 const PolicyClasses = require("./Routes/Underwriting/PolicyClasses");
+const Insurer = require("./Routes/Underwriting/Insurer");
 
-
-
-app.use(bodyParser.urlencoded({
-  extended: false
-}));
+app.use(
+  bodyParser.urlencoded({
+    extended: false
+  })
+);
 app.use(bodyParser.json());
 
-app.use(function (req, res, next) {
+app.use(function(req, res, next) {
   //Enabling CORS
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
@@ -46,14 +47,21 @@ app.use("/api/currency", auth.validaterole("currency"), currencyRoute);
 app.use("/api/Countries", auth.validaterole("Countries"), Countries);
 app.use("/api/Counties", auth.validaterole("Counties"), Counties);
 app.use("/api/CostCenter", auth.validaterole("CostCenter"), CostCenter);
-app.use("/api/CompanyCostCenterAccess", auth.validaterole("CompanyCostCenterAccess"), CompanyCostCenterAccess);
+app.use(
+  "/api/CompanyCostCenterAccess",
+  auth.validaterole("CompanyCostCenterAccess"),
+  CompanyCostCenterAccess
+);
 app.use("/api/Usergroups", auth.validaterole("Usergroups"), Usergroups);
 app.use("/api/UserRoles", auth.validaterole("UserRoles"), UserRoles);
-app.use('/api/roles', auth.validaterole("roles"), RolesRoute);
-app.use('/api/securityGroups', auth.validaterole("securityGroups"), SecurityGroupsRoute);
-app.use('/api/clients', auth.validaterole("securityGroups"), Clients);
-app.use('/api/vehiclemake', auth.validaterole("securityGroups"), vehicleMake);
-
+app.use("/api/roles", auth.validaterole("roles"), RolesRoute);
+app.use(
+  "/api/securityGroups",
+  auth.validaterole("securityGroups"),
+  SecurityGroupsRoute
+);
+app.use("/api/clients", auth.validaterole("securityGroups"), Clients);
+app.use("/api/vehiclemake", auth.validaterole("securityGroups"), vehicleMake);
 
 app.use("/api/roles", auth.validaterole("roles"), RolesRoute);
 app.use(
@@ -65,7 +73,8 @@ app.use("/api/PaymentModes", auth.validaterole("roles"), PaymentModes);
 app.use("/api/PolicyCategories", auth.validaterole("roles"), PolicyCategories);
 app.use("/api/PolicyClasses", auth.validaterole("roles"), PolicyClasses);
 
-app.use(function (req, res, next) {
+app.use("/api/Insurer", auth.validaterole("Insurance Companies"), Insurer);
+app.use(function(req, res, next) {
   //Enabling CORS
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
