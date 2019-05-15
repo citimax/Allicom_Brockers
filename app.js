@@ -22,7 +22,6 @@ const PolicyCategories = require("./Routes/Underwriting/PolicyCategories");
 const PolicyClasses = require("./Routes/Underwriting/PolicyClasses");
 const Agents = require("./Routes/Underwriting/Agents");
 const Clientcategory = require("./Routes/Underwriting/ClientCategory")
-const PolicyClasses = require("./Routes/Underwriting/PolicyClasses");
 const Insurer = require("./Routes/Underwriting/Insurer");
 
 app.use(
