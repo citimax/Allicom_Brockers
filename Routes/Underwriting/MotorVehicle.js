@@ -33,7 +33,6 @@
      .post("/", (req, res) => {
          const schema = Joi.object().keys({
              RegNo: Joi.string().required(),
-             CompCode: Joi.string().required(),
              CostCenter: Joi.string().required(),
              make: Joi.string().required(),
              Model: Joi.string().required(),
@@ -66,7 +65,6 @@
                  new sql.Request(pool)
                      .input("CompCode", sql.VarChar, res.locals.CompCode)
                      .input("RegNo", sql.VarChar, req.body.RegNo)
-                     .input("CompCode", sql.VarChar, req.body.CompCode)
                      .input("CostCenter", sql.VarChar, req.body.CostCenter)
                      .input("make", sql.VarChar, req.body.make)
                      .input("Model", sql.VarChar, req.body.Model)
@@ -76,12 +74,12 @@
                      .input("EngineNo", sql.VarChar, req.body.EngineNo)
                      .input("Fuel", sql.VarChar, req.body.Fuel)
                      .input("SeatCapacity", sql.VarChar, req.body.SeatCapacity)
-                     .input("Rating", sql.float, req.body.Rating)
+                     .input("Rating", sql.Float, req.body.Rating)
                      .input("Tonnage", sql.VarChar, req.body.Tonnage)
-                     .input("YearMDF", sql.float, req.body.YearMDF)
-                     .input("vehiclevalue", sql.float, req.body.vehiclevalue)
-                     .input("WindScreen", sql.float, req.body.WindScreen)
-                     .input("RadioSystem", sql.float, req.body.RadioSystem)
+                     .input("YearMDF", sql.Float, req.body.YearMDF)
+                     .input("vehiclevalue", sql.Float, req.body.vehiclevalue)
+                     .input("WindScreen", sql.Float, req.body.WindScreen)
+                     .input("RadioSystem", sql.Float, req.body.RadioSystem)
                      .input("Accessories", sql.VarChar, req.body.Accessories)
                      .input("FleatName", sql.VarChar, req.body.FleatName)
                      .input("OtherDetails", sql.VarChar, req.body.OtherDetails)

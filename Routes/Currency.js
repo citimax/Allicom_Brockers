@@ -6,30 +6,30 @@ const config = require("../database");
 const Joi = require("joi");
 
 Currency.get("/", (req, res) => {
-  const pool = new sql.ConnectionPool(config);
-  pool.connect(error => {
-    if (error) {
-      res.json({
-        success: false,
-        message: error.message
-      });
-    } else {
-      const request = new sql.Request(pool)
-        .input("UserID", sql.VarChar, res.locals.user)
-        .input("Terminus", sql.VarChar, req.ip[0])
-        .execute("spSelectAllCurrencies", (err, result) => {
-          if (err) {
-            res.json({
-              success: false,
-              message: err.message
-            });
-          } else {
-            res.status(200).json(result.recordset);
-          }
+    const pool = new sql.ConnectionPool(config);
+    pool.connect(error => {
+      if (error) {
+        res.json({
+          success: false,
+          message: error.message
         });
-    }
-  });
-})
+      } else {
+        const request = new sql.Request(pool)
+          .input("UserID", sql.VarChar, res.locals.user)
+          .input("Terminus", sql.VarChar, req.ip[0])
+          .execute("spSelectAllCurrencies", (err, result) => {
+            if (err) {
+              res.json({
+                success: false,
+                message: err.message
+              });
+            } else {
+              res.status(200).json(result.recordset);
+            }
+          });
+      }
+    });
+  })
   .post("/", (req, res) => {
     const schema = Joi.object().keys({
       CurrCode: Joi.string()

@@ -60,9 +60,7 @@ Clients.get("/", (req, res) => {
             Email: Joi.string()
                 .min(3)
                 .required(),
-            Company: Joi.string()
-                .min(3)
-                .required(),
+
             CostCenter: Joi.string()
                 .min(3)
                 .required(),
@@ -72,6 +70,8 @@ Clients.get("/", (req, res) => {
             Agent: Joi.string()
                 .min(3)
                 .required(),
+            IncorparationNo: Joi.string()
+                .required(),
             ContactPerson: Joi.string()
                 .min(3)
                 .required(),
@@ -80,6 +80,9 @@ Clients.get("/", (req, res) => {
                 .required(),
             Category: Joi.string()
                 .min(3)
+                .required(),
+            Currency: Joi.string()
+                .min(1)
                 .required(),
             Domant: Joi.boolean()
 

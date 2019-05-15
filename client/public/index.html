@@ -42,20 +42,12 @@
 
   <link href="%PUBLIC_URL%/css/animate.css" rel="stylesheet">
   <link href="%PUBLIC_URL%/css/style.css" rel="stylesheet">
-  <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-  <!--
-      Notice the use of %PUBLIC_URL% in the tags above.
-      It will be replaced with the URL of the `public` folder during the build.
-      Only files inside the `public` folder can be referenced from the HTML.
+  <link href="%PUBLIC_URL%/css/plugins/select2/select2.min.css" rel="stylesheet">
+  <script src="%PUBLIC_URL%/js/plugins/select2/select2.full.min.js"></script>
 
-      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
-      work correctly both with client-side routing and a non-root public URL.
-      Learn how to configure a non-root public URL by running `npm run build`.
-    -->
+
+  <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
   <title>Allicom insurance brokers</title>
 </head>
 
@@ -68,29 +60,25 @@
   <script src="%PUBLIC_URL%/js/bootstrap.js"></script>
   <script src="%PUBLIC_URL%/js/plugins/metisMenu/jquery.metisMenu.js"></script>
   <script src="%PUBLIC_URL%/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-  <script src="%PUBLIC_URL%/js/plugins/dataTables/datatables.min.js"></script>
-  <script src="%PUBLIC_URL%/js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
-
   <!-- Custom and plugin javascript -->
   <script src="%PUBLIC_URL%/js/inspinia.js"></script>
   <script src="%PUBLIC_URL%/js/plugins/pace/pace.min.js"></script>
-</body>
-
-
-<!-- Mainly scripts -->
-<script src="%PUBLIC_URL%/js/jquery-3.1.1.min.js"></script>
-<script src="%PUBLIC_URL%/js/popper.min.js"></script>
-<script src="%PUBLIC_URL%/js/bootstrap.js"></script>
-<script src="%PUBLIC_URL%/js/plugins/metisMenu/jquery.metisMenu.js"></script>
-<script src="%PUBLIC_URL%/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-
-<script src="%PUBLIC_URL%/js/plugins/dataTables/datatables.min.js"></script>
-<script src="%PUBLIC_URL%/js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
-
-<!-- Custom and plugin javascript -->
-<script src="%PUBLIC_URL%/js/inspinia.js"></script>
-<script src="%PUBLIC_URL%/js/plugins/pace/pace.min.js"></script>
+  <!-- Mainly scripts -->
+  <script src="%PUBLIC_URL%/js/jquery-3.1.1.min.js"></script>
+  <script src="%PUBLIC_URL%/js/popper.min.js"></script>
+  <script src="%PUBLIC_URL%/js/bootstrap.js"></script>
+  <script src="%PUBLIC_URL%/js/plugins/metisMenu/jquery.metisMenu.js"></script>
+  <script src="%PUBLIC_URL%/js/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+  <script src="%PUBLIC_URL%/js/plugins/dataTables/datatables.min.js"></script>
+  <script src="%PUBLIC_URL%/js/plugins/dataTables/dataTables.bootstrap4.min.js"></script>
+  <!-- Custom and plugin javascript -->
+  <script src="%PUBLIC_URL%/js/inspinia.js"></script>
+  <script src="%PUBLIC_URL%/js/plugins/pace/pace.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $('.js-example-basic-single').select2();
+    });
+  </script>
 </body>
 
 </html>
