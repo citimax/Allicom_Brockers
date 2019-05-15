@@ -20,6 +20,8 @@ import clientcategory from './Components/pages/Underwriting/ClientDivision';
 import VehicleMake from './Components/pages/Underwriting/VehicleMake';
 import MotorVehicle from './Components/pages/Underwriting/MotorVehicle';
  
+import InsuranceCompanies from "./Components/pages/Underwriting/Insurer";
+import PolicyClasses from "./Components/pages/Underwriting/PolicyClasses";
 class App extends Component {
   render() {
     return (
@@ -43,6 +45,8 @@ class App extends Component {
         <Route path="/clientcategory" exact component={clientcategory} />
         <Route path="/vehiclemake" exact component={VehicleMake} />
         <Route path = "/motorvehicles" exact component = {MotorVehicle}/>
+        <Route path="/Insurer" exact component={InsuranceCompanies} />
+        <Route path="/PolicyClasses" exact component={PolicyClasses} />
       </BrowserRouter>
     );
   }

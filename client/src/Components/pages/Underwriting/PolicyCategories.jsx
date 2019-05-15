@@ -172,7 +172,7 @@ class PolicyCategories extends Component {
         const Rowdata = {
           Code: k.Code,
           Name: k.Name,
-          Advancemotorins: k.Advancemotorins,
+          Advancemotorins: k.Advancemotorins.toString(),
           action: (
             <span>
               {" "}
@@ -274,6 +274,7 @@ const Formdata = props => {
                       className="form-control"
                       id="exampleInputPassword1"
                       placeholder="RoCodele"
+                      required
                     />
                   </div>
                 </div>
@@ -289,6 +290,7 @@ const Formdata = props => {
                       className="form-control"
                       id="exampleInputPassword1"
                       placeholder="Name"
+                      required
                     />
                   </div>
                   <div className="checkbox">
