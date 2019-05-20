@@ -1,7 +1,6 @@
 const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
-
 const UserRoute = require("./Routes/user");
 const CompanyRoute = require("./Routes/Company");
 const currencyRoute = require("./Routes/Currency");
@@ -23,6 +22,8 @@ const PolicyClasses = require("./Routes/Underwriting/PolicyClasses");
 const Agents = require("./Routes/Underwriting/Agents");
 const Clientcategory = require("./Routes/Underwriting/ClientCategory")
 const Insurer = require("./Routes/Underwriting/Insurer");
+const CalcItems = require("./Routes/Underwriting/CalcItems");
+const PremiumCalc = require("./Routes/Underwriting/Premiumcalculator");
 
 app.use(
   bodyParser.urlencoded({
@@ -63,19 +64,11 @@ app.use('/api/motorvehicle', auth.validaterole("vehiclemake"), MotorVehicle);
 app.use("/api/PaymentModes", auth.validaterole("roles"), PaymentModes);
 app.use("/api/PolicyCategories", auth.validaterole("roles"), PolicyCategories);
 app.use("/api/PolicyClasses", auth.validaterole("roles"), PolicyClasses);
-
-
 app.use("/api/Insurer", auth.validaterole("Insurance Companies"), Insurer);
-app.use(function (req, res, next) {
-  //Enabling CORS
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
-  res.header(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, contentType,Content-Type, Accept, Authorization"
-  );
-  next();
-});
+app.use("/api/calcitems", auth.validaterole("Insurance Companies"), CalcItems);
+app.use("/api/prmiumcalc", auth.validaterole("Insurance Companies"), PremiumCalc);
+
+
 //end of app use routes
 app.use((req, res, next) => {
   const error = new Error("resource not found");

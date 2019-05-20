@@ -268,7 +268,7 @@ class UserRoles extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"User Roles"}
             button={
@@ -288,11 +288,11 @@ class UserRoles extends Component {
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"User Roles"}
             button={
@@ -308,7 +308,7 @@ class UserRoles extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

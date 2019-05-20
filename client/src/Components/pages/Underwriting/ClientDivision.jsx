@@ -192,7 +192,7 @@ class ClientDivision extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Add category"}
             button={
@@ -214,11 +214,11 @@ class ClientDivision extends Component {
             handleSelectChange={this.handleSelectChange}
             Collections={this.state}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={" Client category list"}
             button={
@@ -234,7 +234,7 @@ class ClientDivision extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

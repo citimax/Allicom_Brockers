@@ -222,15 +222,13 @@ class UserGroups extends Component {
               {" "}
               <a
                 style={{ color: "#007bff" }}
-                onClick={e => this.handleEdit(k, e)}
-              >
+                onClick={e => this.handleEdit(k, e)}>
                 Edit
               </a>
               |{" "}
               <a
                 style={{ color: "#f44542" }}
-                onClick={e => this.handleDelete(k, e)}
-              >
+                onClick={e => this.handleDelete(k, e)}>
                 {" "}
                 Delete
               </a>
@@ -242,17 +240,16 @@ class UserGroups extends Component {
     }
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"User Groups"}
             button={
               <button
-                to="/"
-                type="button"
+                to='/'
+                type='button'
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className="btn btn-primary float-left"
-              >
+                className='btn btn-primary float-left'>
                 Go Back
               </button>
             }
@@ -265,21 +262,20 @@ class UserGroups extends Component {
             SecurityGroups={this.state.SecurityGroups}
             handleInputChange={this.handleInputChange}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"User Groups"}
             button={
               <button
-                to="/"
-                type="button"
+                to='/'
+                type='button'
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className="btn btn-primary float-left"
-              >
+                className='btn btn-primary float-left'>
                 Create New
               </button>
             }
@@ -288,74 +284,72 @@ class UserGroups extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }
 }
 const Formdata = props => {
   return (
-    <div className="container-fluid">
-      <div className="col-sm-12">
-        <div className="ibox ">
-          <div className="ibox-title">
-            <div className="ibox-tools">
-              <a className="close-link">
-                <i className="fa fa-times" />
+    <div className='container-fluid'>
+      <div className='col-sm-12'>
+        <div className='ibox '>
+          <div className='ibox-title'>
+            <div className='ibox-tools'>
+              <a className='close-link'>
+                <i className='fa fa-times' />
               </a>
             </div>
           </div>
-          <div className="ibox-content">
+          <div className='ibox-content'>
             <form onSubmit={props.handleSubmit}>
-              <div className=" row">
-                <div className="col-sm">
-                  <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">UserName</label>
+              <div className=' row'>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='exampleInputEmail1'>UserName</label>
                     <select
-                      className="form-control"
-                      name="UserName"
+                      className='form-control'
+                      name='UserName'
                       value={props.Values.UserName}
-                      onChange={props.handleInputChange}
-                    >
+                      onChange={props.handleInputChange}>
                       {props.Usersdata.map((user, i) => (
                         <option key={i}>{user.UserName}</option>
                       ))}
                     </select>
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">GroupCode</label>
+                  <div className='form-group'>
+                    <label htmlFor='exampleInputEmail1'>GroupCode</label>
                     <select
-                      className="form-control"
-                      name="GroupCode"
+                      className='form-control'
+                      name='GroupCode'
                       value={props.Values.GroupCode}
-                      onChange={props.handleInputChange}
-                    >
+                      onChange={props.handleInputChange}>
                       {props.SecurityGroups.map(Group => (
                         <option key={Group.GroupCode}>{Group.GroupCode}</option>
                       ))}
                     </select>
                   </div>
                 </div>
-                <div className="col-sm">
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Narration</label>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='exampleInputPassword1'>Narration</label>
                     <textarea
                       value={props.Values.Narration}
-                      type="text"
-                      name="Narration"
+                      type='text'
+                      name='Narration'
                       // value={props.Values.Narration}
                       onChange={props.handleInputChange}
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Narration"
+                      className='form-control'
+                      id='exampleInputPassword1'
+                      placeholder='Narration'
                     />
                   </div>
                 </div>
               </div>
-              <div className="form-group ">
+              <div className='form-group '>
                 <br />
 
-                <button type="submit" className="btn btn-primary">
+                <button type='submit' className='btn btn-primary'>
                   Save
                 </button>
               </div>

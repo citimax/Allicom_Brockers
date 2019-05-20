@@ -362,7 +362,7 @@ class Agent extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Add Agent"}
             button={
@@ -384,11 +384,11 @@ class Agent extends Component {
             handleSelectChange={this.handleSelectChange}
             Collections={this.state}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Agents list"}
             button={
@@ -404,7 +404,7 @@ class Agent extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

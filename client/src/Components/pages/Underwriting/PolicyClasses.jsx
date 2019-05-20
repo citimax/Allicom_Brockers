@@ -348,7 +348,7 @@ class PolicyClasses extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Policy classes"}
             button={
@@ -371,11 +371,11 @@ class PolicyClasses extends Component {
             InsuranceCompanies={this.state.InsuranceCompanies}
             handleSelectChange={this.handleSelectChange}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Policy classes"}
             button={
@@ -391,7 +391,7 @@ class PolicyClasses extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

@@ -171,15 +171,13 @@ class PaymentModes extends Component {
               {" "}
               <a
                 style={{ color: "#007bff" }}
-                onClick={e => this.handleEdit(k, e)}
-              >
+                onClick={e => this.handleEdit(k, e)}>
                 Edit
               </a>
               |{" "}
               <a
                 style={{ color: "#f44542" }}
-                onClick={e => this.handleDelete(k.Code, e)}
-              >
+                onClick={e => this.handleDelete(k.Code, e)}>
                 {" "}
                 Delete
               </a>
@@ -191,17 +189,16 @@ class PaymentModes extends Component {
     }
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"PaymentModes"}
             button={
               <button
-                to="/"
-                type="button"
+                to='/'
+                type='button'
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className="btn btn-primary float-left"
-              >
+                className='btn btn-primary float-left'>
                 Go Back
               </button>
             }
@@ -212,21 +209,20 @@ class PaymentModes extends Component {
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"PaymentModes"}
             button={
               <button
-                to="/"
-                type="button"
+                to='/'
+                type='button'
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className="btn btn-primary float-left"
-              >
+                className='btn btn-primary float-left'>
                 Create New
               </button>
             }
@@ -235,64 +231,63 @@ class PaymentModes extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }
 }
 const Formdata = props => {
   return (
-    <div className="container-fluid">
-      <div className="col-sm-12">
-        <div className="ibox ">
-          <div className="ibox-title">
-            <div className="ibox-tools">
-              <a className="close-link">
-                <i className="fa fa-times" />
+    <div className='container-fluid'>
+      <div className='col-sm-12'>
+        <div className='ibox '>
+          <div className='ibox-title'>
+            <div className='ibox-tools'>
+              <a className='close-link'>
+                <i className='fa fa-times' />
               </a>
             </div>
           </div>
-          <div className="ibox-content">
+          <div className='ibox-content'>
             <form onSubmit={props.handleSubmit}>
-              <div className=" row">
-                <div className="col-sm">
-                  <div className="form-group">
-                    <label htmlFor="exampleInputEmail1">Code </label>
+              <div className=' row'>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='exampleInputEmail1'>Code </label>
                     <input
                       value={props.Values.Code}
-                      type="text"
-                      name="Code"
+                      type='text'
+                      name='Code'
                       // value={props.Values.Narration}
                       onChange={props.handleInputChange}
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="RoCodele"
+                      className='form-control'
+                      id='exampleInputPassword1'
+                      placeholder='RoCodele'
                     />
                   </div>
                 </div>
-                <div className="col-sm">
-                  <div className="form-group">
-                    <label htmlFor="exampleInputPassword1">Name</label>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='exampleInputPassword1'>Name</label>
                     <textarea
                       value={props.Values.Name}
-                      type="text"
-                      name="Name"
+                      type='text'
+                      name='Name'
                       // value={props.Values.Narration}
                       onChange={props.handleInputChange}
-                      className="form-control"
-                      id="exampleInputPassword1"
-                      placeholder="Name"
+                      className='form-control'
+                      id='exampleInputPassword1'
+                      placeholder='Name'
                     />
                   </div>
 
-                  <div className="form-group ">
+                  <div className='form-group '>
                     <br />
 
                     <button
-                      type="submit"
-                      className="btn btn-primary"
-                      style={{ margintop: 50 }}
-                    >
+                      type='submit'
+                      className='btn btn-primary'
+                      style={{ margintop: 50 }}>
                       Save
                     </button>
                   </div>

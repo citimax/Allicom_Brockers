@@ -120,7 +120,7 @@ class Profile extends Component {
 
   render() {
     return (
-      <Wrapper>
+      <div>
         <Breadcumps
           tablename={"Users"}
           button={
@@ -140,7 +140,7 @@ class Profile extends Component {
           handleSubmit={this.handleSubmit}
           handleInputChange={this.handleInputChange}
         />
-      </Wrapper>
+      </div>
     );
   }
 }

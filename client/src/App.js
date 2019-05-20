@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter, Route } from "react-router-dom";
+import { BrowserRouter, Route,Switch } from "react-router-dom";
 import UsersPage from "./Components/pages/users";
 import UsergroupsPage from "./Components/pages/usergroups";
 import UserRoles from "./Components/pages/UserRoles";
@@ -19,13 +19,20 @@ import Agents from './Components/pages/Underwriting/Agent';
 import clientcategory from './Components/pages/Underwriting/ClientDivision';
 import VehicleMake from './Components/pages/Underwriting/VehicleMake';
 import MotorVehicle from './Components/pages/Underwriting/MotorVehicle';
- 
+ import ClacItems from './Components/pages/Underwriting/CalcItems';
 import InsuranceCompanies from "./Components/pages/Underwriting/Insurer";
 import PolicyClasses from "./Components/pages/Underwriting/PolicyClasses";
+import Wrapper from "./Components/wrapper";
+import Nav from "./Components/nav";
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <div id='wrapper'>
+     
+        
+        <BrowserRouter>
+            < Nav/>
+          < Wrapper >
         <Route path="/" exact component={login} />
         <Route path="/users" exact component={UsersPage} />
         <Route path="/countries" exact component={UsersPage} />
@@ -47,7 +54,10 @@ class App extends Component {
         <Route path = "/motorvehicles" exact component = {MotorVehicle}/>
         <Route path="/Insurer" exact component={InsuranceCompanies} />
         <Route path="/PolicyClasses" exact component={PolicyClasses} />
-      </BrowserRouter>
+            <Route path="/calcitems" exact component={ClacItems} />
+           </Wrapper>
+          </BrowserRouter>        
+        </div>
     );
   }
 }

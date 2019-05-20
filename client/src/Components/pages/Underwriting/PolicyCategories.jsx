@@ -60,7 +60,7 @@ class PolicyCategories extends Component {
       Name: PolicyCategory.Name,
       Code: PolicyCategory.Code
     };
-    console.log(data);
+  
     this.setState(data);
     this.setState({ reseter: true });
   };
@@ -198,7 +198,7 @@ class PolicyCategories extends Component {
     }
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"PolicyCategories"}
             button={
@@ -219,11 +219,11 @@ class PolicyCategories extends Component {
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"PolicyCategories"}
             button={
@@ -242,7 +242,7 @@ class PolicyCategories extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

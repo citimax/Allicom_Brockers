@@ -449,7 +449,7 @@ class MotorVehicle extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Add Vehicle"}
             button={
@@ -471,11 +471,11 @@ class MotorVehicle extends Component {
             handleSelectChange={this.handleSelectChange}
             Collections={this.state}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Vehicle list"}
             button={
@@ -491,7 +491,7 @@ class MotorVehicle extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

@@ -401,7 +401,7 @@ class Company extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Add Company"}
             button={
@@ -423,11 +423,11 @@ class Company extends Component {
             handleSelectChange={this.handleSelectChange}
             Collections={this.state}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Company list"}
             button={
@@ -443,7 +443,7 @@ class Company extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

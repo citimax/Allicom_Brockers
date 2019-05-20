@@ -1,28 +1,26 @@
 import React, { Component } from "react";
-import Breadcumps from "../breadcumps";
-import Table from "../Table";
-import TableWrapper from "../TableWrappper";
-import Wrapper from "../wrapper";
+import Breadcumps from "../../breadcumps";
+import Table from "../../Table";
+import TableWrapper from "../../TableWrappper";
+import Wrapper from "../../wrapper";
 import swal from "sweetalert";
-class UserGroups extends Component {
+
+class CalcItems extends Component {
   constructor() {
     super();
     this.state = {
-      reseter: false,
-      CostCenters: [],
-
-      CCCode: "",
-      CCName: "",
-      CompCode: "",
-      Mobile: "",
-      PostalAddress: "",
-      PhysicalAddress: "",
-      WebUrl: "",
-      Status: true,
-      Email: "",
-      Telephone: ""
+      Calc: [],
+      ItemCode: "",
+      ItemName: "",
+      ItemGroup: "",
+      ControlAcc: "",
+      RateType: "",
+      Method: "",
+      Rate: 0,
+      OrderNumber: ""
     };
   }
+
   handleclick = e => {
     e.preventDefault();
     if (this.state.reseter === false) {
@@ -31,28 +29,20 @@ class UserGroups extends Component {
       this.setState({ reseter: false });
     }
   };
-
-  handleEdit = k => {
-    const data = {
-      CCCode: k.CCCode,
-      CCName: k.CCName,
-      CompCode: k.CompCode,
-      PhysicalAddress: k.PhysicalAddress,
-      WebUrl: k.WebUrl,
-      Status: k.Status,
-      CompCode: k.CompCode,
-      Mobile: k.Mobile,
-      PostalAddress: k.PostalAddress,
-      Email: k.Email,
-      Telephone: k.Telephone
-    };
-    console.log(data);
-    this.setState(data);
-    this.setState({ reseter: true });
-  };
-
+  handleStateReset() {
+    this.setState({
+      ItemCode: "",
+      ItemName: "",
+      ItemGroup: "",
+      ControlAcc: "",
+      RateType: "",
+      Method: "",
+      Rate: "",
+      OrderNumber: ""
+    });
+  }
   fetchData = () => {
-    fetch("/api/CostCenter", {
+    fetch("api/calcitems", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -60,17 +50,26 @@ class UserGroups extends Component {
       }
     })
       .then(res => res.json())
-      .then(data => {
-        if (data.length > 0) {
-          this.setState({ CostCenters: data });
+      .then(Calc => {
+        if (Calc.length > 0) {
+          this.setState({ Calc: Calc });
         } else {
-          swal("Oops!", data.message, "error");
+          swal("Oops!", Calc.message, "error");
         }
       })
       .catch(err => {
         swal("Oops!", err.message, "error");
-        swal("Oops!, data.message, error");
       });
+  };
+
+  handleInputChange = event => {
+    event.preventDefault();
+
+    const target = event.target;
+    const value = target.type === "checkbox" ? target.checked : target.value;
+    const name = target.name;
+    this.setState({ [name]: value });
+    console.log(value);
   };
   handleDelete = k => {
     swal({
@@ -80,7 +79,7 @@ class UserGroups extends Component {
       dangerMode: false
     }).then(willDelete => {
       if (willDelete) {
-        return fetch("/api/CostCenter/" + k, {
+        return fetch("api/calcitems/" + k, {
           method: "Delete",
           headers: {
             "Content-Type": "application/json",
@@ -103,37 +102,37 @@ class UserGroups extends Component {
       }
     });
   };
-
+  handleEdit = Item => {
+    // const data = {
+    //     InsurerCode: Item.InsurerCode,
+    //     ItemCode: Item.InsurerCode,
+    //     ItemGroup: Item.InsurerCode,
+    //     ControlAcc: Item.InsurerCode,
+    //     RateType: Item.RateType,
+    //     Method: Item.Method,
+    //     Rate: Item.Rate,
+    //     OrderNumber: Item.OrderNumber
+    // };
+    this.setState(Item);
+    this.setState({ reseter: true });
+  };
   handleSubmit = event => {
     event.preventDefault();
     const data = {
-      CCCode: this.state.CCCode,
-      CCName: this.state.CCName,
-      CompCode: this.state.CompCode,
-      PhysicalAddress: this.state.PhysicalAddress,
-      WebUrl: this.state.WebUrl,
-      Status: this.state.Status,
-      PostalAddress: this.state.PostalAddress,
-      Mobile: this.state.Mobile,
-      Email: this.state.Email,
-      Telephone: this.state.Telephone
+      ItemCode: this.state.ItemCode,
+      ItemName: this.state.ItemName,
+      ItemGroup: this.state.ItemGroup,
+      ControlAcc: this.state.ControlAcc,
+      RateType: this.state.RateType,
+      Method: this.state.Method,
+      Rate: this.state.Rate,
+      OrderNumber: this.state.OrderNumber
     };
 
-    this.postData("/api/CostCenter", data);
-  };
-
-  handleInputChange = event => {
-    event.preventDefault();
-    const target = event.target;
-    const value = target.type === "checkbox" ? target.checked : target.value;
-    const name = target.name;
-
-    this.setState({
-      [name]: value
-    });
+    this.postData("/api/calcitems", data);
   };
   postData(url = ``, data = {}) {
-    fetch(url, {
+    return fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -144,7 +143,7 @@ class UserGroups extends Component {
       .then(response =>
         response.json().then(data => {
           this.fetchData();
-
+          this.handleStateReset();
           if (data.success) {
             swal("Saved!", "Record has been saved!", "success");
           } else {
@@ -163,64 +162,55 @@ class UserGroups extends Component {
   render() {
     const ColumnData = [
       {
-        label: "CCCode",
-        field: "CCCode",
+        label: "ItemCode",
+        field: "ItemCode",
+        sort: "asc",
+        width: 250
+      },
+
+      {
+        label: "ItemName",
+        field: "ItemName",
         sort: "asc",
         width: 270
       },
+
       {
-        label: "CCName",
-        field: "CCName",
+        label: "Item Group",
+        field: "ItemGroup",
         sort: "asc",
-        width: 250
+        width: 270
+      },
+
+      {
+        label: "Control Acc",
+        field: "ControlAcc",
+        sort: "asc",
+        width: 200
       },
       {
-        label: "CompCode",
-        field: "CompCode",
+        label: "Rate Type",
+        field: "RateType",
         sort: "asc",
-        width: 250
+        width: 200
       },
       {
-        label: "Mobile",
-        field: "Mobile",
+        label: "Method",
+        field: "Method",
         sort: "asc",
-        width: 250
+        width: 200
       },
       {
-        label: "Telephone",
-        field: "Telephone",
+        label: "Rate",
+        field: "Rate",
         sort: "asc",
-        width: 250
+        width: 200
       },
       {
-        label: "Email",
-        field: "Email",
+        label: "Order Number",
+        field: "OrderNumber",
         sort: "asc",
-        width: 250
-      },
-      {
-        label: "PostalAddress",
-        field: "PostalAddress",
-        sort: "asc",
-        width: 250
-      },
-      {
-        label: "PhysicalAddress",
-        field: "PhysicalAddress",
-        sort: "asc",
-        width: 250
-      },
-      {
-        label: "WebUrl",
-        field: "WebUrl",
-        sort: "asc",
-        width: 250
-      },
-      {
-        label: "Status",
-        field: "Status",
-        sort: "asc",
-        width: 250
+        width: 200
       },
       {
         label: "action",
@@ -229,22 +219,20 @@ class UserGroups extends Component {
         width: 200
       }
     ];
+    let Rowdata1 = [];
+    const Rows = [...this.state.Calc];
 
-    const Rowdata1 = [];
-    const rows = [...this.state.CostCenters];
-    if (rows.length > 0) {
-      rows.map((k, i) => {
-        const Rowdata = {
-          CCCode: k.CCCode,
-          CCName: k.CCName,
-          CompCode: k.CompCode,
-          Mobile: k.Mobile,
-          Telephone: k.Telephone,
-          Email: k.Email,
-          PostalAddress: k.PostalAddress,
-          PhysicalAddress: k.PhysicalAddress,
-          WebUrl: k.WebUrl,
-          Status: k.Status.toString(),
+    if (Rows.length > 0) {
+      Rows.map((k, i) => {
+        let Rowdata = {
+          ItemCode: k.ItemCode,
+          ItemName: k.ItemName,
+          ItemGroup: k.ItemGroup,
+          ControlAcc: k.ControlAcc,
+          RateType: k.RateType,
+          Method: k.Method,
+          Rate: k.Rate,
+          OrderNumber: k.OrderNumber,
           action: (
             <span>
               {" "}
@@ -256,7 +244,7 @@ class UserGroups extends Component {
               |{" "}
               <a
                 style={{ color: "#f44542" }}
-                onClick={e => this.handleDelete(k.CCCode, e)}>
+                onClick={e => this.handleDelete(k.ItemCode, e)}>
                 {" "}
                 Delete
               </a>
@@ -266,11 +254,12 @@ class UserGroups extends Component {
         Rowdata1.push(Rowdata);
       });
     }
+
     if (this.state.reseter) {
       return (
         <div>
           <Breadcumps
-            tablename={"CostCenter"}
+            tablename={"Add Calc Items"}
             button={
               <button
                 to='/'
@@ -294,10 +283,9 @@ class UserGroups extends Component {
       return (
         <div>
           <Breadcumps
-            tablename={"CostCenter"}
+            tablename={"Calc Items"}
             button={
               <button
-                to='/'
                 type='button'
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
@@ -306,7 +294,6 @@ class UserGroups extends Component {
               </button>
             }
           />
-
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
@@ -315,6 +302,7 @@ class UserGroups extends Component {
     }
   }
 }
+
 const Formdata = props => {
   return (
     <div className='container-fluid'>
@@ -332,139 +320,118 @@ const Formdata = props => {
               <div className=' row'>
                 <div className='col-sm'>
                   <div className='form-group'>
-                    <label htmlFor='CCCode'>CostCenter Code</label>
+                    <label htmlFor='ItemCode'>ItemCode</label>
                     <input
                       type='text'
-                      name='CCCode'
-                      value={props.Values.CCCode}
+                      name='ItemCode'
+                      value={props.Values.ItemCode}
                       onChange={props.handleInputChange}
                       className='form-control'
-                      id='CCCode1'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter CCCode'
-                      required
-                    />
-                  </div>
-                  <div className='form-group'>
-                    <label htmlFor='CCCode'>CostCenter Name</label>
-                    <input
-                      type='text'
-                      name='CCName'
-                      value={props.Values.CCName}
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='CCName'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter CCName'
-                      required
-                    />
-                  </div>
-                  <div className='form-group'>
-                    <label htmlFor='Mobile'>Mobile</label>
-                    <input
-                      name='Mobile'
-                      type='text'
-                      value={props.Values.Mobile}
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='exampleInputPassword1'
-                      placeholder='Mobile'
-                      required
-                    />
-                  </div>
-                  <div className='form-group'>
-                    <label htmlFor='CompCode'>CompCode</label>
-                    <input
-                      type='text'
-                      name='CompCode'
-                      value={props.Values.CompCode}
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='CompCode'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter CompCode'
+                      id='exampleInputItemCode'
+                      aria-describedby='ItemCodeHelp'
+                      placeholder='Enter ItemCode'
                       required
                     />
                   </div>
 
                   <div className='form-group'>
-                    <label htmlFor='exampleInputEmail1'>Email address</label>
+                    <label htmlFor='ControlAcc'>ControlAcc</label>
                     <input
-                      type='email'
-                      name='Email'
-                      value={props.Values.Email}
-                      className='form-control'
+                      type='text'
+                      name='ControlAcc'
+                      value={props.Values.ControlAcc}
                       onChange={props.handleInputChange}
-                      id='Email'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter email'
+                      className='form-control'
+                      id='ControlAcc'
+                      aria-describedby='ControlAccHelp'
+                      placeholder='Enter ControlAcc'
+                      required
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <label htmlFor='RateType'>RateType</label>
+                    <input
+                      type='text'
+                      name='RateType'
+                      value={props.Values.RateType}
+                      onChange={props.handleInputChange}
+                      className='form-control'
+                      id='RateType'
+                      aria-describedby='RateTypeHelp'
+                      placeholder='Enter RateType'
+                      required
+                    />
+                  </div>
+                  <div className='form-group'>
+                    <label htmlFor='Method'>Method</label>
+                    <input
+                      type='text'
+                      name='Method'
+                      value={props.Values.Method}
+                      onChange={props.handleInputChange}
+                      className='form-control'
+                      id='Method'
+                      aria-describedby='MethodHelp'
+                      placeholder='Enter Method'
                       required
                     />
                   </div>
                 </div>
-
                 <div className='col-sm'>
                   <div className='form-group'>
-                    <label htmlFor='FullNames'>PostalAddress</label>
+                    <label htmlFor='ItemName'>ItemName</label>
                     <input
                       type='text'
-                      name='PostalAddress'
-                      value={props.Values.PostalAddress}
+                      name='ItemName'
+                      value={props.Values.ItemName}
                       onChange={props.handleInputChange}
                       className='form-control'
-                      id='PostalAddress'
-                      placeholder='PostalAddress'
+                      id='ItemName'
+                      aria-describedby='ItemNameHelp'
+                      placeholder='Enter ItemName'
+                      required
+                    />
+                  </div>
+
+                  <div className='form-group'>
+                    <label htmlFor='ItemGroup'>ItemGroup</label>
+                    <input
+                      type='text'
+                      name='ItemGroup'
+                      value={props.Values.ItemGroup}
+                      onChange={props.handleInputChange}
+                      className='form-control'
+                      id='ItemGroup'
+                      aria-describedby='ItemGroupHelp'
+                      placeholder='Enter ItemGroup'
                       required
                     />
                   </div>
                   <div className='form-group'>
-                    <label htmlFor='PhysicalAddress'>PhysicalAddress</label>
+                    <label htmlFor='Rate'>Rate</label>
                     <input
                       type='text'
-                      name='PhysicalAddress'
-                      value={props.Values.PhysicalAddress}
+                      name='Rate'
+                      value={props.Values.Rate}
                       onChange={props.handleInputChange}
                       className='form-control'
-                      id='PhysicalAddress'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter PhysicalAddress'
+                      id='Rate'
+                      aria-describedby='RateHelp'
+                      placeholder='Enter Rate'
                       required
                     />
                   </div>
                   <div className='form-group'>
-                    <label htmlFor='Telephone'>Telephone</label>
+                    <label htmlFor='OrderNumber'>OrderNumber</label>
                     <input
                       type='text'
-                      name='Telephone'
-                      value={props.Values.Telephone}
-                      className='form-control'
-                      onChange={props.handleInputChange}
-                      id='Telephone'
-                      placeholder='Telephone'
-                      required
-                    />
-                  </div>
-                  <div className='checkbox'>
-                    <input
-                      type='checkbox'
-                      name='Status'
-                      checked={props.Values.Status}
-                      onChange={props.handleInputChange}
-                      id='Status'
-                    />
-                    <label htmlFor='Status'>Active Status</label>
-                  </div>
-                  <div className='form-group'>
-                    <label htmlFor='ConfirmPassword'>WebUrl</label>
-                    <input
-                      type='text'
-                      name='WebUrl'
-                      value={props.Values.WebUrl}
+                      name='OrderNumber'
+                      value={props.Values.OrderNumber}
                       onChange={props.handleInputChange}
                       className='form-control'
-                      id='WebUrl'
-                      aria-describedby='emailHelp'
-                      placeholder='WebUrl'
+                      id='OrderNumber'
+                      aria-describedby='OrderNumberHelp'
+                      placeholder='Enter OrderNumber'
                       required
                     />
                   </div>
@@ -481,4 +448,4 @@ const Formdata = props => {
   );
 };
 
-export default UserGroups;
+export default CalcItems;

@@ -232,7 +232,7 @@ class Users extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Users"}
             button={
@@ -252,11 +252,11 @@ class Users extends Component {
             handleSubmit={this.handleSubmit}
             handleInputChange={this.handleInputChange}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Users"}
             button={
@@ -272,7 +272,7 @@ class Users extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }

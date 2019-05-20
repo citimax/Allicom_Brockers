@@ -470,7 +470,7 @@ class Client extends Component {
 
     if (this.state.reseter) {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Add Client"}
             button={
@@ -492,11 +492,11 @@ class Client extends Component {
             handleSelectChange={this.handleSelectChange}
             Collections={this.state}
           />
-        </Wrapper>
+        </div>
       );
     } else {
       return (
-        <Wrapper>
+        <div>
           <Breadcumps
             tablename={"Client list"}
             button={
@@ -512,7 +512,7 @@ class Client extends Component {
           <TableWrapper>
             <Table Rows={Rowdata1} columns={ColumnData} />
           </TableWrapper>
-        </Wrapper>
+        </div>
       );
     }
   }
