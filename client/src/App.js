@@ -24,6 +24,8 @@ import InsuranceCompanies from "./Components/pages/Underwriting/Insurer";
 import PolicyClasses from "./Components/pages/Underwriting/PolicyClasses";
 import Wrapper from "./Components/wrapper";
 import Nav from "./Components/nav";
+import FamilyMember from "./Components/pages/Underwriting/FamilyMembers";
+import FamilyDependant from "./Components/pages/Underwriting/FamilyDependants";
 class App extends Component {
   render() {
     return (
@@ -45,7 +47,11 @@ class App extends Component {
             <Route path='/userroles' exact component={UserRoles} />
             <Route path='/company' exact component={Company} />
             <Route path='/usergroups' exact component={UsergroupsPage} />
-            <Route path='/PolicyCategories' exact component={PolicyCategories}            />
+            <Route
+              path='/PolicyCategories'
+              exact
+              component={PolicyCategories}
+            />
             <Route path='/PaymentModes' exact component={PaymentModes} />
             <Route path='/agents' exact component={Agents} />
             <Route path='/clientcategory' exact component={clientcategory} />
@@ -54,6 +60,8 @@ class App extends Component {
             <Route path='/Insurer' exact component={InsuranceCompanies} />
             <Route path='/PolicyClasses' exact component={PolicyClasses} />
             <Route path='/calcitems' exact component={ClacItems} />
+            <Route path='/FamilyMember' exact component={FamilyMember} />
+            <Route path='/FamilyDependant' exact component={FamilyDependant} />
           </Wrapper>
         </BrowserRouter>
       </div>

@@ -101,6 +101,15 @@ class Nav extends Component {
                   <li>
                     <Link to='/clientcategory'>Client Category</Link>
                   </li>
+                  <li>
+                    <Link to='/clientcategory'>Client Category</Link>
+                  </li>
+                  <li>
+                    <Link to='/FamilyMember'>Family Members</Link>
+                  </li>
+                  <li>
+                    <Link to='/FamilyDependant'> Dependants</Link>
+                  </li>
                 </ul>
               </li>
             </ul>
