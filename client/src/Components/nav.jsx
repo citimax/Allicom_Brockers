@@ -87,6 +87,9 @@ class Nav extends Component {
                     <Link to="/Insurer">Insurance Companies</Link>
                   </li>
                   <li>
+                    <Link to="/calcitems">Premium calc items</Link>
+                  </li>
+                  <li>
                     <Link to="/PolicyClasses">Policy Classes</Link>
                   </li>
                   <li>
@@ -99,7 +102,7 @@ class Nav extends Component {
                   <li>
                     <Link to="/clientcategory">Client Category</Link>
                   </li>
-                 
+
                   <li>
                     <Link to="/FamilyMember">Family Members</Link>
                   </li>
