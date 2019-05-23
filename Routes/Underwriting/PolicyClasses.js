@@ -46,18 +46,16 @@ PolicyClasses.get("/", (req, res) => {
         .max(50)
         .required(),
       InsuranceCompany: Joi.string()
-        .min(1)
-        .max(50)
-        .required(),
+        .allow("")
+        .allow(null),
       STDPolicyNo: Joi.string()
-        .min(1)
-        .max(50)
-        .required(),
+        .allow("")
+        .allow(null),
       SpecificDates: Joi.boolean(),
       Renewable: Joi.boolean(),
       AllowMoreThan1Yr: Joi.boolean(),
-      IsNegotiatedPolicy: Joi.boolean(),
-      IsStandardPolicy: Joi.boolean(),
+      PolicyDetails: Joi.string(),
+      CoverDates: Joi.string(),
       AdminFee: Joi.number().required(),
       CommisionRate: Joi.number().required()
     });
@@ -73,26 +71,25 @@ PolicyClasses.get("/", (req, res) => {
           });
         } else {
           const request = new sql.Request(pool);
-          request.input("CompCode", sql.VarChar, res.locals.CompCode);
+
           request.input("PolicyCode", sql.VarChar, req.body.PolicyCode);
+          request.input("CompCode", sql.VarChar, res.locals.CompCode);
           request.input("PolicyName", sql.VarChar, req.body.PolicyName);
           request.input("Category", sql.VarChar, req.body.Category);
           request.input("CommisionRate", sql.Float, req.body.CommisionRate);
           request.input("AdminFee", sql.Float, req.body.AdminFee);
-          request.input("SpecificDates", sql.Bit, req.body.SpecificDates);
+          request.input("CoverDates", sql.VarChar, req.body.CoverDates);
+
+          request.input("Specificdates", sql.Bit, req.body.SpecificDates);
           request.input("Renewable", sql.Bit, req.body.Renewable);
           request.input("AllowMoreThan1Yr", sql.Bit, req.body.AllowMoreThan1Yr);
-          request.input("IsStandardPolicy", sql.Bit, req.body.IsStandardPolicy);
+          request.input("PolicyDetails", sql.VarChar, req.body.PolicyDetails);
           request.input(
             "InsuranceCompany",
             sql.VarChar,
             req.body.InsuranceCompany
           );
-          request.input(
-            "IsNegotiatedPolicy",
-            sql.Bit,
-            req.body.IsNegotiatedPolicy
-          );
+
           request.input("STDPolicyNo", sql.VarChar, req.body.STDPolicyNo);
           request.input("UserID", sql.VarChar, res.locals.user);
           request.input("Terminus", sql.VarChar, req.ip[0]);

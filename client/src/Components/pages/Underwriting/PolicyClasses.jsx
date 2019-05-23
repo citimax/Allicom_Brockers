@@ -23,11 +23,11 @@ class PolicyClasses extends Component {
       AllowMoreThan1Yr: false,
       reseter: false,
       SpecificDates: false,
-      IsStandardPolicy: false,
-      IsNegotiatedPolicy: false,
-      Renewable: true,
+      Renewable: false,
       InsuranceCompany: "",
-      STDPolicyNo: ""
+      STDPolicyNo: "",
+      Coverdates: "",
+      PolicyDetails: ""
     };
   }
   fetchInsuranceCompanies = () => {
@@ -93,9 +93,7 @@ class PolicyClasses extends Component {
       AllowMoreThan1Yr: false,
       SpecificDates: false,
       InsuranceCompany: "",
-      STDPolicyNo: "",
-      IsStandardPolicy: false,
-      IsNegotiatedPolicy: false
+      STDPolicyNo: ""
     });
   }
   fetchData = () => {
@@ -126,7 +124,6 @@ class PolicyClasses extends Component {
     const value = target.type === "checkbox" ? target.checked : target.value;
     const name = target.name;
     this.setState({ [name]: value });
-    console.log(value);
   };
   handleDelete = k => {
     swal({
@@ -160,23 +157,7 @@ class PolicyClasses extends Component {
     });
   };
   handleEdit = PolicyClass => {
-    const data = {
-      PolicyCode: PolicyClass.PolicyCode,
-      PolicyName: PolicyClass.PolicyName,
-      Category: PolicyClass.Category,
-      CommisionRate: PolicyClass.CommisionRate,
-      AdminFee: PolicyClass.AdminFee,
-      SpecificDates: PolicyClass.SpecificDates,
-      Renewable: PolicyClass.Renewable,
-      AllowMoreThan1Yr: PolicyClass.AllowMoreThan1Yr,
-      InsuranceCompany: PolicyClass.InsuranceCompany,
-      STDPolicyNo: PolicyClass.STDPolicyNo,
-      SpecificDates: PolicyClass.SpecificDates,
-      IsStandardPolicy: PolicyClass.IsStandardPolicy,
-      IsNegotiatedPolicy: PolicyClass.IsNegotiatedPolicy,
-      IsNegotiatedPolicy: PolicyClass.IsNegotiatedPolicy
-    };
-    this.setState(data);
+    this.setState(PolicyClass);
     this.setState({ reseter: true });
   };
   handleSubmit = event => {
@@ -187,16 +168,16 @@ class PolicyClasses extends Component {
       Category: this.state.Category.value,
       CommisionRate: this.state.CommisionRate,
       AdminFee: this.state.AdminFee,
+      CoverDates: this.state.Coverdates.value,
+
       SpecificDates: this.state.SpecificDates,
       Renewable: this.state.Renewable,
       AllowMoreThan1Yr: this.state.AllowMoreThan1Yr,
+      PolicyDetails: this.state.PolicyDetails.value,
       InsuranceCompany: this.state.InsuranceCompany.value,
-      STDPolicyNo: this.state.STDPolicyNo,
-      SpecificDates: this.state.SpecificDates,
-      IsStandardPolicy: this.state.IsStandardPolicy,
-      IsNegotiatedPolicy: this.state.IsNegotiatedPolicy
+      STDPolicyNo: this.state.STDPolicyNo
     };
-    console.log(data);
+    console.log("data", data);
     this.postData("/api/PolicyClasses", data);
   };
   postData(url = ``, data = {}) {
@@ -258,24 +239,31 @@ class PolicyClasses extends Component {
       {
         label: "AdminFee",
         field: "AdminFee",
-        sort: "asc",
-        width: 200
+        sort: "asc"
+      },
+      {
+        label: "CoverDates",
+        field: "CoverDates",
+        sort: "asc"
       },
       {
         label: "SpecificDates",
         field: "SpecificDates",
-        sort: "asc",
-        width: 200
+        sort: "asc"
       },
       {
         label: "Renewable",
         field: "Renewable",
-        sort: "asc",
-        width: 200
+        sort: "asc"
       },
       {
         label: "AllowMoreThan1Yr",
         field: "AllowMoreThan1Yr",
+        sort: "asc"
+      },
+      {
+        label: "PolicyDetails",
+        field: "PolicyDetails",
         sort: "asc"
       },
       {
@@ -288,16 +276,7 @@ class PolicyClasses extends Component {
         field: "STDPolicyNo",
         sort: "asc"
       },
-      {
-        label: "IsStandardPolicy",
-        field: "IsStandardPolicy",
-        sort: "asc"
-      },
-      {
-        label: "IsNegotiatedPolicy",
-        field: "IsNegotiatedPolicy",
-        sort: "asc"
-      },
+
       {
         label: "action",
         field: "action",
@@ -316,26 +295,30 @@ class PolicyClasses extends Component {
           Category: k.Category,
           CommisionRate: k.CommisionRate,
           AdminFee: k.AdminFee,
-          SpecificDates: k.SpecificDates.toString(),
+          CoverDates: k.CoverDates,
+
+          Specificdates: k.Specificdates.toString(),
           Renewable: k.Renewable.toString(),
           AllowMoreThan1Yr: k.AllowMoreThan1Yr.toString(),
+
+          PolicyDetails: k.PolicyDetails,
           InsuranceCompany: k.InsuranceCompany,
           STDPolicyNo: k.STDPolicyNo,
-          IsStandardPolicy: k.IsStandardPolicy.toString(),
-          IsNegotiatedPolicy: k.IsNegotiatedPolicy.toString(),
 
           action: (
             <span>
               {" "}
               <a
                 style={{ color: "#007bff" }}
-                onClick={e => this.handleEdit(k, e)}>
+                onClick={e => this.handleEdit(k, e)}
+              >
                 Edit
               </a>
               |{" "}
               <a
                 style={{ color: "#f44542" }}
-                onClick={e => this.handleDelete(k.PolicyCode, e)}>
+                onClick={e => this.handleDelete(k.PolicyCode, e)}
+              >
                 {" "}
                 Delete
               </a>
@@ -353,11 +336,12 @@ class PolicyClasses extends Component {
             tablename={"Policy classes"}
             button={
               <button
-                to='/'
-                type='button'
+                to="/"
+                type="button"
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className='btn btn-primary float-left'>
+                className="btn btn-primary float-left"
+              >
                 Go Back
               </button>
             }
@@ -380,10 +364,11 @@ class PolicyClasses extends Component {
             tablename={"Policy classes"}
             button={
               <button
-                type='button'
+                type="button"
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className='btn btn-primary float-left'>
+                className="btn btn-primary float-left"
+              >
                 Create New
               </button>
             }
@@ -396,8 +381,7 @@ class PolicyClasses extends Component {
     }
   }
 }
-
-const Formdata = props => {
+const Negotiated = props => {
   const InsuranceCompaniesoptions = [...props.Values.InsuranceCompanies].map(
     (k, i) => {
       return {
@@ -406,200 +390,232 @@ const Formdata = props => {
       };
     }
   );
+
+  if (props.Values.PolicyDetails.value == "Binder/Negotiated Policy") {
+    return (
+      <div className="">
+        <div className="form-group">
+          <label htmlFor="InsuranceCompany">Insurance Company</label>
+          <Select
+            name="InsuranceCompany"
+            className="form-group"
+            defaultInputValue={props.Values.InsuranceCompany}
+            value={props.Values.InsuranceCompany}
+            onChange={props.handleSelectChange}
+            options={InsuranceCompaniesoptions}
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="STDPolicyNo">STDPolicyNo</label>
+          <input
+            type="text"
+            name="STDPolicyNo"
+            defaultValue={props.Values.STDPolicyNo}
+            onChange={props.handleInputChange}
+            className="form-control"
+            id="STDPolicyNo"
+            placeholder="STDPolicy No"
+          />
+        </div>
+      </div>
+    );
+  } else {
+    return <div />;
+  }
+};
+
+const Specificdates = props => {
+  if (props.Values.Coverdates.value == "Specific Dates") {
+    return (
+      <div className="form-group">
+        <div className="checkbox">
+          <input
+            id="checkbox4"
+            type="checkbox"
+            name="Renewable"
+            onChange={props.handleInputChange}
+            defaultChecked={props.Values.Renewable}
+          />
+          <label htmlFor="checkbox4">Renewable</label>
+        </div>
+        <div className="checkbox">
+          <input
+            id="checkbox5"
+            type="checkbox"
+            name="AllowMoreThan1Yr"
+            onChange={props.handleInputChange}
+            defaultChecked={props.Values.AllowMoreThan1Yr}
+          />
+          <label htmlFor="checkbox1">Allow More Than 1Yr</label>
+        </div>
+
+        <div className="checkbox">
+          <input
+            id="checkbox1"
+            type="checkbox"
+            name="SpecificDates"
+            onChange={props.handleInputChange}
+            defaultChecked={props.Values.SpecificDates}
+          />
+          <label htmlFor="checkbox1">Specific Dates</label>
+        </div>
+      </div>
+    );
+  } else {
+    return <div />;
+  }
+};
+
+const Formdata = props => {
   const Categoryoptions = [...props.Values.PolicyCategories].map((k, i) => {
     return {
       value: k.Code.toString(),
       label: k.Name.toString()
     };
   });
+  const PolicyDetailsOptions = [
+    {
+      value: "Standard Policy",
+      label: "Standard Policy"
+    },
+    {
+      value: "Binder/Negotiated Policy",
+      label: "Binder/Negotiated Policy"
+    }
+  ];
+  const CoverdatesOptions = [
+    {
+      value: "Specific Dates",
+      label: "Specific Dates"
+    },
+    {
+      value: "No Specific Dates",
+      label: "No Specific Dates"
+    }
+  ];
   return (
-    <div className='container-fluid'>
-      <div className='col-sm-12'>
-        <div className='ibox '>
-          <div className='ibox-title'>
-            <div className='ibox-tools'>
-              <a className='close-link'>
-                <i className='fa fa-times' />
+    <div className="container-fluid">
+      <div className="col-sm-12">
+        <div className="ibox ">
+          <div className="ibox-title">
+            <div className="ibox-tools">
+              <a className="close-link">
+                <i className="fa fa-times" />
               </a>
             </div>
           </div>
-          <div className='ibox-content'>
+          <div className="ibox-content">
             <form onSubmit={props.handleSubmit}>
-              <div className=' row'>
-                <div className='col-sm'>
-                  <div className='form-group'>
-                    <label htmlFor='PolicyCode'>PolicyCode</label>
+              <div className=" row">
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="PolicyCode">PolicyCode</label>
                     <input
-                      type='text'
-                      name='PolicyCode'
+                      type="text"
+                      name="PolicyCode"
                       value={props.Values.PolicyCode}
                       onChange={props.handleInputChange}
-                      className='form-control'
-                      id='exampleInputRenewable1'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter PolicyCode'
+                      className="form-control"
+                      id="exampleInputRenewable1"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter PolicyCode"
                       required
                     />
                   </div>
-                  <div className='form-group'>
-                    <label htmlFor='InsuranceCompany'>Category</label>
+                  <div className="form-group">
+                    <label htmlFor="PolicyName">PolicyName</label>
+                    <input
+                      type="text"
+                      name="PolicyName"
+                      value={props.Values.PolicyName}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="PolicyName"
+                      placeholder="PolicyName"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="InsuranceCompany">Category</label>
                     <Select
-                      name='Category'
-                      className='form-group'
+                      name="Category"
+                      className="form-group"
                       defaultInputValue={props.Values.Category}
                       value={props.Values.Category}
                       onChange={props.handleSelectChange}
                       options={Categoryoptions}
                     />
                   </div>
-
-                  <div className='form-group'>
-                    <label htmlFor='AdminFee'>AdminFee (%)</label>
+                </div>
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="CommisionRate">CommisionRate (%)</label>
                     <input
-                      type='number'
-                      name='AdminFee'
+                      type="number"
+                      name="CommisionRate"
+                      value={props.Values.CommisionRate}
+                      onChange={props.handleInputChange}
+                      className="form-control"
+                      id="CommisionRate"
+                      placeholder="CommisionRate"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label htmlFor="AdminFee">AdminFee (%)</label>
+                    <input
+                      type="number"
+                      name="AdminFee"
                       value={props.Values.AdminFee}
                       onChange={props.handleInputChange}
-                      className='form-control'
-                      id='exampleInputEmail1'
-                      aria-describedby='emailHelp'
-                      placeholder='Enter Admin Fee'
+                      className="form-control"
+                      id="exampleInputEmail1"
+                      aria-describedby="emailHelp"
+                      placeholder="Enter Admin Fee"
                       required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="PolicyDetails">Policy Details</label>
+                    <Select
+                      name="PolicyDetails"
+                      defaultInputValue={props.Values.PolicyDetails}
+                      value={props.Values.PolicyDetails}
+                      onChange={props.handleSelectChange}
+                      options={PolicyDetailsOptions}
                     />
                   </div>
                 </div>
-                <div className='col-sm'>
-                  <div className='form-group'>
-                    <label htmlFor='PolicyName'>PolicyName</label>
-                    <input
-                      type='text'
-                      name='PolicyName'
-                      checked={props.Values.PolicyName}
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='PolicyName'
-                      placeholder='PolicyName'
-                      required
+                <div className="col-sm">
+                  <div className="form-group">
+                    <label htmlFor="Coverdates">Cover dates</label>
+                    <Select
+                      name="Coverdates"
+                      value={props.Values.Coverdates}
+                      defaultInputValue={props.Values.Coverdates}
+                      onChange={props.handleSelectChange}
+                      options={CoverdatesOptions}
                     />
                   </div>
-                  <div className='form-group'>
-                    <label htmlFor='CommisionRate'>CommisionRate (%)</label>
-                    <input
-                      type='number'
-                      name='CommisionRate'
-                      checked={props.Values.CommisionRate}
-                      onChange={props.handleInputChange}
-                      className='form-control'
-                      id='CommisionRate'
-                      placeholder='CommisionRate'
-                      required
+                  <div className="form-group">
+                    <Specificdates
+                      Values={props.Values}
+                      handleInputChange={props.handleInputChange}
                     />
                   </div>
 
-                  <div className='form-group'>
-                    <p>Cover dates</p>
-                    <div className='row'>
-                      <div className='checkbox'>
-                        <input
-                          id='checkbox4'
-                          type='checkbox'
-                          name='Renewable'
-                          onChange={props.handleInputChange}
-                          checked={props.Values.Renewable}
-                        />
-                        <label htmlFor='checkbox4'>Renewable</label>
-                      </div>
-                      <div className='checkbox'>
-                        <input
-                          id='checkbox5'
-                          type='checkbox'
-                          name='AllowMoreThan1Yr'
-                          onChange={props.handleInputChange}
-                          checked={props.Values.AllowMoreThan1Yr}
-                        />
-                        <label htmlFor='checkbox1'>AllowMoreThan1Yr</label>
-                      </div>
-
-                      <div className='checkbox'>
-                        <input
-                          id='checkbox1'
-                          type='checkbox'
-                          name='SpecificDates'
-                          onChange={props.handleInputChange}
-                          checked={props.Values.SpecificDates}
-                        />
-                        <label htmlFor='checkbox1'>SpecificDates</label>
-                      </div>
-                    </div>
-                  </div>
+                  <Negotiated
+                    Values={props.Values}
+                    handleSelectChange={props.handleSelectChange}
+                    handleInputChange={props.handleInputChange}
+                  />
                 </div>
               </div>
               <p />
 
-              <span className='border-top'>
-                <fieldset>
-                  <p>Other policy details</p>
-
-                  <div className='row'>
-                    <div className='col-sm'>
-                      <div className='form-group'>
-                        <div className='checkbox'>
-                          <input
-                            id='checkbox3'
-                            type='checkbox'
-                            name='IsStandardPolicy'
-                            onChange={props.handleInputChange}
-                            checked={props.Values.IsStandardPolicy}
-                          />
-                          <label htmlFor='checkbox3'>Standard Policy</label>
-                        </div>
-                      </div>
-                      <div className='form-group'>
-                        <label htmlFor='InsuranceCompany'>
-                          Insurance Company
-                        </label>
-                        <Select
-                          name='InsuranceCompany'
-                          className='form-group'
-                          defaultInputValue={props.Values.InsuranceCompany}
-                          value={props.Values.InsuranceCompany}
-                          onChange={props.handleSelectChange}
-                          options={InsuranceCompaniesoptions}
-                        />
-                      </div>
-                    </div>
-                    <div className='col-sm'>
-                      <div className='form-group'>
-                        <div className='checkbox'>
-                          <input
-                            id='checkbox2'
-                            type='checkbox'
-                            name='IsNegotiatedPolicy'
-                            onChange={props.handleInputChange}
-                            checked={props.Values.IsNegotiatedPolicy}
-                          />
-                          <label htmlFor='checkbox2'>Negotiated Policy</label>
-                        </div>
-                      </div>
-
-                      <div className='form-group'>
-                        <label htmlFor='STDPolicyNo'>STDPolicyNo</label>
-                        <input
-                          type='text'
-                          name='STDPolicyNo'
-                          checked={props.Values.STDPolicyNo}
-                          onChange={props.handleInputChange}
-                          className='form-control'
-                          id='STDPolicyNo'
-                          placeholder='STDPolicyNo'
-                          required
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </fieldset>
-              </span>
-              <button type='submit' className='btn btn-primary'>
+              <button type="submit" className="btn btn-primary">
                 Submit
               </button>
             </form>
