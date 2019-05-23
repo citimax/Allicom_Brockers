@@ -249,7 +249,7 @@ class Client extends Component {
       Domant: this.state.Domant,
       Category: this.state.Category.value
     };
-    console.log(data);
+
     this.postData("api/clients", data);
   };
   postData(url = ``, data = {}) {

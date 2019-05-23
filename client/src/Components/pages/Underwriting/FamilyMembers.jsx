@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import Breadcumps from "../../breadcumps";
 import Table from "../../Table";
 import TableWrapper from "../../TableWrappper";
-import Wrapper from "../../wrapper";
 import swal from "sweetalert";
 import Select from "react-select";
 //import { js } from "./bootstrap";
@@ -46,7 +45,7 @@ class FamilyMember extends Component {
       Address: "",
       Mobile: "",
       Telephone: "",
-      Mobile: "",
+
       Email: "",
       IDNO: "",
       PassportNo: ""
@@ -126,7 +125,7 @@ class FamilyMember extends Component {
       Address: FamilyMember.Address,
       Mobile: FamilyMember.Mobile,
       Telephone: FamilyMember.Telephone,
-      Mobile: FamilyMember.Mobile,
+
       Email: FamilyMember.Email,
       Town: FamilyMember.Town,
       IDNO: FamilyMember.IDNO,
@@ -297,15 +296,13 @@ class FamilyMember extends Component {
               {" "}
               <a
                 style={{ color: "#007bff" }}
-                onClick={e => this.handleEdit(k, e)}
-              >
+                onClick={e => this.handleEdit(k, e)}>
                 Edit
               </a>
               |{" "}
               <a
                 style={{ color: "#f44542" }}
-                onClick={e => this.handleDelete(k, e)}
-              >
+                onClick={e => this.handleDelete(k, e)}>
                 {" "}
                 Delete
               </a>
@@ -323,12 +320,11 @@ class FamilyMember extends Component {
             tablename={"Add FamilyMember"}
             button={
               <button
-                to="/"
-                type="button"
+                to='/'
+                type='button'
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className="btn btn-primary float-left"
-              >
+                className='btn btn-primary float-left'>
                 Go Back
               </button>
             }
@@ -350,11 +346,10 @@ class FamilyMember extends Component {
             tablename={"FamilyMember list"}
             button={
               <button
-                type="button"
+                type='button'
                 style={{ marginTop: 40 }}
                 onClick={this.handleclick}
-                className="btn btn-primary float-left"
-              >
+                className='btn btn-primary float-left'>
                 Create New
               </button>
             }
@@ -379,53 +374,53 @@ const Formdata = props => {
     }
   ];
   return (
-    <div className="container-fluid">
-      <div className="col-sm-12">
-        <div className="ibox ">
-          <div className="ibox-title">
-            <div className="ibox-tools">
-              <a className="close-link">
-                <i className="fa fa-times" />
+    <div className='container-fluid'>
+      <div className='col-sm-12'>
+        <div className='ibox '>
+          <div className='ibox-title'>
+            <div className='ibox-tools'>
+              <a className='close-link'>
+                <i className='fa fa-times' />
               </a>
             </div>
           </div>
-          <div className="ibox-content">
+          <div className='ibox-content'>
             <form onSubmit={props.handleSubmit}>
-              <div className=" row">
-                <div className="col-sm">
-                  <div className="form-group">
-                    <label htmlFor="Names">Names</label>
+              <div className=' row'>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='Names'>Names</label>
                     <input
-                      type="text"
-                      name="Names"
+                      type='text'
+                      name='Names'
                       required
                       value={props.Values.Names}
-                      className="form-control"
+                      className='form-control'
                       onChange={props.handleInputChange}
-                      id="Names"
-                      aria-describedby="NamesHelp"
-                      placeholder="Enter names"
+                      id='Names'
+                      aria-describedby='NamesHelp'
+                      placeholder='Enter names'
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="DOB">DOB</label>
+                  <div className='form-group'>
+                    <label htmlFor='DOB'>DOB</label>
                     <input
-                      type="date"
-                      name="DOB"
+                      type='date'
+                      name='DOB'
                       required
                       value={props.Values.DOB}
-                      className="form-control"
+                      className='form-control'
                       onChange={props.handleInputChange}
-                      id="DOB"
-                      aria-describedby="DOBHelp"
-                      placeholder="Enter DOB"
+                      id='DOB'
+                      aria-describedby='DOBHelp'
+                      placeholder='Enter DOB'
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="Gender">Gender</label>
+                  <div className='form-group'>
+                    <label htmlFor='Gender'>Gender</label>
                     <Select
-                      name="Gender"
+                      name='Gender'
                       value={props.Values.Gender}
                       onChange={props.handleSelectChange}
                       options={GenderOptions}
@@ -433,117 +428,117 @@ const Formdata = props => {
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="Address">Address</label>
+                  <div className='form-group'>
+                    <label htmlFor='Address'>Address</label>
                     <input
-                      className="form-control"
-                      name="Address"
+                      className='form-control'
+                      name='Address'
                       value={props.Values.Address}
                       onChange={props.handleInputChange}
-                      placeholder="Enter Address"
+                      placeholder='Enter Address'
                     />
                   </div>
                 </div>
-                <div className="col-sm">
-                  <div className="form-group">
-                    <label htmlFor="Family">Family</label>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='Family'>Family</label>
                     <input
-                      type="text"
-                      name="Family"
+                      type='text'
+                      name='Family'
                       value={props.Values.Family}
-                      className="form-control"
+                      className='form-control'
                       onChange={props.handleInputChange}
-                      id="Family"
-                      placeholder="Family"
+                      id='Family'
+                      placeholder='Family'
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="Telephone">Telephone</label>
+                  <div className='form-group'>
+                    <label htmlFor='Telephone'>Telephone</label>
                     <input
-                      type="text"
-                      name="Telephone"
+                      type='text'
+                      name='Telephone'
                       value={props.Values.Telephone}
-                      className="form-control"
+                      className='form-control'
                       onChange={props.handleInputChange}
-                      id="Telephone"
-                      placeholder="Telephone"
+                      id='Telephone'
+                      placeholder='Telephone'
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="Mobile">Mobile</label>
+                  <div className='form-group'>
+                    <label htmlFor='Mobile'>Mobile</label>
                     <input
-                      type="text"
-                      name="Mobile"
+                      type='text'
+                      name='Mobile'
                       onChange={props.handleInputChange}
                       value={props.Values.Mobile}
-                      className="form-control"
-                      id="Mobile"
-                      aria-describedby="emailHelp"
-                      placeholder="Mobile"
+                      className='form-control'
+                      id='Mobile'
+                      aria-describedby='emailHelp'
+                      placeholder='Mobile'
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="Email">Email</label>
+                  <div className='form-group'>
+                    <label htmlFor='Email'>Email</label>
                     <input
-                      type="text"
-                      name="Email"
+                      type='text'
+                      name='Email'
                       onChange={props.handleInputChange}
                       value={props.Values.Email}
-                      className="form-control"
-                      id="Email"
-                      aria-describedby="emailHelp"
-                      placeholder="Email"
+                      className='form-control'
+                      id='Email'
+                      aria-describedby='emailHelp'
+                      placeholder='Email'
                     />
                   </div>
                 </div>
-                <div className="col-sm">
-                  <div className="form-group">
-                    <label htmlFor="IDNO">Contact Person</label>
+                <div className='col-sm'>
+                  <div className='form-group'>
+                    <label htmlFor='IDNO'>Contact Person</label>
                     <input
-                      type="text"
-                      name="IDNO"
+                      type='text'
+                      name='IDNO'
                       required
                       value={props.Values.IDNO}
-                      className="form-control"
+                      className='form-control'
                       onChange={props.handleInputChange}
-                      id="IDNO"
-                      aria-describedby="IDNOHelp"
-                      placeholder="Enter IDNO"
+                      id='IDNO'
+                      aria-describedby='IDNOHelp'
+                      placeholder='Enter IDNO'
                     />
                   </div>
 
-                  <div className="form-group">
-                    <label htmlFor="PassportNo">PassportNo</label>
+                  <div className='form-group'>
+                    <label htmlFor='PassportNo'>PassportNo</label>
                     <input
-                      type="text"
-                      name="PassportNo"
+                      type='text'
+                      name='PassportNo'
                       onChange={props.handleInputChange}
                       value={props.Values.PassportNo}
-                      className="form-control"
-                      id="PassportNo"
-                      aria-describedby="PassportNoHelp"
-                      placeholder="PassportNo"
+                      className='form-control'
+                      id='PassportNo'
+                      aria-describedby='PassportNoHelp'
+                      placeholder='PassportNo'
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="Town">Town</label>
+                  <div className='form-group'>
+                    <label htmlFor='Town'>Town</label>
                     <input
-                      type="text"
-                      name="Town"
+                      type='text'
+                      name='Town'
                       required
                       value={props.Values.Town}
-                      className="form-control"
+                      className='form-control'
                       onChange={props.handleInputChange}
-                      id="Town"
-                      aria-describedby="TownHelp"
-                      placeholder="Enter Town"
+                      id='Town'
+                      aria-describedby='TownHelp'
+                      placeholder='Enter Town'
                     />
                   </div>
                 </div>
               </div>
-              <button type="submit" className="btn btn-primary">
+              <button type='submit' className='btn btn-primary'>
                 Submit
               </button>
             </form>

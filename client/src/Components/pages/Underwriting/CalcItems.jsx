@@ -320,7 +320,7 @@ const Formdata = props => {
               <div className=' row'>
                 <div className='col-sm'>
                   <div className='form-group'>
-                    <label htmlFor='ItemCode'>ItemCode</label>
+                    <label htmlFor='ItemCode'>Item Code</label>
                     <input
                       type='text'
                       name='ItemCode'
@@ -335,7 +335,7 @@ const Formdata = props => {
                   </div>
 
                   <div className='form-group'>
-                    <label htmlFor='ControlAcc'>ControlAcc</label>
+                    <label htmlFor='ControlAcc'>Control Acc</label>
                     <input
                       type='text'
                       name='ControlAcc'
@@ -348,38 +348,45 @@ const Formdata = props => {
                       required
                     />
                   </div>
+
                   <div className='form-group'>
-                    <label htmlFor='RateType'>RateType</label>
-                    <input
-                      type='text'
+                    <label htmlFor='RateType'>Rate Type</label>
+                    <select
                       name='RateType'
-                      value={props.Values.RateType}
                       onChange={props.handleInputChange}
-                      className='form-control'
-                      id='RateType'
-                      aria-describedby='RateTypeHelp'
-                      placeholder='Enter RateType'
+                      value={props.Values.RateType}
                       required
-                    />
+                      className='select2_demo_3 form-control'>
+                      <option selected value={props.Values.RateType}>
+                        {props.Values.RateType}
+                      </option>
+                      <option value='Percentage'>Percentage</option>
+                      <option value='Per Mille'>Per Mille</option>
+                      <option value='figure'>Just a figure</option>
+                    </select>
                   </div>
+
                   <div className='form-group'>
                     <label htmlFor='Method'>Method</label>
-                    <input
-                      type='text'
+                    <select
                       name='Method'
-                      value={props.Values.Method}
                       onChange={props.handleInputChange}
-                      className='form-control'
-                      id='Method'
-                      aria-describedby='MethodHelp'
-                      placeholder='Enter Method'
+                      value={props.Values.Method}
+                      selected={props.Values.Method}
                       required
-                    />
+                      className='select2_demo_3 form-control'>
+                      <option selected value={props.Values.Method}>
+                        {props.Values.Method}
+                      </option>
+                      <option value='Sum Insured'>Sum Insured</option>
+                      <option value='Basic Premium'>Basic Premium</option>
+                      <option value='Set Amount'>Set Amount</option>
+                    </select>
                   </div>
                 </div>
                 <div className='col-sm'>
                   <div className='form-group'>
-                    <label htmlFor='ItemName'>ItemName</label>
+                    <label htmlFor='ItemName'>Item Name</label>
                     <input
                       type='text'
                       name='ItemName'
@@ -394,18 +401,30 @@ const Formdata = props => {
                   </div>
 
                   <div className='form-group'>
-                    <label htmlFor='ItemGroup'>ItemGroup</label>
-                    <input
-                      type='text'
+                    <label htmlFor='ItemGroup'>Item Group</label>
+                    <select
                       name='ItemGroup'
-                      value={props.Values.ItemGroup}
                       onChange={props.handleInputChange}
-                      className='form-control'
-                      id='ItemGroup'
-                      aria-describedby='ItemGroupHelp'
-                      placeholder='Enter ItemGroup'
+                      value={props.Values.ItemGroup}
                       required
-                    />
+                      className='select2_demo_3 form-control'>
+                      <option selected value={props.Values.ItemGroup}>
+                        {props.Values.ItemGroup}
+                      </option>
+                      <option value='Add to Basic Premium'>
+                        Add to Basic Premium
+                      </option>
+                      <option value='Add to Total Premium'>
+                        Add to Total Premium
+                      </option>
+                      <option value='Less from Basic Premium'>
+                        Less from Basic Premium
+                      </option>
+                      <option value='Less from Total Premium'>
+                        Less from Total Premium
+                      </option>
+                      <option value='Statutory Charge'>Statutory Charge</option>
+                    </select>
                   </div>
                   <div className='form-group'>
                     <label htmlFor='Rate'>Rate</label>

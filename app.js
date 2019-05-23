@@ -33,7 +33,7 @@ app.use(
 );
 app.use(bodyParser.json());
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   //Enabling CORS
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
@@ -80,7 +80,7 @@ app.use("/api/PolicyClasses", auth.validaterole("roles"), PolicyClasses);
 app.use("/api/Insurer", auth.validaterole("Insurance Companies"), Insurer);
 app.use("/api/calcitems", auth.validaterole("Insurance Companies"), CalcItems);
 app.use(
-  "/api/prmiumcalc",
+  "/api/premiumcalc",
   auth.validaterole("Insurance Companies"),
   PremiumCalc
 );

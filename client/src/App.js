@@ -26,6 +26,7 @@ import Wrapper from "./Components/wrapper";
 import Nav from "./Components/nav";
 import FamilyMember from "./Components/pages/Underwriting/FamilyMembers";
 import FamilyDependant from "./Components/pages/Underwriting/FamilyDependants";
+import PremiumCalculator from "./Components/pages/Underwriting/PremiumCulculator";
 class App extends Component {
   render() {
     return (
@@ -62,6 +63,7 @@ class App extends Component {
             <Route path='/calcitems' exact component={ClacItems} />
             <Route path='/FamilyMember' exact component={FamilyMember} />
             <Route path='/FamilyDependant' exact component={FamilyDependant} />
+           <Route path='/premiumCalculator' exact component={PremiumCalculator} />
           </Wrapper>
         </BrowserRouter>
       </div>
