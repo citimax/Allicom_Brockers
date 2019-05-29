@@ -29,6 +29,14 @@ const Dependants = require("./Routes/Underwriting/Dependants");
 const Department = require("./Routes/Underwriting/Department");
 const DamagedCerts = require("./Routes/Underwriting/DamagedCerts");
 const PolicyRegister = require("./Routes/Underwriting/PolicyRegister");
+const InsuredItems = require("./Routes/Underwriting/InsuredItems");
+const ReceiveMotorCertificates = require("./Routes/Underwriting/ReceiveMotorCertificates");
+const CoInsurance = require("./Routes/Underwriting/CoInsurance");
+
+//reports test
+const Report = require("./Routes/Reports/index");
+
+//end of report test
 app.use(
   bodyParser.urlencoded({
     extended: false
@@ -46,6 +54,8 @@ app.use(function (req, res, next) {
   );
   next();
 });
+
+app.use("/api/reports", Report);
 
 app.use("/api/login", auth.router);
 app.use(auth.validateToken);
@@ -82,6 +92,13 @@ app.use("/api/PolicyCategories", auth.validaterole("roles"), PolicyCategories);
 app.use("/api/PolicyClasses", auth.validaterole("roles"), PolicyClasses);
 app.use("/api/Insurer", auth.validaterole("Insurance Companies"), Insurer);
 app.use("/api/calcitems", auth.validaterole("Insurance Companies"), CalcItems);
+app.use("/api/InsuredItems", auth.validaterole("Insured Items"), InsuredItems);
+app.use("/api/CoInsurance", auth.validaterole("Co-Insurance"), CoInsurance);
+app.use(
+  "/api/ReceiveMotorCertificates",
+  auth.validaterole("Receive Motor Certificates"),
+  ReceiveMotorCertificates
+);
 app.use(
   "/api/premiumcalc",
   auth.validaterole("Insurance Companies"),

@@ -129,6 +129,27 @@ class Nav extends Component {
                   <li>
                     <Link to='/policyregister'>Policy Register</Link>
                   </li>
+                  <li>
+                    <Link to="/InsuredItems"> Insured Items</Link>
+                  </li>
+                  <li>
+                    <Link to="/CoInsurance"> Co Insurance</Link>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="">
+                  <i className="fa fa-th-large" />
+                  <span className="nav-label ">Certificates</span>
+                  <span className="fa arrow" />
+                </a>
+                <ul className="nav nav-second-level collapse">
+                  <li>
+                    <Link to="/ReceiveMotorCertificates">
+                      Receive Motor Certificates
+                    </Link>
+                  </li>
                 </ul>
               </li>
             </ul>

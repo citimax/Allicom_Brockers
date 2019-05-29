@@ -6,7 +6,6 @@ import UserRoles from "./Components/pages/UserRoles";
 import Company from "./Components/pages/company";
 import login from "./Components/Login";
 import Profile from "./Components/pages/profile";
-
 import roles from "./Components/pages/roles";
 import countries from "./Components/pages/Countries";
 import counties from "./Components/pages/counties";
@@ -30,29 +29,33 @@ import PremiumCalculator from "./Components/pages/Underwriting/PremiumCulculator
 import Department from "./Components/pages/Underwriting/Department";
 import DamagedCerts from "./Components/pages/Underwriting/DamagedCerts";
 import PolicyRegister from "./Components/pages/Underwriting/PolicyRegister";
+import InsuredItems from "./Components/pages/Underwriting/InsuredItems";
+import ReceiveMotorCertificates from "./Components/pages/Underwriting/ReceiveMotorCertificates";
+import CoInsurance from "./Components/pages/Underwriting/CoInsurance";
+import report from "./Reports/testreport";
+
 class App extends Component {
   render() {
     return (
-      <div id='wrapper'>
+      <div id="wrapper" onMouseMove={this.handleClick}>
         <BrowserRouter>
           <Nav />
 
           <Wrapper>
-            <Route path='/' exact component={login} />
-            <Route path='/users' exact component={UsersPage} />
-
-            <Route path='/profile' exact component={Profile} />
-            <Route path='/clients' exact component={Clientpage} />
-            <Route path='/roles' exact component={roles} />
-            <Route path='/countries' exact component={countries} />
-            <Route path='/securitygroups' exact component={securitygroups} />
-            <Route path='/counties' exact component={counties} />
-            <Route path='/costCenter' exact component={costCenter} />
-            <Route path='/userroles' exact component={UserRoles} />
-            <Route path='/company' exact component={Company} />
-            <Route path='/usergroups' exact component={UsergroupsPage} />
+            <Route path="/" exact component={login} />
+            <Route path="/users" exact component={UsersPage} />
+            <Route path="/profile" exact component={Profile} />
+            <Route path="/clients" exact component={Clientpage} />
+            <Route path="/roles" exact component={roles} />
+            <Route path="/countries" exact component={countries} />
+            <Route path="/securitygroups" exact component={securitygroups} />
+            <Route path="/counties" exact component={counties} />
+            <Route path="/costCenter" exact component={costCenter} />
+            <Route path="/userroles" exact component={UserRoles} />
+            <Route path="/company" exact component={Company} />
+            <Route path="/usergroups" exact component={UsergroupsPage} />
             <Route
-              path='/PolicyCategories'
+              path="/PolicyCategories"
               exact
               component={PolicyCategories}
             />
@@ -69,7 +72,15 @@ class App extends Component {
             <Route path='/premiumCalculator' exact component={PremiumCalculator} />
             <Route path='/department' exact component={Department} />
             <Route path='/damagedcerts' exact component={DamagedCerts} />
-             <Route path='/policyregister' exact component={PolicyRegister} />
+            <Route path='/policyregister' exact component={PolicyRegister} />
+             <Route path="/InsuredItems" exact component={InsuredItems} />
+            <Route path="/CoInsurance" exact component={CoInsurance} />
+            <Route path="/report" exact component={report} />
+            <Route
+              path="/ReceiveMotorCertificates"
+              exact
+              component={ReceiveMotorCertificates}
+            />
           </Wrapper>
         </BrowserRouter>
       </div>

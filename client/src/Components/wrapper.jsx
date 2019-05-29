@@ -6,7 +6,7 @@ import Nav from "./nav";
 class wrapper extends Component {
   render() {
     return (
-      <div id='page-wrapper' className='gray-bg'>
+      <div id="page-wrapper" className="gray-bg">
         <NavTop />
         {this.props.children}
         <Footer />
