@@ -402,8 +402,8 @@ const Formdata = props => {
     const MemberCodeOptions = [...props.Values.Members].map(
         (k, i) => {
             return {
-                value: k.MemberCode.toString(),
-                label: k.Names.toString()
+                value: k.MemberCode,
+                label: k.Names + "|" + k.MemberCode
             };
         }
     );
