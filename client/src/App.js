@@ -27,6 +27,9 @@ import Nav from "./Components/nav";
 import FamilyMember from "./Components/pages/Underwriting/FamilyMembers";
 import FamilyDependant from "./Components/pages/Underwriting/FamilyDependants";
 import PremiumCalculator from "./Components/pages/Underwriting/PremiumCulculator";
+import Department from "./Components/pages/Underwriting/Department";
+import DamagedCerts from "./Components/pages/Underwriting/DamagedCerts";
+import PolicyRegister from "./Components/pages/Underwriting/PolicyRegister";
 class App extends Component {
   render() {
     return (
@@ -63,7 +66,10 @@ class App extends Component {
             <Route path='/calcitems' exact component={ClacItems} />
             <Route path='/FamilyMember' exact component={FamilyMember} />
             <Route path='/FamilyDependant' exact component={FamilyDependant} />
-           <Route path='/premiumCalculator' exact component={PremiumCalculator} />
+            <Route path='/premiumCalculator' exact component={PremiumCalculator} />
+            <Route path='/department' exact component={Department} />
+            <Route path='/damagedcerts' exact component={DamagedCerts} />
+             <Route path='/policyregister' exact component={PolicyRegister} />
           </Wrapper>
         </BrowserRouter>
       </div>

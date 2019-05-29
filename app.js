@@ -26,6 +26,9 @@ const CalcItems = require("./Routes/Underwriting/CalcItems");
 const PremiumCalc = require("./Routes/Underwriting/Premiumcalculator");
 const FamilyMembers = require("./Routes/Underwriting/FamilyMembers");
 const Dependants = require("./Routes/Underwriting/Dependants");
+const Department = require("./Routes/Underwriting/Department");
+const DamagedCerts = require("./Routes/Underwriting/DamagedCerts");
+const PolicyRegister = require("./Routes/Underwriting/PolicyRegister");
 app.use(
   bodyParser.urlencoded({
     extended: false
@@ -93,6 +96,21 @@ app.use(
   "/api/FamilyDependants",
   auth.validaterole("Family Dependants"),
   Dependants
+);
+app.use(
+  "/api/department",
+  auth.validaterole("Family Dependants"),
+  Department
+);
+app.use(
+  "/api/damagedcerts",
+  auth.validaterole("Family Dependants"),
+  DamagedCerts
+);
+app.use(
+  "/api/policyregister",
+  auth.validaterole("Family Dependants"),
+  PolicyRegister
 );
 
 //end of app use routes
