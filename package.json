@@ -19,7 +19,7 @@
     "html-pdf": "^2.2.0",
     "joi": "^14.3.1",
     "jquery": "^3.4.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "mssql": "^5.1.0",
     "nodemon": "^1.19.0",
     "sweetalert": "^2.1.2",
